@@ -5,6 +5,7 @@ Require Import PeanoNat Le Lt Plus Mult Even.
 Require Import Lia.
 Require Import CoqNat.
 
+
 Notation "x .^ y" :=  (expn x y)%coq_nat (at level 30, right associativity).
 
 Section nat1.
