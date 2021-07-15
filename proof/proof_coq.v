@@ -752,187 +752,115 @@ Section Three_Color_Triangle_Problem_nec.
       ( ~ (exists k :nat, n = 3 .^ k) -> ~ forall (c0 c1 c2 : Color),((Cpos x y c0 /\ Cpos (x + n) y c1 /\ Cpos x (y + n) c2) -> c2 = mix c0 c1)).
   
   Proof.
-    (* move=> n; case n. *)
-    (* - by move=> x y c0 c1 c2 Even.  *)
     move=> n x y.
     move=> NotZero_N Even_N Paint Not3k Triangle.
     destruct Even_N as [m]; move: H => Even_N.
+
+    (* Cpos x (y + n) red を示す *)
     have Alternate :
       ((forall (x1 : nat), (exists k1, x1 = 2 * k1) -> Cpos x1 y blu) /\ (forall (x2 : nat), (exists k2, x2 = 2 * k2 + 1) -> Cpos x2 y yel)) ->
       (forall (x : nat), Cpos x (y + 1) red).
-    by apply Paint_Alternate.
+      by apply Paint_Alternate.
     specialize (Alternate Paint).
     destruct Paint as [Paint_Even Paint_Odd].
-    - have Red_Y1 :
-        (forall x1 : nat, Cpos x1 y red) -> forall (x2 : nat), Cpos x2 (y + 1) red.
-      by apply Red_N.
-    - have Red_YN :
-        (forall x1 : nat, Cpos x1 (y + 1) red) -> forall (x2 : nat), Cpos x2 (y + n) red.
-      move=> Paint_Red_Y1.
-      apply Red_N.
-    - have Red_Y1N :
-        (forall x1 : nat, Cpos x1 (y + 1) red) -> forall (x2 : nat), Cpos x2 (y + 1 + n) red.
-      by apply Red_N.
-      (* specialize(Red_Y1N Alternate). *)
-      (* + have N' : exists n' : nat, n = n' + 1. *)
-      (*   exists ((2 * m) - 1). *)
-      (*   rewrite- Even_N. *)
-        * have NotZero_M : m <> 0.
-          move=> mZero.
-          rewrite mZero in Even_N.
-          rewrite muln0 in Even_N.
-          rewrite Even_N in NotZero_N.
-          by [].
-        * have notZero_N : n <> 0.
-          move=> Zero_N.
-          rewrite Zero_N in Even_N.
-        * have Zero_M : m = 0.
-          * have tmp : Nat.div2 (2 * m) = m.
-            by apply Nat.div2_double.
-          rewrite- Even_N in tmp.
-          by [].
-        by [].
-    + have N' : exists n' : nat, n = n' + 1.
-        exists ((2 * m) - 1).
-        rewrite- Even_N.
-        rewrite addn1; rewrite subn1.
-        symmetry.
-      by rewrite  prednK.
+    have Red_YN : Cpos x ((y + 1) + (n - 1)) red.
+      by apply Red_N.  
+    have Rerite_YN : y + 1 + (n - 1) = y + n.
+    rewrite- addnA.
+    rewrite [1+(n-1)]addnC.
+    rewrite subn1.
+    rewrite addn1.
+    + have prednk : n.-1.+1 = n.
+      by apply prednK.
+    by rewrite prednk.
+    move: Red_YN; rewrite Rerite_YN; move=> Red_YN.
 
-      destruct N' as [n' N'].
+    (* x を even, odd で場合分け開始 *)
+    case (even_or_odd x).
+    (* x:even の場合開始 *)
+    - rewrite even_equiv; rewrite /Nat.Even.
+      move=> Even_X.
+      destruct Even_X as [m' Even_X].
+      rewrite- coqnat_mult in Even_X.
 
+      (* even x と n = 2 * m' より even( x + n ) を示す *)
+      have Even_XN : even(x + n).
+      apply even_even_plus.
+      rewrite even_equiv; rewrite /Nat.Even.
+      by exists m'.
+      rewrite even_equiv; rewrite /Nat.Even.
+      exists m.
+      by rewrite- coqnat_mult.
+
+      (* Cpos x y blu を示す *)
+      have Blue_Y : Cpos x y blu.
+      apply Paint_Even.
+      by exists m'.
+
+      (* Cpos (x + n) y blue を示す *)
+      have Blue_Y' : Cpos (x + n) y blu.
+      apply Paint_Even.
+      move: Even_XN.
+      rewrite even_equiv; rewrite /Nat.Even.
+      move=> Even_XN.
+      destruct Even_XN as [k Even_XN].
+      rewrite- coqnat_mult in Even_XN.
+      by exists k.
+
+      (* Triangle から Cpos x (y + n) blu を示す *)
+      have Blue_YN : exists c : Color, Cpos x (y + n) c.
+      by apply C_exists.
+      destruct Blue_YN as [c' Blue_YN].
+      have Mix : c' = mix blu blu.
+      apply Triangle.
+      by split.
+      rewrite /= in Mix; rewrite Mix in Blue_YN.
+        
+      (* Cpos x (y + n) blu と Cpos x (y + n) red から矛盾を示す *)
+      by apply (falseColor x (y + n) red blu).      
+      (* (x : even の場合終了) *)
+
+    (* x:odd の場合開始 *)
+    (* odd x と Paint_Odd より Cpos x y yel を示す *)
+    - rewrite odd_equiv; rewrite /Nat.Odd.
+      move=> Odd_X.
+      destruct Odd_X as [m' Odd_X].
+      rewrite- coqnat_mult in Odd_X; rewrite- coqnat_plus in Odd_X.
+      have Yellow_Y : Cpos x y yel.
+      apply Paint_Odd.
+      by exists m'.
       
-    (* rewrite [n'+1]addnC; rewrite addnA. *)
-    (*   by apply Red_Color0N'_Y. *)
-    (*   specialize (Red_Color01' Alternate). *)
-    (*   have Cpos_Below : Cpos x (y + n) red. *)
-    (*   by apply Red_Color01'. *)
-
-    (*   (* Cpos x (y+n) red を示す *) *)
-    (*   have Paint_Red_YN : Cpos x (y + n) red. *)
-    (*   by apply Red_YN. *)
-    (*   have Red_YN' : Cpos (x + 1) (y + n) red. *)
-    (*   by apply Red_N. *)
-    (*   have Red_YN1 : exists c : Color, Cpos x (y + n + 1) c. *)
-    (*   by apply C_exists. *)
-    (*   destruct Red_YN1 as [c' Red_YN1]. *)
-    (*   have Red_Mix : c' = mix red red. *)
-    (*   apply (C_mix x2 (y + n)). *)
-    (*   by split. *)
-    (*   rewrite /= in Mix; by rewrite Mix in C'. *)
-    (*   specialize (Red_Color01' Alternate). *)
-    (*   move : Red_Color. *)
-    (*   rewrite- addnA. rewrite [1 + n]addnC. rewrite [n + 1]addn1. *)
-    (*   move => Red_Color. *)
-    (*   have Color_Below : Cpos x (y + n) red. *)
-    (*   by apply Red_Color. *)
-
-    (* * have NotZero_M : m <> 0. *)
-    (*       move=> mZero. *)
-    (*       rewrite mZero in Even_N. *)
-    (*       rewrite muln0 in Even_N. *)
-    (*       rewrite Even_N in NotZero_N. *)
-    (*       by []. *)
-    (*     * have notZero_N : n <> 0. *)
-    (*       move=> Zero_N. *)
-    (*       rewrite Zero_N in Even_N. *)
-    (*     * have Zero_M : m = 0. *)
-    (*       * have tmp : Nat.div2 (2 * m) = m. *)
-    (*         by apply Nat.div2_double. *)
-    (*       rewrite- Even_N in tmp. *)
-    (*       by []. *)
-    (*     by []. *)
-            
-    (* case (even_or_odd x) => [Even_X|Odd_X]. *)
-    
-    (* (* x:even の場合開始 *) *)
-    (* - move: Even_X. *)
-    (*   rewrite even_equiv; rewrite /Nat.Even. *)
-    (*   move=> Even_X. *)
-    (*   destruct Even_X as [m' Even_X]. *)
-    (*   rewrite- coqnat_mult in Even_X. *)
-
-    (*   (* Cpos x (y + n) red を示す *) *)
-    (*   have Paint_Red_YN : Cpos x (y + n) red. *)
-    (*   rewrite Even_N. *)
-    (*   rewrite addnA. *)
-    (*   apply Red_N. *)
+      (* odd x と n = 2 * m より odd(x + n) を示す *)
+      have Odd_XN : odd(x + n).
+      apply odd_plus_l.
+      + rewrite odd_equiv; rewrite /Nat.Odd.
+        exists m'.
+        rewrite- coqnat_plus.
+        by rewrite- coqnat_mult.
+      + rewrite even_equiv; rewrite /Nat.Even.
+        by exists m.
+      (* Cpos (x + n) y yel を示す *)
+      have Yellow_Y' : Cpos (x + n) y yel.
+      apply Paint_Odd.
+      move: Odd_XN.
+      rewrite odd_equiv; rewrite /Nat.Odd.
+      move=> Odd_XN.
+      destruct Odd_XN as [m'' Odd_XN].
+      by exists m''.
+                  
+      (* Triangle より Cpos x (y+n) yel を示す *)
+      have Yellow_YN : exists c : Color, Cpos x (y + n) c.
+      by apply C_exists.
+      destruct Yellow_YN as [c' Yellow_YN].
+      have Mix : c' = mix yel yel.
+      apply Triangle.
+      by split.
+      rewrite /= in Mix; rewrite Mix in Yellow_YN.
       
-      
-    (*   (* even x と n = 2 * m より even( x + n ) を示す *) *)
-    (*   + have Even_XN : even(x + n). *)
-    (*     apply even_even_plus. *)
-    (*     * rewrite even_equiv; rewrite /Nat.Even. *)
-    (*       by exists m'. *)
-    (*     * rewrite even_equiv; rewrite /Nat.Even. *)
-    (*       exists m. *)
-    (*       by rewrite- coqnat_mult. *)
-            
-    (*   (* Cpos (x + n) y blue を示す *)       *)
-    (*   + have Blue_Y' : Cpos (x + n) y blu. *)
-    (*     apply Paint_Even. *)
-    (*     move: Even_XN. *)
-    (*     rewrite even_equiv; rewrite /Nat.Even. *)
-    (*     move=> Even_XN. *)
-    (*     destruct Even_XN as [k Even_XN]. *)
-    (*     rewrite- coqnat_mult in Even_XN. *)
-    (*     by exists k.  *)
-
-    (*   (* Triangle から Cpos x (y + n) blu を示す *) *)
-    (*   + have Blue_Y : Cpos x y blu. *)
-    (*     apply Paint_Even. *)
-    (*     by exists m'. *)
-    (*   + have Blue_YN : exists c : Color, Cpos x (y + n) c. *)
-    (*     by apply C_exists. *)
-    (*     destruct Blue_YN as [c' Blue_YN].  *)
-    (*   + have Mix : c' = mix blu blu. *)
-    (*     apply Triangle. *)
-    (*     by split.   *)
-
-    (*   (* Cpos x (y + n) blu と Cpos x (y + n) red から矛盾を示す *) *)
-    (*   rewrite /= in Mix; rewrite Mix in Blue_YN. *)
-      
-    (*   (* (x : even の場合終了) *) *)
-
-    (*   (* x:odd の場合開始 *) *)
-    (*   (* Cpos x (y+n) red を示す *) *)
-      
-    (*   (* odd x と Paint_Odd より Cpos x y yel を示す *) *)
-      
-    (*   (* odd x と n = 2 * m より odd(x+n)を示す *) *)
-    (*   + have Odd_XN : odd(x + n). *)
-    (*     apply odd_plus_l. *)
-    (*     * rewrite odd_equiv; rewrite /Nat.Odd. *)
-    (*       exists m'. *)
-    (*     * rewrite even_equiv; rewrite /Nat.Even. *)
-    (*       exists m. *)
-    (*       by rewrite- coqnat_mult. *)
-            
-    (*   (* Cpos (x+n) y yel を示す *) *)
-    (*   + have Yellow_Y' : Cpos (x + n) y yel. *)
-    (*     apply Paint_Odd. *)
-    (*     move: Odd_XN. *)
-    (*     rewrite odd_equiv; rewrite /Nat.Odd. *)
-    (*     move=> Odd_XN. *)
-    (*     destruct Odd_XN as [k Odd_XN]. *)
-    (*     rewrite- coqnat_mult in Od_XN. *)
-    (*     by exists k. *)
-                    
-    (*   (* Triangle より Cpos x (y+n) yel を示す *) *)
-    (*   + have Yellow_Y : Cpos x y yel. *)
-    (*     apply Paint_Odd. *)
-    (*     by exists m'. *)
-    (*   + have Yellow_YN : exists c : Color, Cpos x (y + n) c. *)
-    (*     by apply C_exists. *)
-    (*     destruct Yellow_YN as [c' Yellow_YN].  *)
-    (*   + have Mix : c' = mix yel yel. *)
-    (*     apply Triangle. *)
-    (*     by split. *)
-          
-    (*   (* これと Cpos x (y+n) red より矛盾を示す *) *)
-    (*   rewrite /= in Mix; rewrite Mix in Yelloe_YN. *)
+      (* これと Cpos x (y+n) red より矛盾を示す *)
+      by apply (falseColor x (y + n) red yel). 
       (* (x : odd の場合終了) *)
-  Admitted.
+  Qed.
   
   Lemma Three_Color_Triangle_Problem_nec_oddA :
     forall (n x y : nat),
