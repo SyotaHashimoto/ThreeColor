@@ -1194,14 +1194,30 @@ Section Three_Color_Triangle_Problem_nec.
       ~(forall c:Color, forall f:nat -> Color, Triangle x y n (f x) (f (x+n)) c).
   Proof.
     - move=> x y n k rangeN triangle.
-      
-  Admitted.
-
-
-
-
-
-
+      + have A1: (3.^k) <= n. by apply fromRangeN.
+      + have tri3k: forall x y: nat, forall c0 c1 c2: Color, Triangle x y (3.^k) c0 c1 c2.
+        move=> x1 y1 c0 c1 c2. apply Three_Color_Triangle_Problem_suf. exists k. done. 
+      + have CposBYB: forall i:nat, 0<=i<=n -> Cpos (x+i) y (colorBYB x n k (x+i)).
+        move=> i rangeI. apply C_paint. 
+      + have CposR: Cpos x (y+n) red.
+        by apply (LongEvenC k n x y).
+      + have triBYB: Triangle x y n (colorBYB x n k x) (colorBYB x n k (x+n)) red. done. 
+      + have colB1: colorBYB x n k x = blu.
+        rewrite- {2} (addn0 x). 
+        apply (lemBYB1 x y). done. 
+      + have colB2: colorBYB x n k (x+n) = blu.
+        apply (lemBYB3 x y). apply/andP. apply conj. 
+        rewrite (ceql_minus_lt_lt_plus_l n A1).
+        rewrite- (eql_lt_plus_r n (3.^k)). apply expn3Pos. done. 
+      + have triBBR: Triangle x y n blu blu red.
+        rewrite- {1} colB1. rewrite- {1} colB2. done.
+      + have CposB1: Cpos x y blu.
+        rewrite- colB1. rewrite- {1 3} (addn0 x). apply CposBYB. done. 
+      + have CposB2: Cpos (x+n) y blu.
+        rewrite- colB2. apply CposBYB. apply/andP. done. 
+      + have mixRBB: red = mix blu blu.
+        apply triBBR. apply conj. done. done. done.         
+  Qed.
 
   
   Lemma Three_Color_Triangle_Problem_nec' :
