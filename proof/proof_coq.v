@@ -997,10 +997,75 @@ Section Three_Color_Triangle_Problem_nec.
       apply/orP. right. move: range. move/andP. move=> [A B]. done.
     - by rewrite H in T.
   Qed.
+
+  (* n の範囲条件から導かれる不等式 *)
+  Lemma fromRangeN:
+    forall k n : nat,
+      ((3.^k).*2 + 1 <= n < (3.^(k.+1))) -> ((3.^k) <= n) /\ ((3.^k).*2 <= n) /\ (n - (3.^k).*2 <= (3.^k).-1).
+  Proof.
+    move => k n. move/andP. move=> [rangeN1 rangeN2]. apply conj. 
+    - (* first goal *)
+      have X1: ((3.^k) <= (3.^k).*2 + 1).
+      rewrite- addnn. rewrite eql_assoc_plus. rewrite- eql_le_plus_l. by apply leq0n.
+      by apply (trans_lelele X1).
+    - (* second goal *)
+      have X2: ((3.^k).*2 <= n). 
+      apply ltnW. rewrite  addn1 in rangeN1. done.
+      apply conj. done. 
+    - (* third goal *)
+      have X3: (0 < 3.^k) = true. by apply expn3Pos.
+      rewrite- (ceql_S_le_le_P (n - (3 .^ k).*2) X3). 
+      rewrite (ceql_minus_lt_lt_plus_l (3 .^ k) X2).
+      rewrite expnS in rangeN2.
+      rewrite (mulnDr' 1 2 (3.^k)) in rangeN2.
+      rewrite mul2n in rangeN2. 
+      rewrite mul1n in rangeN2.
+      rewrite eql_comm_plus. done. 
+  Qed.
+
+  (* ある段が全て赤ならその下はずっと赤 (Red_N と似ているが，x の範囲制限つき) *)  
+  Lemma AllRedN :
+    forall x y n : nat,
+      (forall i :nat, (0 <= i <= n -> Cpos (x+i) y red))
+      -> forall q p : nat, (0 <= p+q <= n ->  Cpos (x+p) (y+q) red). 
+  Proof.
+    move=> x y n topcolor.
+    induction q.
+    - (* base case: q is 0 *)
+      move=> p. 
+      rewrite ! addn0. apply topcolor. 
+    - (* induction case: q is successor *)
+      move=> p. move/andP. move =>[rangePQ1 rangePQ2].
+      + have prevL: Cpos (x+p) (y+q) red.
+        apply IHq.
+        apply /andP. apply conj. done.
+        rewrite addnS in rangePQ2. by apply ltnW. 
+      + have prevR: Cpos ((x+p).+1) (y+q) red.
+        rewrite- (addnS x p). 
+        apply IHq. apply /andP. apply conj. done. 
+        rewrite addSn. rewrite addnS in rangePQ2. done.
+    - have [c Red'] : exists c : Color, Cpos (x+p) (y+q+1) c.
+        by apply C_exists.
+    - have Mix : c = mix red red.
+      rewrite- addn1 in prevR. 
+      rewrite- addn1 in Red'. apply (C_mix (x+p) (y+q)). by split. 
+    - rewrite /= in Mix. rewrite- Mix. rewrite addnS. rewrite- addn1. done. 
+  Qed.
+
+  (* ある段が全て赤なら最下段も赤 *)
+  Lemma AllRed:
+    forall x y n : nat,
+      (forall i :nat, (0 <= i <= n -> Cpos (x+i) y red)) -> Cpos x (y+n) red. 
+  Proof.
+    move=> x y n topcolor.
+    have fromAllRedN: forall q p : nat, (0 <= p+q <= n ->  Cpos (x+p) (y+q) red). by apply AllRedN. 
+    generalize (fromAllRedN n 0). rewrite addn0. rewrite add0n. move=> A. apply A.
+    apply/andP. done. 
+  Qed.
   
   Lemma LongEvenA:
     forall (k n x y : nat),
-      ((3.^k).*2 + 1 <= n < (3.^k).+1) ->
+      ((3.^k).*2 + 1 <= n < (3.^(k.+1))) ->
       (forall(x1 y1:nat), forall(c0 c1 c2: Color), Triangle x1 y1 (3 .^ k) c0 c1 c2) ->
       (forall i: nat,(0 <= i <= n -> Cpos (x+i) y (colorBYB x n k (x+i)))) -> 
       (
@@ -1009,30 +1074,17 @@ Section Three_Color_Triangle_Problem_nec.
         (forall i: nat,(3.^k <= i <= n - 3.^k -> Cpos (x+i) (y+3.^k) red))
       ).
   Proof.
-    move=> k n x y.  move /andP. move => [A B] triangle topcolor.
-    have exp3Pos: (0 < 3.^k) = true. by apply expn3Pos.    
-    apply conj.
-    - (* first part *)
-      move=> i. move /andP. move => [C D].
+    - move=> k n x y rangeN triangle topcolor.
+      + have A1: (3.^k) <= n. by apply fromRangeN.
+      + have A2: (3 .^ k).*2 <= n. by apply fromRangeN.
+      + have A3: n - (3.^k).*2 <= (3.^k).-1. by apply fromRangeN.
+      + have exp3Pos: (0 < 3.^k) = true. by apply expn3Pos.    
+        apply conj.
+      + (* first part *)
+        move=> i. move /andP. move => [C D].
       + have E: 0 <= i <= n.
         apply /andP. apply conj. done.
         apply (trans_lelele D), leq_subr.
-      + have A1: (3.^k) <= n.
-        have A11: ((3.^k) <= (3.^k).*2 + 1).
-        rewrite- addnn. rewrite eql_assoc_plus. rewrite- eql_le_plus_l. by apply leq0n. 
-          by rewrite (trans_lelele A11 A).
-      + have A2: (3 .^ k).*2 <= n. 
-        rewrite addn1 in A. by apply ltnW.         
-      + have A3: n - (3.^k).*2 <= (3.^k).-1.
-        have A31: (0 < 3.^k) = true. by apply expn3Pos.
-        rewrite- (ceql_S_le_le_P (n - (3 .^ k).*2) A31). 
-        rewrite (ceql_minus_lt_lt_plus_l (3 .^ k) A2).
-        apply (trans_ltltlt B).
-        rewrite- (addn1 (3 .^ k)).
-        rewrite- (eql_comm_plus 1 (3 .^ k)).
-        rewrite- eql_mono_plus_lt_plus.
-        have X: 2 = 1.*2. done. rewrite {1} X. 
-        rewrite leq_double. by apply expn3Pos. 
       + have A4: 0 <= i <= (3.^k).-1.
         apply/andP. apply conj. done. apply (trans_lelele D A3).
       + have CposB: Cpos (x+i) y blu. 
@@ -1053,40 +1105,31 @@ Section Three_Color_Triangle_Problem_nec.
         apply Bottom_color_of_triangle. done. done.
         rewrite eql_assoc_plus. rewrite (eql_comm_plus i (3.^k)). rewrite- eql_assoc_plus. done.
         done.
-    - (* second part *)
-      move=> i. move /andP. move => [C D].      
+      + (* second part *)
+        move=> i. move /andP. move => [C D].      
       + have E: 0 <= i <= n.
         apply /andP. apply conj. done.
         apply (trans_lelele D), leq_subr.
-      + have A1: (3.^k) <= n.
-        have A11: ((3.^k) <= (3.^k).*2 + 1).
-        rewrite- addnn. rewrite eql_assoc_plus. rewrite- eql_le_plus_l. by apply leq0n. 
-        by rewrite (trans_lelele A11 A).
-      + have A2: (3 .^ k).*2 <= n. 
-        rewrite addn1 in A. by apply ltnW.         
-      + have A3: n - (3.^k).*2 <= (3.^k).-1.        
-        rewrite- (ceql_S_le_le_P (n - (3 .^ k).*2) exp3Pos). 
-        rewrite (ceql_minus_lt_lt_plus_l (3 .^ k) A2).
-        apply (trans_ltltlt B).
-        rewrite- (addn1 (3 .^ k)).
-        rewrite- (eql_comm_plus 1 (3 .^ k)).
-        rewrite- eql_mono_plus_lt_plus.
-        have X: 2 = 1.*2. done. rewrite {1} X. 
-        rewrite leq_double. by apply expn3Pos.
       + have A4: 3.^k <= i <= n-(3.^k).
         apply/andP. apply conj. done. done. 
       + have CposY: Cpos (x+i) y yel. 
         ++ have colY: colorBYB x n k (x+i) = yel. apply (lemBYB2 x y n k i A4).
         ++ rewrite- colY. by apply C_paint. 
       + have CposB: Cpos (x+(3.^k)+i) y blu.
-        ++ have A5: (n-(3.^k)).+1 <= (3.^k)+i <= n.
+        ++ have A5: n - 3 .^ k < 3 .^ k + i <= n. 
            apply /andP. apply conj.
            rewrite (ceql_minus_lt_lt_plus_r (3.^k+i) A1).
-           apply (trans_ltlelt B). rewrite eql_assoc_plus. 
-           rewrite- (eql_lt_plus_l (3.^k) (i + 3 .^ k)).
-           apply (trans_ltlelt exp3Pos). rewrite- eql_le_plus_r. done. by rewrite (ceql_plus_le_le_minus_r i A1).
+           rewrite (eql_comm_plus (3.^k) i).
+           have X: n < 3 .^ k.+1. move: rangeN. move/andP. move=>[rangeN1 rangeN2]. done.
+           apply (trans_ltlelt X). rewrite expnS. 
+           rewrite (mulnDr' 1 2 (3.^k)). 
+           rewrite mul1n. rewrite mul2n. rewrite eql_assoc_plus. rewrite addnn.
+           rewrite- (eql_mono_plus_le_plus (3.^k) i). done. 
+           have Y: i <= n - 3 .^ k. done.
+           rewrite- (ceql_plus_le_le_minus_l i A1) in Y.
+           rewrite eql_comm_plus. done.
         ++ have colB: colorBYB x n k (x+(3.^k)+i) = blu.
-           rewrite eql_assoc_plus. by apply (lemBYB3 x y n k ((3.^k)+i)).            
+           rewrite eql_assoc_plus. apply (lemBYB3 x y n k ((3.^k)+i)). done. 
         ++ rewrite- colB. by apply C_paint.            
       + have CposR: Cpos (x+i) (y+(3.^k)) red.
         have mixR: red = mix yel blu. done. 
@@ -1098,30 +1141,60 @@ Section Three_Color_Triangle_Problem_nec.
   
   Lemma LongEvenB:
     forall (k n x y : nat),
-      ((3.^k).*2 + 1 <= n < (3.^k).+1) ->
+      ((3.^k).*2 + 1 <= n < (3.^(k.+1))) ->
       (forall(x1 y1:nat), forall(c0 c1 c2: Color), Triangle x1 y1 (3 .^ k) c0 c1 c2) ->
       (forall i: nat,(0 <= i <= n -> Cpos (x+i) y (colorBYB x n k (x+i)))) ->
       forall i:nat, (0 <= i <= n-(3.^k).*2) -> Cpos (x+i) (y+(3.^k).*2) red. 
   Proof.
-    move=> k n x y rangeN triangle color i rangeI. 
-
+    - move=> k n x y rangeN triangle color i rangeI.
+      + have A1: (3.^k) <= n. by apply fromRangeN. 
+      + have A2: (3 .^ k).*2 <= n. by apply fromRangeN.
+      + have A3: n - (3.^k).*2 <= (3.^k).-1. by apply fromRangeN.
+      + have exp3Pos: (0 < 3.^k) = true. by apply expn3Pos.    
+      + have [fromA1 fromA2]: 
+          (forall i: nat,(0 <= i <= n - (3.^k).*2 -> Cpos (x+i) (y+3.^k) red))
+          /\ (forall i: nat,(3.^k <= i <= n - 3.^k -> Cpos (x+i) (y+3.^k) red)). by apply LongEvenA.
+      + have CposR1: Cpos (x+i) (y+3.^k) red.
+        apply fromA1. done.
+      + have CposR2: Cpos (x+i) (y+(3.^k).*2) red.
+      + have mixR: red = mix red red. done.
+      + rewrite mixR. rewrite- addnn. rewrite- (eql_assoc_plus y (3.^k) (3.^k)).
+        apply Bottom_color_of_triangle. done. done. rewrite (eql_assoc_plus x i (3.^k)). apply fromA2.
+        apply /andP. rewrite- (eql_le_plus_r (3.^k) i). apply conj. done.
+        rewrite- (ceql_plus_le_le_minus_l (i+3.^k) A1).
+        rewrite eql_assoc_plus. rewrite addnn.
+        move:rangeI. move/andP. move =>[P Q].
+          by rewrite (ceql_plus_le_le_minus_l i A2).
+          done.
   Qed.
   
-  
-  
-  
-  Lemma Three_Color_Triangle_Problem_nec_oddB :
-    forall (n x y : nat), 
-      (exists m: nat, n = 2*m) -> 
-      (exists k:nat, (2 * 3 .^ k + 1 <= n /\ n < 3 .^ k.+1)) -> ~ forall c0 c1 c2 : Color, Triangle x y n c0 c1 c2.
+  Lemma LongEvenC:
+    forall (k n x y : nat),
+      ((3.^k).*2 + 1 <= n < (3.^(k.+1))) ->
+      (forall(x1 y1:nat), forall(c0 c1 c2: Color), Triangle x1 y1 (3 .^ k) c0 c1 c2) ->
+      Cpos x (y+n) red. 
   Proof.
-    move=> n x y [m even] [k [nLB nUB]] Triangle.
-    rewrite /Triangle in Triangle.
-    assert 
-    
+    - move=> k n x y rangeN triangle.
+      + have rangeN1: (3 .^ k).*2 <= n.
+          by apply fromRangeN.
+      + have fromB: forall i:nat, (0 <= i <= n-(3.^k).*2 -> Cpos (x+i) (y+(3.^k).*2) red).
+        apply LongEvenB. done. done.
+        move=> i rangeI. apply C_paint.
+      + have fromRR: Cpos x (y + (3 .^ k).*2 + (n - (3 .^ k).*2)) red.
+        apply (AllRed x (y+(3.^k).*2) (n-((3.^k).*2))). done. 
+        rewrite eql_assoc_plus in fromRR.
+        rewrite (addnBA ((3.^k).*2) rangeN1) in fromRR.
+        rewrite x_plus_y_minus_x_is_y in fromRR. done. 
+  Qed.
 
-forall n : nat, (exists k : nat, ( n = 0 \/  \/ )).
-    
+  (* 奇数の場合-2 終わり *)
+  Lemma Three_Color_Triangle_Problem_nec_oddB :
+    forall (x y n k : nat),
+      ((3.^k).*2 + 1 <= n < (3.^(k.+1))) ->
+      ~(forall c:Color, forall f:nat -> Color, Triangle x y n (f x) (f (x+n)) c).
+  Proof.
+    - move=> x y n k rangeN triangle.
+      
   Admitted.
 
 
