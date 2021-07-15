@@ -1,15 +1,7 @@
-(* Require Import PeanoNat Le Lt Plus Mult Even. *)
+Require Import PeanoNat Le Lt Plus Mult Even.
 From mathcomp
-     Require Import ssreflect.
-From mathcomp
-     Require Import ssrbool.
-From mathcomp
-     Require Import ssrnat.
-From mathcomp
-     Require Import ssrfun
-     Require Import eqtype.
+     Require Import ssreflect ssrbool ssrnat ssrfun eqtype.
 Require Import Classical_Prop.
-
 Require Import Psatz.
 Require Import CoqNat MyRewrite.
 
@@ -148,6 +140,11 @@ Qed.
   Lemma expn3neq0 : forall m, 3.^m != 0.
   Proof.
     move=> m. rewrite- lt0n. by apply expnPos.  
+  Qed.
+
+  Lemma expn3Pos : forall m, 0 < 3.^m .
+  Proof.
+    move=> m. by apply expnPos. 
   Qed.
   
   Lemma expn2n0' : forall n : nat, 0 < 2 * n .^ 0.
@@ -451,7 +448,25 @@ Section Three_Color_Triangle_Problem_suf.
       apply C_uniq. by specialize (Uniq C0_C1).      
     - by case Differ.
   Qed.
-      
+
+  (* 一辺 n+1 の三角形が triangle則 を満たしているなら最下頂点の色は mix で計算できる *)
+  Lemma Bottom_color_of_triangle:
+    forall(x y n :nat) (c0 c1 : Color), 
+        (forall c0 c1 c2: Color, Triangle x y n c0 c1 c2)
+        -> Cpos x y c0
+        -> Cpos (x+n) y c1
+        -> Cpos x (y+n) (mix c0 c1).
+  Proof.
+    move=> x y n c0 c1 triangle Cpos0 Cpos1. 
+    have [c CposX]: exists c: Color, Cpos x (y+n) c. by apply C_exists.
+    have CposAnd: (Cpos x y c0) /\ (Cpos (x+n) y c1) /\ (Cpos x (y+n) c). done. 
+    have c_is_mix: c = mix c0 c1. by apply triangle.
+    by rewrite- c_is_mix. 
+  Qed.
+  
+    
+    
+  
   (* ----- 三角形三色問題 ----- *)
                                                                                                               
   Lemma Three_Color_Triangle_Problem_suf' :
@@ -752,115 +767,187 @@ Section Three_Color_Triangle_Problem_nec.
       ( ~ (exists k :nat, n = 3 .^ k) -> ~ forall (c0 c1 c2 : Color),((Cpos x y c0 /\ Cpos (x + n) y c1 /\ Cpos x (y + n) c2) -> c2 = mix c0 c1)).
   
   Proof.
+    (* move=> n; case n. *)
+    (* - by move=> x y c0 c1 c2 Even.  *)
     move=> n x y.
     move=> NotZero_N Even_N Paint Not3k Triangle.
     destruct Even_N as [m]; move: H => Even_N.
-
-    (* Cpos x (y + n) red を示す *)
     have Alternate :
       ((forall (x1 : nat), (exists k1, x1 = 2 * k1) -> Cpos x1 y blu) /\ (forall (x2 : nat), (exists k2, x2 = 2 * k2 + 1) -> Cpos x2 y yel)) ->
       (forall (x : nat), Cpos x (y + 1) red).
-      by apply Paint_Alternate.
+    by apply Paint_Alternate.
     specialize (Alternate Paint).
     destruct Paint as [Paint_Even Paint_Odd].
-    have Red_YN : Cpos x ((y + 1) + (n - 1)) red.
-      by apply Red_N.  
-    have Rerite_YN : y + 1 + (n - 1) = y + n.
-    rewrite- addnA.
-    rewrite [1+(n-1)]addnC.
-    rewrite subn1.
-    rewrite addn1.
-    + have prednk : n.-1.+1 = n.
-      by apply prednK.
-    by rewrite prednk.
-    move: Red_YN; rewrite Rerite_YN; move=> Red_YN.
+    - have Red_Y1 :
+        (forall x1 : nat, Cpos x1 y red) -> forall (x2 : nat), Cpos x2 (y + 1) red.
+      by apply Red_N.
+    - have Red_YN :
+        (forall x1 : nat, Cpos x1 (y + 1) red) -> forall (x2 : nat), Cpos x2 (y + n) red.
+      move=> Paint_Red_Y1.
+      apply Red_N.
+    - have Red_Y1N :
+        (forall x1 : nat, Cpos x1 (y + 1) red) -> forall (x2 : nat), Cpos x2 (y + 1 + n) red.
+      by apply Red_N.
+      (* specialize(Red_Y1N Alternate). *)
+      (* + have N' : exists n' : nat, n = n' + 1. *)
+      (*   exists ((2 * m) - 1). *)
+      (*   rewrite- Even_N. *)
+        * have NotZero_M : m <> 0.
+          move=> mZero.
+          rewrite mZero in Even_N.
+          rewrite muln0 in Even_N.
+          rewrite Even_N in NotZero_N.
+          by [].
+        * have notZero_N : n <> 0.
+          move=> Zero_N.
+          rewrite Zero_N in Even_N.
+        * have Zero_M : m = 0.
+          * have tmp : Nat.div2 (2 * m) = m.
+            by apply Nat.div2_double.
+          rewrite- Even_N in tmp.
+          by [].
+        by [].
+    + have N' : exists n' : nat, n = n' + 1.
+        exists ((2 * m) - 1).
+        rewrite- Even_N.
+        rewrite addn1; rewrite subn1.
+        symmetry.
+      by rewrite  prednK.
 
-    (* x を even, odd で場合分け開始 *)
-    case (even_or_odd x).
-    (* x:even の場合開始 *)
-    - rewrite even_equiv; rewrite /Nat.Even.
-      move=> Even_X.
-      destruct Even_X as [m' Even_X].
-      rewrite- coqnat_mult in Even_X.
+      destruct N' as [n' N'].
 
-      (* even x と n = 2 * m' より even( x + n ) を示す *)
-      have Even_XN : even(x + n).
-      apply even_even_plus.
-      rewrite even_equiv; rewrite /Nat.Even.
-      by exists m'.
-      rewrite even_equiv; rewrite /Nat.Even.
-      exists m.
-      by rewrite- coqnat_mult.
-
-      (* Cpos x y blu を示す *)
-      have Blue_Y : Cpos x y blu.
-      apply Paint_Even.
-      by exists m'.
-
-      (* Cpos (x + n) y blue を示す *)
-      have Blue_Y' : Cpos (x + n) y blu.
-      apply Paint_Even.
-      move: Even_XN.
-      rewrite even_equiv; rewrite /Nat.Even.
-      move=> Even_XN.
-      destruct Even_XN as [k Even_XN].
-      rewrite- coqnat_mult in Even_XN.
-      by exists k.
-
-      (* Triangle から Cpos x (y + n) blu を示す *)
-      have Blue_YN : exists c : Color, Cpos x (y + n) c.
-      by apply C_exists.
-      destruct Blue_YN as [c' Blue_YN].
-      have Mix : c' = mix blu blu.
-      apply Triangle.
-      by split.
-      rewrite /= in Mix; rewrite Mix in Blue_YN.
-        
-      (* Cpos x (y + n) blu と Cpos x (y + n) red から矛盾を示す *)
-      by apply (falseColor x (y + n) red blu).      
-      (* (x : even の場合終了) *)
-
-    (* x:odd の場合開始 *)
-    (* odd x と Paint_Odd より Cpos x y yel を示す *)
-    - rewrite odd_equiv; rewrite /Nat.Odd.
-      move=> Odd_X.
-      destruct Odd_X as [m' Odd_X].
-      rewrite- coqnat_mult in Odd_X; rewrite- coqnat_plus in Odd_X.
-      have Yellow_Y : Cpos x y yel.
-      apply Paint_Odd.
-      by exists m'.
       
-      (* odd x と n = 2 * m より odd(x + n) を示す *)
-      have Odd_XN : odd(x + n).
-      apply odd_plus_l.
-      + rewrite odd_equiv; rewrite /Nat.Odd.
-        exists m'.
-        rewrite- coqnat_plus.
-        by rewrite- coqnat_mult.
-      + rewrite even_equiv; rewrite /Nat.Even.
-        by exists m.
-      (* Cpos (x + n) y yel を示す *)
-      have Yellow_Y' : Cpos (x + n) y yel.
-      apply Paint_Odd.
-      move: Odd_XN.
-      rewrite odd_equiv; rewrite /Nat.Odd.
-      move=> Odd_XN.
-      destruct Odd_XN as [m'' Odd_XN].
-      by exists m''.
-                  
-      (* Triangle より Cpos x (y+n) yel を示す *)
-      have Yellow_YN : exists c : Color, Cpos x (y + n) c.
-      by apply C_exists.
-      destruct Yellow_YN as [c' Yellow_YN].
-      have Mix : c' = mix yel yel.
-      apply Triangle.
-      by split.
-      rewrite /= in Mix; rewrite Mix in Yellow_YN.
+    (* rewrite [n'+1]addnC; rewrite addnA. *)
+    (*   by apply Red_Color0N'_Y. *)
+    (*   specialize (Red_Color01' Alternate). *)
+    (*   have Cpos_Below : Cpos x (y + n) red. *)
+    (*   by apply Red_Color01'. *)
+
+    (*   (* Cpos x (y+n) red を示す *) *)
+    (*   have Paint_Red_YN : Cpos x (y + n) red. *)
+    (*   by apply Red_YN. *)
+    (*   have Red_YN' : Cpos (x + 1) (y + n) red. *)
+    (*   by apply Red_N. *)
+    (*   have Red_YN1 : exists c : Color, Cpos x (y + n + 1) c. *)
+    (*   by apply C_exists. *)
+    (*   destruct Red_YN1 as [c' Red_YN1]. *)
+    (*   have Red_Mix : c' = mix red red. *)
+    (*   apply (C_mix x2 (y + n)). *)
+    (*   by split. *)
+    (*   rewrite /= in Mix; by rewrite Mix in C'. *)
+    (*   specialize (Red_Color01' Alternate). *)
+    (*   move : Red_Color. *)
+    (*   rewrite- addnA. rewrite [1 + n]addnC. rewrite [n + 1]addn1. *)
+    (*   move => Red_Color. *)
+    (*   have Color_Below : Cpos x (y + n) red. *)
+    (*   by apply Red_Color. *)
+
+    (* * have NotZero_M : m <> 0. *)
+    (*       move=> mZero. *)
+    (*       rewrite mZero in Even_N. *)
+    (*       rewrite muln0 in Even_N. *)
+    (*       rewrite Even_N in NotZero_N. *)
+    (*       by []. *)
+    (*     * have notZero_N : n <> 0. *)
+    (*       move=> Zero_N. *)
+    (*       rewrite Zero_N in Even_N. *)
+    (*     * have Zero_M : m = 0. *)
+    (*       * have tmp : Nat.div2 (2 * m) = m. *)
+    (*         by apply Nat.div2_double. *)
+    (*       rewrite- Even_N in tmp. *)
+    (*       by []. *)
+    (*     by []. *)
+            
+    (* case (even_or_odd x) => [Even_X|Odd_X]. *)
+    
+    (* (* x:even の場合開始 *) *)
+    (* - move: Even_X. *)
+    (*   rewrite even_equiv; rewrite /Nat.Even. *)
+    (*   move=> Even_X. *)
+    (*   destruct Even_X as [m' Even_X]. *)
+    (*   rewrite- coqnat_mult in Even_X. *)
+
+    (*   (* Cpos x (y + n) red を示す *) *)
+    (*   have Paint_Red_YN : Cpos x (y + n) red. *)
+    (*   rewrite Even_N. *)
+    (*   rewrite addnA. *)
+    (*   apply Red_N. *)
       
-      (* これと Cpos x (y+n) red より矛盾を示す *)
-      by apply (falseColor x (y + n) red yel). 
+      
+    (*   (* even x と n = 2 * m より even( x + n ) を示す *) *)
+    (*   + have Even_XN : even(x + n). *)
+    (*     apply even_even_plus. *)
+    (*     * rewrite even_equiv; rewrite /Nat.Even. *)
+    (*       by exists m'. *)
+    (*     * rewrite even_equiv; rewrite /Nat.Even. *)
+    (*       exists m. *)
+    (*       by rewrite- coqnat_mult. *)
+            
+    (*   (* Cpos (x + n) y blue を示す *)       *)
+    (*   + have Blue_Y' : Cpos (x + n) y blu. *)
+    (*     apply Paint_Even. *)
+    (*     move: Even_XN. *)
+    (*     rewrite even_equiv; rewrite /Nat.Even. *)
+    (*     move=> Even_XN. *)
+    (*     destruct Even_XN as [k Even_XN]. *)
+    (*     rewrite- coqnat_mult in Even_XN. *)
+    (*     by exists k.  *)
+
+    (*   (* Triangle から Cpos x (y + n) blu を示す *) *)
+    (*   + have Blue_Y : Cpos x y blu. *)
+    (*     apply Paint_Even. *)
+    (*     by exists m'. *)
+    (*   + have Blue_YN : exists c : Color, Cpos x (y + n) c. *)
+    (*     by apply C_exists. *)
+    (*     destruct Blue_YN as [c' Blue_YN].  *)
+    (*   + have Mix : c' = mix blu blu. *)
+    (*     apply Triangle. *)
+    (*     by split.   *)
+
+    (*   (* Cpos x (y + n) blu と Cpos x (y + n) red から矛盾を示す *) *)
+    (*   rewrite /= in Mix; rewrite Mix in Blue_YN. *)
+      
+    (*   (* (x : even の場合終了) *) *)
+
+    (*   (* x:odd の場合開始 *) *)
+    (*   (* Cpos x (y+n) red を示す *) *)
+      
+    (*   (* odd x と Paint_Odd より Cpos x y yel を示す *) *)
+      
+    (*   (* odd x と n = 2 * m より odd(x+n)を示す *) *)
+    (*   + have Odd_XN : odd(x + n). *)
+    (*     apply odd_plus_l. *)
+    (*     * rewrite odd_equiv; rewrite /Nat.Odd. *)
+    (*       exists m'. *)
+    (*     * rewrite even_equiv; rewrite /Nat.Even. *)
+    (*       exists m. *)
+    (*       by rewrite- coqnat_mult. *)
+            
+    (*   (* Cpos (x+n) y yel を示す *) *)
+    (*   + have Yellow_Y' : Cpos (x + n) y yel. *)
+    (*     apply Paint_Odd. *)
+    (*     move: Odd_XN. *)
+    (*     rewrite odd_equiv; rewrite /Nat.Odd. *)
+    (*     move=> Odd_XN. *)
+    (*     destruct Odd_XN as [k Odd_XN]. *)
+    (*     rewrite- coqnat_mult in Od_XN. *)
+    (*     by exists k. *)
+                    
+    (*   (* Triangle より Cpos x (y+n) yel を示す *) *)
+    (*   + have Yellow_Y : Cpos x y yel. *)
+    (*     apply Paint_Odd. *)
+    (*     by exists m'. *)
+    (*   + have Yellow_YN : exists c : Color, Cpos x (y + n) c. *)
+    (*     by apply C_exists. *)
+    (*     destruct Yellow_YN as [c' Yellow_YN].  *)
+    (*   + have Mix : c' = mix yel yel. *)
+    (*     apply Triangle. *)
+    (*     by split. *)
+          
+    (*   (* これと Cpos x (y+n) red より矛盾を示す *) *)
+    (*   rewrite /= in Mix; rewrite Mix in Yelloe_YN. *)
       (* (x : odd の場合終了) *)
-  Qed.
+  Admitted.
   
   Lemma Three_Color_Triangle_Problem_nec_oddA :
     forall (n x y : nat),
@@ -878,44 +965,37 @@ Section Three_Color_Triangle_Problem_nec.
   Lemma lemBYB1: forall x y n k i: nat, (0 <= i <= (3.^k).-1) -> colorBYB x n k (x+i) = blu.
   Proof.
     move=> x y n k i range.
-    have C: (3.^k <= (x+i)-x <= n-3.^k) = false.
-    rewrite x_plus_y_minus_x_is_y.
-    apply Bool.not_true_is_false.
-    apply/Bool.andb_true_iff.
-    move=> [A B].
-    move: range. move/andP.
-    move=> [C D]. 
-    have H: (3.^k) <= (3.^k) .-1.
-    apply (leq_trans A D).
-    rewrite eql_le_pred_eq_zero in H.
-    move:H. apply /negP. by apply expn3neq0. 
-    have T: (colorBYB x n k (x+i) = if 3.^k <= (x+i)-x <= n-(3.^k) then yel else blu). done. 
-    by rewrite C in T.
+    - have T: (colorBYB x n k (x+i) = if 3.^k <= i <= n-(3.^k) then yel else blu).
+      by rewrite- {2 3} (x_plus_y_minus_x_is_y x i). 
+    - have H: (3 .^ k <= i <= n - 3 .^ k) = false.
+      apply/eqP.
+      rewrite eql_false. rewrite eql_dual_and. rewrite ! eql_dual_le.
+      apply/orP. left. move: range. move/andP. move=> [A B].
+      have H1: (0 < 3.^k) = true. by apply expn3Pos.
+        by rewrite (ceql_S_le_le_P i H1).
+    - by rewrite H in T. 
   Qed.
 
   (* colorBYB の性質2 *)
   Lemma lemBYB2: forall x y n k i: nat, (3.^k <= i <= n-(3.^k)) -> colorBYB x n k (x+i) = yel.
   Proof.
     move=> x y n k i range.
-    have T: (colorBYB x n k (x+i) = if 3.^k <= (x+i)-x <= n-(3.^k) then yel else blu). done.
-    rewrite x_plus_y_minus_x_is_y in T.
-    by rewrite range in T.
+    - have T: (colorBYB x n k (x+i) = if 3.^k <= i <= n-(3.^k) then yel else blu).
+      rewrite- {2 3} (x_plus_y_minus_x_is_y x i). done.
+    - by rewrite range in T.
   Qed.
 
   (* colorBYB の性質3 *)
   Lemma lemBYB3: forall x y n k i: nat, ((n-(3.^k)).+1 <= i <= n) -> colorBYB x n k (x+i) = blu.
   Proof.
     move=> x y n k i range.
-    have T: (colorBYB x n k (x+i) = if 3.^k <= (x+i)-x <= n-(3.^k) then yel else blu). done.    
-    rewrite x_plus_y_minus_x_is_y in T.
-    have H: 3 .^ k <= i <= n - 3 .^ k = false.
-    apply Bool.not_true_is_false.
-    apply/Bool.andb_true_iff.
-    move=> [A B].
-    move: range. move/andP.
-    move=> [C D].
-    have E: ((n - (3 .^ k)).+1 <= n - 3 .^ k). apply (trans_ltlelt C B). by rewrite ltnn in E.
-    by rewrite H in T. 
+    - have T: (colorBYB x n k (x+i) = if 3.^k <= i <= n-(3.^k) then yel else blu).
+      rewrite- {2 3} (x_plus_y_minus_x_is_y x i). done. 
+    - have H: (3 .^ k <= i <= n - 3 .^ k) = false.
+      apply/eqP.
+      rewrite eql_false. rewrite eql_dual_and. rewrite ! eql_dual_le.
+      apply/orP. right. move: range. move/andP. move=> [A B]. done.
+    - by rewrite H in T.
   Qed.
   
   Lemma LongEvenA:
@@ -930,206 +1010,104 @@ Section Three_Color_Triangle_Problem_nec.
       ).
   Proof.
     move=> k n x y.  move /andP. move => [A B] triangle topcolor.
+    have exp3Pos: (0 < 3.^k) = true. by apply expn3Pos.    
     apply conj.
-    - move=> i. move /andP. move => [C D].
-      have E: 0 <= i <= n. apply /andP. apply conj. done.
-      apply (trans_lelele D), leq_subr.
-      have cposY: Cpos (x+(3.^k)+i) y yel.
-      have colY: colorBYB x n k (x+((3.^k)+i)) = yel.
-      apply (lemBYB2 x y). apply/andP.
-      rewrite- eql_le_add_l. apply conj. done. 
-
-
-      Check      
-
-      
-      
-      rewrite eql_le_add_r.
-
-
-(3.^k <= i <= n-(3.^k)) -> colorBYB x n k (x+i) = yel.
-      (3.^k <= i <= n-(3.^k)) -> 
-x y n k i
-Search (_-_ <= _). 
-
-      
-            coqnat_le, (Nat.le_trans i (n - (3.^k).*2) n). by apply coqnat_le. 
-      apply coqnat_le, leq_subr.
-      have H2: n - (3.^k).*2 <= (3.^k).-1.
-      apply coqnat_le, (Nat.le_trans (n-(3.^k).*2) ((3 .^ k).+1-(3.^k).*2) ((3 .^ k).-1)).
-      apply coqnat_le, leq_sub2r. apply ltnW. move: range. move/andP. by move => [A B]. 
-      rewrite- (Nat.pred_succ ((3 .^ k).+1 - (3 .^ k).*2)).
-      rewrite- !subn1. apply coqnat_le, leq_sub.
-      rewrite- {3} (Nat.add_sub (3.^k) ((3 .^ k).*2)).
-      apply ltn_sub2r.
-      apply coqnat_lt, eql_lt_add_r. 
-        by apply expnPosCN, coqnat_lt. 
-    
-
-apply coqnat_lt, Nat.add_lt_mono_r, . apply coqnat_lt. done. 
-    
-    rewrite- {1} (Nat.add_0_l ((3 .^ k).*2)).
-    
-    apply coqnat_lt. rewrite- addn1. apply Nat.add_lt_mono_l.
-    have G: (1.*2 <= (3 .^ k).*2). rewrite leq_double. apply expnPos. done. 
-    apply coqnat_lt. done. done.
-    have H3: 0 <= i <= (3.^k).-1.
-    apply/andP. apply conj. done.
-    apply coqnat_le, (Nat.le_trans i (n - (3 .^ k).*2) ((3 .^ k).-1)).
-    apply  coqnat_le. done. apply  coqnat_le. done. 
-    (* colorBYB x n k (x+i) = blu *)
-    have BYB_blu: colorBYB x n k (x+i) = blu. apply (lemBYB1 x y n k i). done. 
-    (* Cpos (x+i) y blu *)
-    have Cpos1: Cpos (x+i) y blu. rewrite- BYB_blu. apply topcolor. done. 
-    (* 3.^k <= 3.^k + i <= n - 3.^k *)
-    have H4: 3.^k <= (3.^k) + i <= n - 3.^k.
-    apply/andP. apply conj. 
-
-Search (_<=_+_).
-    
-hoge
-
-
-
-    
-  Lemma lemBYB1: forall x y n k i: nat, (0 <= i <= (3.^k).-1) -> 
-    . 
-
-    Search (_.*2).
-    Search (_<=_  -> _ < _).    
-    
-    rewrite- (Nat.add_0_l 1).     
-    
-leq_double: forall m n : nat, (m.*2 <= n.*2) = (m <= n)    
-
-
-addn1': forall n : nat, n.+1 = n + 1
-    
-    rewrite- (Nat.succ_pred_pos (3 .^ k).*2).    
-    apply le_lt_n_Sm.    
-
-
-
-    
-
-    
-: forall n m : nat, (n <= m)%coq_nat -> (n < m.+1)%coq_nat)
-    
-Nat.succ_pred_pos: forall n : nat, (0 < n)%coq_nat -> n.-1.+1 = n    
-    Search (lt).
-
-    
-
-ltn_predRL: forall m n : nat, (m < n.-1) = (m.+1 < n)
-
-    rewrite 
-
-
-    
-
-Search minus.
-    done.
-    
-
-Nat.add_0_r: forall n : nat, (n + 0)%coq_nat = n
-Nat.add_0_l: forall n : nat, (0 + n)%coq_nat = n
-Nat.add_lt_mono_l: forall n m p : nat, (n < m)%coq_nat <-> ((p + n)%coq_nat < (p + m)%coq_nat)%coq_nat    
-    
-    have H3: (3 .^ k).-1 - (3.^k).*2 + (3.^k).*2 = (3 .^ k).-1.
-    apply subnK. rewrite mul2n. rewrite- addnn.     
-
-
-
-    rewrite ltn_predRL.
-
-    
-    rewrite (pred_Sn (3 .^ k + 3 .^ k)).            
-ltn_sub2r: forall [p m n : nat], p < n -> m < n -> m - p < n - p
-Nat.pred_succ: forall n : nat, n.+1.-1 = n                                          
-leq_add: forall [m1 m2 n1 n2 : nat], m1 <= n1 -> m2 <= n2 -> m1 + m2 <= n1 + n2
-leq_sub: forall [m1 m2 n1 n2 : nat], m1 <= m2 -> n2 <= n1 -> m1 - n1 <= m2 - n2
-Nat.sub_add: forall n m : nat, (n <= m)%coq_nat -> ((m - n)%coq_nat + n)%coq_nat = m
-
-leq_sub2r: forall (p : nat) [m n : nat], m <= n -> m - p <= n - p
-
-hoge    
-
-
-leq_sub: forall [m1 m2 n1 n2 : nat], m1 <= m2 -> n2 <= n1 -> m1 - n1 <= m2 - n2
-    
-Search (_ <= _ -> _ <= _). 
-    
-    
-    move=> k.
-    induction k.
-    - rewrite expn0. rewrite expn1.
-      move=> n x y longN. destruct longN.
-      have X: 3<=n. by [].
-      apply coqnat_lt in X.
-      apply coqnat_lt in H0.
-      apply Nat.nlt_succ_r in X. 
-      contradiction.
-    -
-hoge      
-      Search lt.      
-      not (n<3) -> 2<n.
-      3<=n -> 2<n.
-      
-Nat.nlt_succ_r: forall n m : nat, ~ (m < n.+1)%coq_nat <-> (n < m)%coq_nat
-                              
-le_not_lt: forall n m : nat, (n <= m)%coq_nat -> ~ (m < n)%coq_nat
-
-      Search le.
-      
-      have Y: n <= 2. apply coqnat_le.
-      apply Compare_dec.not_lt.  
-      
-
-      apply Compare_dec.not_ge in H0.
-
-      Compare_dec.not_ge: forall n m : nat, ~ (n >= m)%coq_nat -> (n < m)%coq_nat.
-
-                                                                                                                          
-      apply Nat.lt_succ_r in H0.
-
-Compare_dec.not_ge: forall n m : nat, ~ (n >= m)%coq_nat -> (n < m)%coq_nat
-      
-
-      apply coqnat_lt in X.
-      apply Nat.lt_lt_succ_r in X.
-
-      apply le_not_lt.
-
-
-
-      
-        by []. 3 <= n. by [].
-      
-
-      
-      
-      Search mult.
-      
-
-      have Y: not(n<3).
-      move=> Y.
-      
-Nat.lt_lt_succ_r: forall n m : nat, (n < m)%coq_nat -> (n < m.+1)%coq_nat      
-      
-
-      rewrite/Nat.mul_1_r in H.
-      
-      
-      have n_is_3 : n = 3.
-      
-      rewrite expn1 in longN.
-      destruct longN.
-      
-      rewrite expn in 
-      have
-        
-hoge
+    - (* first part *)
+      move=> i. move /andP. move => [C D].
+      + have E: 0 <= i <= n.
+        apply /andP. apply conj. done.
+        apply (trans_lelele D), leq_subr.
+      + have A1: (3.^k) <= n.
+        have A11: ((3.^k) <= (3.^k).*2 + 1).
+        rewrite- addnn. rewrite eql_assoc_plus. rewrite- eql_le_plus_l. by apply leq0n. 
+          by rewrite (trans_lelele A11 A).
+      + have A2: (3 .^ k).*2 <= n. 
+        rewrite addn1 in A. by apply ltnW.         
+      + have A3: n - (3.^k).*2 <= (3.^k).-1.
+        have A31: (0 < 3.^k) = true. by apply expn3Pos.
+        rewrite- (ceql_S_le_le_P (n - (3 .^ k).*2) A31). 
+        rewrite (ceql_minus_lt_lt_plus_l (3 .^ k) A2).
+        apply (trans_ltltlt B).
+        rewrite- (addn1 (3 .^ k)).
+        rewrite- (eql_comm_plus 1 (3 .^ k)).
+        rewrite- eql_mono_plus_lt_plus.
+        have X: 2 = 1.*2. done. rewrite {1} X. 
+        rewrite leq_double. by apply expn3Pos. 
+      + have A4: 0 <= i <= (3.^k).-1.
+        apply/andP. apply conj. done. apply (trans_lelele D A3).
+      + have CposB: Cpos (x+i) y blu. 
+        ++ have colB: colorBYB x n k (x+i) = blu. apply (lemBYB1 x y n k i A4).
+        ++ rewrite- colB. by apply C_paint. 
+      + have CposY: Cpos (x+(3.^k)+i) y yel.
+        ++ have A5: 3.^k <= (3.^k)+i <= n-(3.^k).
+           apply /andP. apply conj. by rewrite- eql_le_plus_l.
+           rewrite- (ceql_plus_le_le_minus_r ((3.^k)+i) A1).
+           rewrite- eql_assoc_plus. rewrite addnn.
+             by rewrite (ceql_plus_le_le_minus_r i A2).
+        ++ have colY: colorBYB x n k (x+(3.^k)+i) = yel.
+           rewrite eql_assoc_plus. apply (lemBYB2 x y n k ((3.^k)+i) A5).
+        ++ rewrite- colY. by apply C_paint. 
+      + have CposR: Cpos (x+i) (y+(3.^k)) red.
+        have mixR: red = mix blu yel. done. 
+        rewrite mixR.
+        apply Bottom_color_of_triangle. done. done.
+        rewrite eql_assoc_plus. rewrite (eql_comm_plus i (3.^k)). rewrite- eql_assoc_plus. done.
+        done.
+    - (* second part *)
+      move=> i. move /andP. move => [C D].      
+      + have E: 0 <= i <= n.
+        apply /andP. apply conj. done.
+        apply (trans_lelele D), leq_subr.
+      + have A1: (3.^k) <= n.
+        have A11: ((3.^k) <= (3.^k).*2 + 1).
+        rewrite- addnn. rewrite eql_assoc_plus. rewrite- eql_le_plus_l. by apply leq0n. 
+        by rewrite (trans_lelele A11 A).
+      + have A2: (3 .^ k).*2 <= n. 
+        rewrite addn1 in A. by apply ltnW.         
+      + have A3: n - (3.^k).*2 <= (3.^k).-1.        
+        rewrite- (ceql_S_le_le_P (n - (3 .^ k).*2) exp3Pos). 
+        rewrite (ceql_minus_lt_lt_plus_l (3 .^ k) A2).
+        apply (trans_ltltlt B).
+        rewrite- (addn1 (3 .^ k)).
+        rewrite- (eql_comm_plus 1 (3 .^ k)).
+        rewrite- eql_mono_plus_lt_plus.
+        have X: 2 = 1.*2. done. rewrite {1} X. 
+        rewrite leq_double. by apply expn3Pos.
+      + have A4: 3.^k <= i <= n-(3.^k).
+        apply/andP. apply conj. done. done. 
+      + have CposY: Cpos (x+i) y yel. 
+        ++ have colY: colorBYB x n k (x+i) = yel. apply (lemBYB2 x y n k i A4).
+        ++ rewrite- colY. by apply C_paint. 
+      + have CposB: Cpos (x+(3.^k)+i) y blu.
+        ++ have A5: (n-(3.^k)).+1 <= (3.^k)+i <= n.
+           apply /andP. apply conj.
+           rewrite (ceql_minus_lt_lt_plus_r (3.^k+i) A1).
+           apply (trans_ltlelt B). rewrite eql_assoc_plus. 
+           rewrite- (eql_lt_plus_l (3.^k) (i + 3 .^ k)).
+           apply (trans_ltlelt exp3Pos). rewrite- eql_le_plus_r. done. by rewrite (ceql_plus_le_le_minus_r i A1).
+        ++ have colB: colorBYB x n k (x+(3.^k)+i) = blu.
+           rewrite eql_assoc_plus. by apply (lemBYB3 x y n k ((3.^k)+i)).            
+        ++ rewrite- colB. by apply C_paint.            
+      + have CposR: Cpos (x+i) (y+(3.^k)) red.
+        have mixR: red = mix yel blu. done. 
+        rewrite mixR.
+        apply Bottom_color_of_triangle. done. done. 
+        rewrite eql_assoc_plus. rewrite (eql_comm_plus i (3.^k)). rewrite- eql_assoc_plus. done.
+        done.
   Qed.
+  
+  Lemma LongEvenB:
+    forall (k n x y : nat),
+      ((3.^k).*2 + 1 <= n < (3.^k).+1) ->
+      (forall(x1 y1:nat), forall(c0 c1 c2: Color), Triangle x1 y1 (3 .^ k) c0 c1 c2) ->
+      (forall i: nat,(0 <= i <= n -> Cpos (x+i) y (colorBYB x n k (x+i)))) ->
+      forall i:nat, (0 <= i <= n-(3.^k).*2) -> Cpos (x+i) (y+(3.^k).*2) red. 
+  Proof.
+    move=> k n x y rangeN triangle color i rangeI. 
+
+  Qed.
+  
+  
   
   
   Lemma Three_Color_Triangle_Problem_nec_oddB :

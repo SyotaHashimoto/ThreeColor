@@ -29,11 +29,32 @@ Proof.
   move=> A. rewrite A. done. 
 Qed.
 
+Lemma eql_true: forall b: bool, (b==true) = b. 
+Proof.
+  by apply eqb_id. 
+Qed. 
+
+Lemma eql_false: forall b: bool, (b==false) = ~~b. 
+Proof.
+    by apply eqbF_neg.
+Qed. 
+
 (* double negation elimination *)
 Lemma dne_bool: forall b : bool, ~~ ~~ b = b. 
 Proof.
     by apply Bool.negb_involutive.
 Qed.
+
+Lemma eql_dual_and: forall b1 b2 : bool, ~~ (b1 && b2) = (~~ b1 || ~~ b2).
+Proof.
+  by apply Bool.negb_andb. 
+Qed. 
+
+Lemma eql_dual_or: forall b1 b2 : bool, ~~ (b1 || b2) = (~~ b1 && ~~ b2).
+Proof.
+  by apply Bool.negb_orb. 
+Qed. 
+  
 
 Lemma iff_not_eq: forall b1 b2: bool, (~~b1 = b2) <-> (b1 = ~~b2).
 Proof.
@@ -42,7 +63,7 @@ Proof.
   move => H. rewrite- H. by rewrite dne_bool. 
   move => H. rewrite H. by rewrite dne_bool. 
 Qed.
-  
+
 Lemma eql_dual_le: forall m n : nat, ~~ (m <= n) = (n < m). 
 Proof.
   move => m n.
@@ -66,13 +87,13 @@ Proof.
 Qed.
 
 
-Lemma eql_add_comm: forall m n : nat, m+n = n+m.
+Lemma eql_comm_plus: forall m n : nat, m+n = n+m.
 Proof.
   move=> m n. 
   rewrite ! coqnat_plus. by apply Nat.add_comm. 
 Qed.
 
-Lemma eql_add_assoc: forall m n k : nat, (m+n)+k = m+(n+k).
+Lemma eql_assoc_plus: forall m n k : nat, (m+n)+k = m+(n+k).
 Proof.
   move=> m n k. 
   rewrite ! coqnat_plus. by apply plus_assoc_reverse.
@@ -108,65 +129,65 @@ Proof.
     by apply leq_eqVlt.
 Qed.
 
-Lemma eql_add_unit_l: forall n : nat, n + 0 = n. 
+Lemma eql_unit_plus_l: forall n : nat, n + 0 = n. 
 Proof.
   move=> n. rewrite coqnat_plus. by rewrite Nat.add_0_r. 
 Qed.
 
-Lemma eql_add_unit_r: forall n : nat, 0 + n = n. 
+Lemma eql_unit_plus_r: forall n : nat, 0 + n = n. 
 Proof.
-  move=> n. rewrite eql_add_comm. by apply eql_add_unit_l. 
+  move=> n. rewrite eql_comm_plus. by apply eql_unit_plus_l. 
 Qed.
 
-Lemma eql_add_lt_mono: forall n m p : nat, (n < m) = ((n + p) < (m + p)). 
+Lemma eql_mono_plus_lt_plus: forall n m p : nat, (n < m) = ((n + p) < (m + p)). 
 Proof.
   move=> n m p. by rewrite ltn_add2r. 
 Qed.
 
-Lemma eql_add_le_mono: forall n m p : nat, (n <= m) = ((n + p) <= (m + p)). 
+Lemma eql_mono_plus_le_plus: forall n m p : nat, (n <= m) = ((n + p) <= (m + p)). 
 Proof.
   move=> n m p. by rewrite leq_add2r. 
 Qed.
 
 (* zero_lt_add_r *)
-Lemma eql_lt_add_r: forall m n : nat, (0 < n) = (m < n+m). 
+Lemma eql_lt_plus_r: forall m n : nat, (0 < n) = (m < n+m). 
 Proof.
   move=> m n. apply conv_iff_eql. 
   rewrite- {1} (Nat.add_0_l m).
-  rewrite- coqnat_plus. 
-  by rewrite- eql_add_lt_mono.
+  rewrite- coqnat_plus.
+  by rewrite- eql_mono_plus_lt_plus.
 Qed.
 
 (* zero_lt_add_l *)
-Lemma eql_lt_add_l: forall m n : nat, (0 < n) = (m < m+n). 
+Lemma eql_lt_plus_l: forall m n : nat, (0 < n) = (m < m+n). 
 Proof.
-  move=> m n. rewrite eql_add_comm. by apply eql_lt_add_r. 
+  move=> m n. rewrite eql_comm_plus. by apply eql_lt_plus_r. 
 Qed.
 
-Lemma eql_le_add_r: forall m n : nat, (0 <= n) = (m <= n+m). 
+Lemma eql_le_plus_r: forall m n : nat, (0 <= n) = (m <= n+m). 
 Proof.
-  move=> m n. rewrite- {1} (eql_add_unit_r m). by apply eql_add_le_mono. 
+  move=> m n. rewrite- {1} (eql_unit_plus_r m). by apply eql_mono_plus_le_plus. 
 Qed.
 
-Lemma eql_le_add_l : forall m n : nat, (0 <= n) = (m <= m+n). 
+Lemma eql_le_plus_l : forall m n : nat, (0 <= n) = (m <= m+n). 
 Proof.
-  move=> m n. rewrite eql_add_comm. by apply eql_le_add_r.   
+  move=> m n. rewrite eql_comm_plus. by apply eql_le_plus_r.   
 Qed.
 
 (* zero_lt_le_add_l *)
 Lemma eql_S_le_add_l: forall m n : nat, (0 < n) = (m.+1 <= m+n). 
 Proof.
-  move=> m n. by apply eql_lt_add_l. 
+  move=> m n. by apply eql_lt_plus_l. 
 Qed.
 
 (* zero_lt_le_add_r *)
 Lemma eql_S_le_add_r: forall m n : nat, (0 < n) = (m.+1 <= n+m). 
 Proof.
-  move=> m n. rewrite (eql_add_comm n m). by apply eql_S_le_add_l.
+  move=> m n. rewrite (eql_comm_plus n m). by apply eql_S_le_add_l.
 Qed.
 
 
-(* Conditional Equalities *)
+(* Shifting plus and minus in < and <= *)
 Lemma ceql_minus_lt_lt_plus_l: forall p m n: nat, p <= m -> (m-p < n) = (m < p+n).
 Proof.
   move=> p m n. by apply ltn_subLR.
@@ -175,12 +196,18 @@ Qed.
 Lemma ceql_minus_lt_lt_plus_r: forall p m n: nat, p <= m -> (m-p < n) = (m < n+p).
 Proof.
   move=> p m n. 
-  rewrite (eql_add_comm n p). by apply ceql_minus_lt_lt_plus_l. 
+  rewrite (eql_comm_plus n p). by apply ceql_minus_lt_lt_plus_l. 
 Qed.
 
-Lemma ceql_P_lt_lt_S: forall m n: nat, 0 < m -> (m.-1 < n) = (m < n.+1).
+Lemma eql_plus_lt_lt_minus_l: forall p m n: nat, (m+p < n) = (m < n-p).
 Proof.
-  move=> m n. rewrite- (addn1 n). rewrite- subn1. apply ceql_minus_lt_lt_plus_r. 
+  move=> p m n. rewrite ltn_subRL. by rewrite eql_comm_plus. 
+Qed.   
+
+Lemma eql_plus_lt_lt_minus_r: forall p m n: nat, (p+m < n) = (m < n-p).
+Proof.
+  move=> p m n. 
+  rewrite (eql_comm_plus p m). by apply eql_plus_lt_lt_minus_l. 
 Qed.
 
 Lemma ceql_plus_le_le_minus_l: forall p m n: nat, p <= n -> (m+p <= n) = (m <= n-p).
@@ -195,7 +222,27 @@ Qed.
 Lemma ceql_plus_le_le_minus_r: forall p m n: nat, p <= n -> (p+m <= n) = (m <= n-p).
 Proof.
   move=> p m n.
-  rewrite (eql_add_comm p m). by apply ceql_plus_le_le_minus_l.
+  rewrite (eql_comm_plus p m). by apply ceql_plus_le_le_minus_l.
+Qed.
+
+Lemma eql_minus_le_le_plus_l: forall p m n: nat, (m-p <= n) = (m <= n+p).
+Proof.
+  move=> p m n.
+  rewrite- (dne_bool (m - p <= n)).
+  rewrite- (dne_bool (m <= n+p)).
+  rewrite eql_dual_le. rewrite (eql_dual_le m (n + p)).
+  by rewrite eql_plus_lt_lt_minus_l. 
+Qed.
+
+Lemma eql_minus_le_le_plus_r: forall p m n: nat, (m-p <= n) = (m <= p+n).
+Proof.
+  move=> p m n.
+  rewrite (eql_comm_plus p n). by apply eql_minus_le_le_plus_l.
+Qed.
+
+Lemma ceql_P_lt_lt_S: forall m n: nat, 0 < m -> (m.-1 < n) = (m < n.+1).
+Proof.
+  move=> m n. rewrite- (addn1 n). rewrite- subn1. apply ceql_minus_lt_lt_plus_r. 
 Qed.
 
 Lemma ceql_S_le_le_P: forall m n: nat, 0 < n -> (m.+1 <= n) = (m <= n.-1).
