@@ -1,0 +1,48 @@
+
+%% \renewenvironment{description}%  
+%% {%
+%%    \begin{list}{\parbox{10pt}{$\bullet$}}% 見出し記号／直後の空白を調節
+%%    {%
+%%       \setlength{\topsep}{0pt}
+%%       \setlength{\itemindent}{10pt}
+%%       \setlength{\leftmargin}{2pt}%  左のインデント
+%%       \setlength{\rightmargin}{0pt}% 右のインデント
+%%       \setlength{\labelsep}{0.5pt}%    黒丸と説明 の間
+%%       \setlength{\labelwidth}{10pt}%  ラベルの幅
+%%       \setlength{\itemsep}{0.2em}%     項目ごとの改行幅
+%%       \setlength{\parsep}{0em}%      段落での改行幅
+%%       \setlength{\listparindent}{0pt}% 段落での一字下りx
+%%    }
+%% }{%
+%%    \end{list}%
+%% }
+
+
+%\renewcommand{\baselinestretch}{1.3}
+
+%\evensidemargin 0.0in
+%\oddsidemargin 0.0in
+%\topmargin 0.0in
+%\textwidth 6.2in
+%\textheight 9.0in
+%\headheight 0.0in 
+%\headsep 0.0in 
+%\topskip 0.0in 
+
+\def\alart#1{{\color{red} #1}}
+
+%% Environments
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\newtheorem{caution}{Caution}
+%\renewcommand{\thedefinition}{}
+%\renewcommand{\theexample}{}
+%\renewcommand{\thetheorem}{}
+
+%\def\beginproof{{\bf Proof}\quad}
+%\def\endproof{\hfill$\Box$\vspace{0.5em}}
