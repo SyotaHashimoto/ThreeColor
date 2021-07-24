@@ -159,7 +159,14 @@ Qed.
     move=> n.
     rewrite expn0.
     by rewrite muln1.
-  Qed.  
+  Qed.
+
+  Lemma case0 : forall n : nat, n = 0 \/ n > 0.
+  Proof.
+    elim=> [ | n IHn].
+    - left. done.
+    - right; by apply ltn0Sn.
+  Qed.
 
   Lemma case01 : forall n : nat, n = 0 \/ n = 1 \/ n > 1.
   Proof.
@@ -359,6 +366,18 @@ Qed.
     rewrite- eql_assoc_plus.
     rewrite- eql_S_le_add_r.
     rewrite H. by [].
+  Qed.
+
+  Lemma OddS : forall n : nat, odd n.+1 = ~~ odd n.
+  Proof. done. Qed.
+
+  Lemma odd_or_even : forall n : nat, odd n \/ odd n = false.
+  Proof.
+    elim=> [ | n IHn].
+    - right. done.
+    - case IHn => [Odd|Even].
+      + right. by rewrite OddS Odd.
+      + left. by rewrite OddS Even.
   Qed.
   
 End nat1.
@@ -802,7 +821,7 @@ Section Three_Color_Triangle_Problem_nec.
   Definition colorYB (x n z : nat) :=
     if (0 <= z-x <= n) && (odd (z-x) == false) then yel
     else if (0 <= z-x <= n) && (odd (z-x) == true) then blu
-         else yel.
+         else blu.
   
   (* colorYB の性質1 *)
   Lemma lemYB1: forall x n i : nat, (0 <= i <= n) && (odd i == false) -> colorYB x n (x + i) = yel.
@@ -839,19 +858,73 @@ Section Three_Color_Triangle_Problem_nec.
   Qed.
 
   Lemma EvenA :
-    forall x y n : nat,
-    forall i : nat, ((0 <= i <= n) -> Cpos (x+i) y (colorYB x n (x+i))) ->
-             forall i : nat, ((0 <= i <= n) -> Cpos (x+i) y red).
+    forall x y n : nat, n > 0 ->
+    (forall i : nat, ((0 <= i <= n) -> Cpos (x+i) y (colorYB x n (x+i)))) ->
+             forall i : nat, ((0 <= i <= n.-1) -> Cpos (x+i) (y+1) red).
   Proof.
+    move=> x y n NotZero topcolor i range.
     
-  Admitted.
+    (* 最上段のマスが colorYB で塗られていることを示す *)
+    - have rangetop1 : 0 <= i <= n.
+      apply /andP. apply conj. done.
+      move: range. move /andP. move=> [] rangetop1a rangetop1b.
+      apply (trans_lelele rangetop1b). apply leq_pred.
+      generalize (topcolor i) => Cpos1. specialize (Cpos1 rangetop1).
+    - have rangetop2 : 0 <= i.+1 <= n.
+      apply /andP. apply conj. done.
+      move: range. move /andP. move=> [] rangetop2a rangetop2b.
+      have S_pred : (i.+1 <= n) = (i <= n.-1).
+      apply ceql_S_le_le_P. done.
+      rewrite S_pred. done. rewrite- addn1 in rangetop2.
+      generalize (topcolor (i+1)) => Cpos2. specialize (Cpos2 rangetop2).
 
+    (* 最上段より 1 段下のマスの色は mix と colorYB で得られることを示す *)
+    - have Cpos3 : exists c : Color, Cpos (x+i) (y+1) c.
+      apply C_exists. move: Cpos3. case. move=> c Cpos3.
+      have Color : c = mix (colorYB x n (x + i)) (colorYB x n (x + (i + 1))).
+      apply (C_mix (x+i) y).
+      apply conj. done. apply conj. rewrite- addnA. done. done.
+      rewrite Color in Cpos3.
+
+    (* colorYB で塗られている色を示す *)
+    - case (odd_or_even i) => [OddI|EvenI].
+      
+    (* i が奇数のとき *)
+      + have Color1 : colorYB x n (x + i) = blu.
+        rewrite /colorYB. rewrite x_plus_y_minus_x_is_y.
+        rewrite rangetop1 OddI. done.
+      + have Color2 : colorYB x n (x + (i + 1)) = yel.
+        have OddI1 : odd (i+1) = false.
+        rewrite addn1 OddS. by rewrite OddI.
+        rewrite /colorYB. rewrite x_plus_y_minus_x_is_y.
+        rewrite rangetop2 OddI1. done.
+      + rewrite Color1 Color2 in Cpos3. by rewrite /= in Cpos3.
+        
+    (* i が偶数のとき *)
+      + have Color1 : colorYB x n (x + i) = yel.
+        rewrite /colorYB. rewrite x_plus_y_minus_x_is_y.
+        rewrite rangetop1 EvenI. done.
+      + have Color2 : colorYB x n (x + (i + 1)) = blu.
+        have OddI1 : odd (i+1) = true.
+        rewrite addn1 OddS. by rewrite EvenI.
+        rewrite /colorYB. rewrite x_plus_y_minus_x_is_y.
+        rewrite rangetop2 OddI1. done.
+      + rewrite Color1 Color2 in Cpos3. by rewrite /= in Cpos3.
+  Qed.
+  
   Lemma EvenB :
-    forall x y n : nat,
-    forall i : nat, ((0 <= i <= n) -> Cpos (x+i) y (colorYB x n (x+i))) -> Cpos x (y+n) red.
+    forall x y n : nat, n > 0 ->
+    (forall i : nat, ((0 <= i <= n) -> Cpos (x+i) y (colorYB x n (x+i)))) -> Cpos x (y+n) red.
   Proof.
-    
-  Admitted.
+    move=> x y n NotZero topcolor.
+    have AllRed1 : forall i : nat, (0 <= i <= n.-1) -> Cpos (x+i) (y+1) red.
+    apply EvenA. done. done.
+    have YN : y + n = (y + 1) + (n - 1).
+    rewrite addnAC. rewrite- addnA. rewrite subn1 addn1.
+    have pred_S : n.-1.+1 = n.
+    apply prednK. done. rewrite pred_S. done. rewrite YN.
+    apply AllRed. by rewrite subn1.
+  Qed.
 
   Lemma Three_Color_Triangle_Problem_nec_even :
     forall x y n :nat,
