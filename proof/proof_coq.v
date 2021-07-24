@@ -53,6 +53,13 @@ Proof.
   apply Nat.add_0_r. apply coqnat_le, le_n.
 Qed.
 
+  (* --- 減法の性質 --- *)
+  Lemma x_minus_x_is_0 : forall x : nat, x - x = 0.
+  Proof.
+    elim=> [ | x IHx].
+    done. by rewrite subSS.
+  Qed.
+
   (* --- 乗法の性質 --- *)
 
   Lemma addnnmul2n : forall n : nat, n + n = 2 * n.
@@ -335,14 +342,24 @@ Qed.
 
   Lemma leq_half1 : forall n : nat, n./2 <= n.
   Proof.
-
-  Admitted.
+    move=> n.
+    rewrite- {2} (odd_double_half n).
+    rewrite- addnn.
+    rewrite- eql_assoc_plus.
+    rewrite- eql_minus_le_le_plus_l.
+    by rewrite x_minus_x_is_0.
+  Qed.
 
   (*  odd n は n <> 0 でもよいが今後の証明がしやすいように odd n とする *)
   Lemma leq_half2 : forall n : nat, odd n -> (n./2).+1 <= n.
   Proof.
-
-  Admitted.
+    move=>n H.
+    rewrite- {2} (odd_double_half n).
+    rewrite- addnn.
+    rewrite- eql_assoc_plus.
+    rewrite- eql_S_le_add_r.
+    rewrite H. by [].
+  Qed.
   
 End nat1.
 
