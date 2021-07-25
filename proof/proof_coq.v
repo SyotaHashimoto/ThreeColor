@@ -888,7 +888,7 @@ Section Three_Color_Triangle_Problem_nec.
       apply /andP. apply conj. done.
       move: range. move /andP. move=> [] rangetop2a rangetop2b.
       have S_pred : (i.+1 <= n) = (i <= n.-1).
-      apply ceql_S_le_le_P. done.
+      apply eq_adjoint_S_P_le. done.
       rewrite S_pred. done. rewrite- addn1 in rangetop2.
       generalize (topcolor (i+1)) => Cpos2. specialize (Cpos2 rangetop2).
 
@@ -1219,16 +1219,17 @@ Section Three_Color_Triangle_Problem_nec.
 
   Lemma ShortOddA :
     forall x y n k : nat,
-      ((3.^k <= n <= (3.^k).*2) && (odd n == true)) ->
+      ((3.^k < n <= (3.^k).*2) && (odd n == true)) ->
       (forall(x1 y1:nat), forall(c0 c1 c2: Color), Triangle x1 y1 (3 .^ k) c0 c1 c2) ->
       (forall i : nat, ((0 <= i <= n) -> Cpos (x+i) y (colorYBBY x n (x+i)))) ->
       (forall i : nat, ((0 <= i <= n - 3.^k) -> Cpos (x+i) (y+3.^k) (colorYB x (n-3.^k) (x+i)))).
   Proof.
     move=> x y n k. move/andP. case=>[A B]. move:(A). move/andP. case=>[A1 A2]. move=>triangle color i rangeI.
-    move:{+} rangeI. move/andP. case=>[rangeI1 rangeI2].
+    move: (rangeI). move/andP. case=>[rangeI1 rangeI2].
     - have A3: n < (3.^k).*2. rewrite eq_le_eq_lt in A2. move:A2. move/orP. case. move=>P.
       have B': odd ((3.^k).*2). move/eqP in P. rewrite- P. move/eqP in B. done. rewrite odd_double in B'. done. done.
-    - have B': odd n = true. by apply/eqP.      
+    - have B': odd n = true. by apply/eqP.
+    - have E: 3 .^ k <= n. by apply ltnW.       
     - have C1: 1+(n./2).*2 = n. rewrite- {2} (odd_double_half n). rewrite B'. done.
     - have C2: (n./2).*2 = n.-1. apply/eqP. rewrite- eq_adjoint_S_P_eq. apply/eqP. done. by apply odd_gt0.
     - have C3: n-(n./2) = (n./2).+1. apply/eqP. rewrite eq_adjoint_minus_plus_eq. apply/eqP.
@@ -1238,16 +1239,16 @@ Section Three_Color_Triangle_Problem_nec.
     - have C5: n-3.^k <= n./2. rewrite eq_adjoint_minus_plus_le. rewrite eq_comm_plus.
       rewrite- eq_adjoint_minus_plus_le. rewrite C3. done. 
     - have C6: i<=n./2. apply (trans_lelele rangeI2). done.
-    - have C7: n./2 < i + 3 .^ k. apply (trans_ltlelt C4). rewrite eq_comm_plus. apply leq_addr. 
-    - have C8: i + 3 .^ k <= n. by rewrite eq_adjoint_plus_minus_le.
-    - have C9: odd (3.^k). by apply odd3m. 
+    - have C7: n./2 < i + 3 .^ k. apply (trans_ltlelt C4). rewrite eq_comm_plus. apply leq_addr.
+    - have C8: i + 3 .^ k <= n. rewrite eq_adjoint_plus_minus_le. done. done. 
+    - have C9: odd (3.^k). by apply odd3m.
     - have rangeIa: 0 <= i <= n.
       apply/andP; split. done. apply (trans_lelele rangeI2); apply leq_subr.
     - have rangeIb: 0 <= (i+3.^k) <= n.
-      apply/andP; split. apply (trans_lelele rangeI1); apply leq_addr. by rewrite (eq_adjoint_plus_minus_le i A1).
+      apply/andP; split. apply (trans_lelele rangeI1); apply leq_addr. rewrite eq_adjoint_plus_minus_le. done. done.
     - have posN: 0<n. by apply odd_gt0.
     - have Cpos1: Cpos (x+i) y (colorYBBY x n (x+i)).
-      apply color; apply rangeIa.
+      apply color. apply rangeIa.
     - have Cpos2: Cpos (x+i+3.^k) y (colorYBBY x n (x+i+3.^k)).
       rewrite eq_assoc_plus. apply color. apply rangeIb.      
     - have [c' Cpos3]: exists c:Color, Cpos (x+i) (y+3.^k) c. by apply C_exists.
@@ -1279,14 +1280,23 @@ Section Three_Color_Triangle_Problem_nec.
   
   Lemma ShortOddB :
     forall x y n k : nat,
-      ((3.^k <= n <= (3.^k).*2) && (odd n == true)) ->
+      ((3.^k < n <= (3.^k).*2) && (odd n == true)) ->
       (forall(x1 y1:nat), forall(c0 c1 c2: Color), Triangle x1 y1 (3 .^ k) c0 c1 c2) ->
       (forall i : nat, ((0 <= i <= n) -> Cpos (x+i) y (colorYBBY x n (x+i)))) ->
       (forall i : nat, ((0 <= i <= (n - 3.^k).-1) -> Cpos (x+i) ((y+3.^k).+1) red)).
   Proof.
-    
-  Admitted.
-
+    move=> x y n k cond1 triangle color i rangeI. 
+    move: (rangeI). move/andP. case=>[C1 C2].
+    move: cond1. move/andP. case=>[rangeN oddN]. move:(oddN). move/eqP =>oddN'.
+    move:(rangeN). move/andP. case=>[rangeN1 rangeN2].
+    have C3: n>0. have D: 0<=3.^k. apply leq0n. apply (trans_leltlt D). done. 
+    have fromOddA: forall i:nat, (0<=i<=n-3.^k -> Cpos (x+i) (y+3.^k) (colorYB x (n-3.^k) (x+i))).
+    apply ShortOddA. rewrite oddN'. by rewrite rangeN. done. done.
+    have fromEvenA: forall i:nat, (0<=i<=(n-3.^k).-1) -> Cpos (x+i) (y+3.^k+1) red.
+    apply EvenA. rewrite- eq_adjoint_plus_minus_lt. by rewrite add0n. done. 
+    rewrite- addn1. apply fromEvenA. done. 
+  Qed.
+  
   Lemma ShortOddC :
     forall x y n k : nat,
       ((3.^k <= n <= (3.^k).*2) && (odd n == true)) ->
