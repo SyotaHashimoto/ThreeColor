@@ -1299,22 +1299,42 @@ Section Three_Color_Triangle_Problem_nec.
   
   Lemma ShortOddC :
     forall x y n k : nat,
-      ((3.^k <= n <= (3.^k).*2) && (odd n == true)) ->
+      ((3.^k < n <= (3.^k).*2) && (odd n == true)) ->
       (forall(x1 y1:nat), forall(c0 c1 c2: Color), Triangle x1 y1 (3 .^ k) c0 c1 c2) ->
       (forall i : nat, ((0 <= i <= n) -> Cpos (x+i) y (colorYBBY x n (x+i)))) ->
       Cpos x (y+n) red.
   Proof.
-    
-  Admitted.
-
+    move=> x y n k cond triangle color.
+    move: (cond). move/andP. case=>[C1 C2].
+    move: C1. move/andP. case=>[rangeN1 rangeN2]. 
+    have fromOddB: forall i:nat, 0<=i<=(n-3.^k).-1 -> Cpos (x+i) ((y+(3.^k)).+1) red.
+    apply ShortOddB. done. done. done. 
+    have fromAllRed: Cpos x ((y+(3.^k)+1)+((n-3.^k)-1)) red. 
+    apply AllRed. rewrite subn1. rewrite addn1. done.
+    have D: y+n = (y + 3 .^ k + 1 + (n - 3 .^ k - 1)).
+    apply/eqP. rewrite eq_assoc_plus. rewrite eq_assoc_plus. 
+    rewrite- eq_mono_plus_eq_plus_l. rewrite eq_comm_plus. 
+    rewrite- eq_adjoint_minus_plus_eq. rewrite eq_comm_plus. 
+    rewrite- eq_adjoint_minus_plus_eq. done.
+    rewrite- eq_adjoint_plus_minus_lt. rewrite add0n. done.
+    apply ltnW. done. 
+    rewrite- D in fromAllRed. done. 
+  Qed.
+  
   Lemma Three_Color_Triangle_Problem_nec_oddA :
     forall x y n k : nat,
-      ((3.^k <= n <= (3.^k).*2) && (odd n == true)) ->
+      ((3.^k < n <= (3.^k).*2) && (odd n == true)) ->
       ~(forall c:Color, forall f:nat -> Color, Triangle x y n (f x) (f (x+n)) c).
   Proof.
 
   Admitted.
 
+
+
+
+
+
+  
   (* Three_Color_Triangle_Problem_nec_oddB のための定義と補題群 *)
   (* colorBYB x n k z : 最上段の x から x+n までの左端＋右端 3^k 個を青，中央を黄で塗る (範囲外は青にする) *)
   Definition colorBYB (x n k z : nat) := if 3.^k <= z-x <= n-(3.^k) then yel else blu.
