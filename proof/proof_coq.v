@@ -625,54 +625,108 @@ End Three_Color_Triangle_Problem_suf.
 
 Section Three_Color_Triangle_Problem_nec.
 
-  Lemma caseN :
-    forall n : nat, (exists k : nat, ( n = 0 \/ (3 .^ k <= n /\ n <= 2 * 3 .^ k) \/ (2 * 3 .^ k + 1 <= n /\ n < 3 .^ k.+1))).
+  (* Lemma caseN : *)
+  (*   forall n : nat, (exists k : nat, ( n = 0 \/ (3 .^ k <= n /\ n <= 2 * 3 .^ k) \/ (2 * 3 .^ k + 1 <= n /\ n < 3 .^ k.+1))). *)
+  (* Proof. *)
+  (*   elim=> [ | n IHn]. *)
+  (*   - exists 0. *)
+  (*     by left.  *)
+  (*   - destruct IHn as [m]. *)
+  (*     move: H => IHm. *)
+  (*     case IHm => IHm'. *)
+  (*     exists 0; rewrite IHm'. *)
+  (*     right; left. *)
+  (*     by split.  *)
+      
+  (*     have Case1 : n.+1 = 1 \/ n.+1 >= 2. *)
+  (*     by apply (case1 n).   *)
+
+  (*     case Case1 => Case1'. *)
+  (*     + exists 0. *)
+  (*       right; left. *)
+  (*       rewrite Case1'. *)
+  (*       by rewrite /=. *)
+
+  (*     + have Case3m1 : (n.+1 < 3 .^ m.+1) \/ (n.+1 = 3 .^ (m.+1)). *)
+  (*       apply case3m1. *)
+  (*       case IHm' => Range. *)
+  (*       destruct Range as [Range1 Range2]. *)
+  (*       by apply leq23m_3m1. *)
+  (*       by destruct Range as [Range1 Range2]. *)
+
+  (*       case Case3m1 => Case3m1'. *)
+  (*       * exists m. *)
+  (*         move: IHm'; rewrite connect; move=> IHm'. *)
+  (*         rewrite connect. *)
+  (*         destruct IHm' as [IHm'_left IHm'_right]. *)
+  (*         right. *)
+  (*         split. *)
+  (*         by apply leqn_n1. *)
+  (*         by [].  *)
+  (*       * exists (m.+1). *)
+  (*         move: IHm'; rewrite connect; move=> IHm'. *)
+  (*         rewrite connect. *)
+  (*         destruct IHm' as [IHm'_left IHm'_right]. *)
+  (*         right. *)
+  (*         rewrite Case3m1'. *)
+  (*         split. *)
+  (*         by []. *)
+  (*         by apply leq3m_3m1. *)
+  (* Qed. *)
+
+  Lemma rangeN : forall n : nat, exists k : nat, (n = 0) \/ (3.^k <= n <= (3.^k).*2) \/ ((3.^k).*2 + 1 <= n < (3.^(k.+1))).
   Proof.
     elim=> [ | n IHn].
-    - exists 0.
-      by left. 
-    - destruct IHn as [m].
-      move: H => IHm.
-      case IHm => IHm'.
-      exists 0; rewrite IHm'.
-      right; left.
-      by split. 
-      
-      have Case1 : n.+1 = 1 \/ n.+1 >= 2.
-      by apply (case1 n).  
+    - exists 0. left. done.
+    - move: IHn. case. move=> k IHn.
+      case IHn.
+      + move=> Zero.
+        rewrite Zero. exists 0. rewrite /=. right; left. done.
 
-      case Case1 => Case1'.
-      + exists 0.
-        right; left.
-        rewrite Case1'.
-        by rewrite /=.
+      (* 不等式を書き換えるための補題 *)  
+      + have Short1 : 3 .^ k <= n <= (3 .^ k).*2 <-> (3 .^ k <= n /\ n <= 2 * (3 .^ k)).
+        apply conj.
+        move=> H. apply /andP. by rewrite mul2n.
+        move=> H. apply /andP. by rewrite mul2n in H.
+        
+      + have Long1 : (3 .^ k).*2 + 1 <= n < 3 .^ k.+1 <-> 2 * (3 .^ k) + 1 <= n /\ n < 3 .^ k.+1.
+        apply conj.
+        move=> H. apply /andP. by rewrite mul2n.
+        move=> H. apply /andP. by rewrite mul2n in H.
+      + have Short2 : 3 .^ k <= n.+1 <= (3 .^ k).*2 <-> (3 .^ k <= n.+1 /\ n.+1 <= 2 * (3 .^ k)).
+        apply conj.
+        move=> H. apply /andP. by rewrite mul2n.
+        move=> H. apply /andP. by rewrite mul2n in H.
+        
+      + have Long2 : (3 .^ k).*2 + 1 <= n.+1 < 3 .^ k.+1 <-> 2 * (3 .^ k) + 1 <= n.+1 /\ n.+1 < 3 .^ k.+1.
+        apply conj.
+        move=> H. apply /andP. by rewrite mul2n.
+        move=> H. apply /andP. by rewrite mul2n in H.
 
-      + have Case3m1 : (n.+1 < 3 .^ m.+1) \/ (n.+1 = 3 .^ (m.+1)).
-        apply case3m1.
-        case IHm' => Range.
-        destruct Range as [Range1 Range2].
-        by apply leq23m_3m1.
-        by destruct Range as [Range1 Range2].
+      + have Boundary : (n.+1 = 3 .^ k.+1) <-> (n.+1 == 3 .^ k.+1).
+        apply conj => H. by apply /eqP. by apply /eqP.
 
-        case Case3m1 => Case3m1'.
-        * exists m.
-          move: IHm'; rewrite connect; move=> IHm'.
-          rewrite connect.
-          destruct IHm' as [IHm'_left IHm'_right].
-          right.
-          split.
-          by apply leqn_n1.
-          by []. 
-        * exists (m.+1).
-          move: IHm'; rewrite connect; move=> IHm'.
-          rewrite connect.
-          destruct IHm' as [IHm'_left IHm'_right].
-          right.
-          rewrite Case3m1'.
-          split.
-          by [].
-          by apply leq3m_3m1.
-  Qed.    
+      (* 証明再開 *)
+      (* n.+1 = 1 と n.+1 > 1 で場合分け *)
+      + case (case1 n) => [Zero|NotZero].      
+        (* n.+1 = 1 のとき *)
+        * rewrite Zero. exists 0. right; left. by rewrite /=.
+        (* n.+1 > 1 のとき *)
+        * rewrite Short1 Long1 connect. move /andP. move => rangeN.          
+          (* n.+1 = 3 .^ k と n.+1 < 3 .^ k.+1で場合分け *)
+          have rangeBoundary : (n.+1 = 3 .^ k.+1) \/ (n.+1 < 3 .^ k.+1).
+          move: rangeN. move /andP; move=> [] ranegeN1 rangeN2.
+          rewrite Boundary. apply /orP. by rewrite leq_eqVlt in rangeN2.
+          case rangeBoundary => [rangeN1|rangeN2].
+          (* n.+1 = 3 .^ k のとき *)
+          ** exists (k.+1). rewrite rangeN1. right; left.
+             apply /andP. apply conj. done.
+             rewrite- addnn. rewrite- eql_minus_le_le_plus_l.
+             rewrite x_minus_x_is_0. done.
+          ** exists k. rewrite Short2 Long2 connect. right. apply conj.
+             move: rangeN. move /andP. move=> [] range1 range2.
+             apply leqW. done. done.
+  Qed.        
                
   (* Lemma caseN' : *)
   (*   forall (n : nat), ( even n \/ ( odd n /\ exists k : nat, (3 .^ k <= n <= 2 * 3 .^ k) \/ (2 * 3 .^ k + 1 <= n < 3 .^ k.+1))). *)  
@@ -928,11 +982,49 @@ Section Three_Color_Triangle_Problem_nec.
 
   Lemma Three_Color_Triangle_Problem_nec_even :
     forall x y n :nat,
-      odd n == false ->
+      (n > 0) && (odd n == false) ->
       ~(forall c:Color, forall f:nat -> Color, Triangle x y n (f x) (f (x+n)) c).
   Proof.
+    move=> x y n.
+    move /andP; move=> [] NotZeroN OddN Triangle_hyp.
+    have topcolor : forall i : nat, ((0 <= i <= n) -> Cpos (x+i) y (colorYB x n (x+i))).
+    move=> i range. by apply C_paint.
 
-  Admitted.
+    (* 最下段のマスの色が異なることで矛盾を導く *)
+    
+    (* EvenB より最下段のマスの色が red であることを示す．*)
+    - have CposR : Cpos x (y+n) red. by apply EvenB.
+
+    (* Triangle_hyp 等を用いて最下段のマスの色が yel であることを示す *)
+    (* 最上段の両端のマスを colorYB を用いて塗ることを示す *) 
+    - have : (0 <= 0 <= n) && (odd 0 == false).
+      rewrite /=. done.
+      move /andP; move=> [] range0a range0b.
+      generalize (topcolor 0) => Cpos0. specialize (Cpos0 range0a).
+    - have : (0 <= n <= n) && (odd n == false).
+      rewrite OddN. rewrite leqnn. rewrite /=. done.
+      move /andP; move=> [] rangeNa rangeNb.
+      generalize (topcolor n) => CposN. specialize (CposN rangeNa).
+
+    (* 最下段の色が Triangle_hyp より mix で得られることを示す *)
+    - have : exists c : Color, Cpos x (y+n) c. apply C_exists.
+      case. move=> c CposY.
+      generalize (Triangle_hyp c (colorYB x n)) => TriangleN.
+      have ColorBelow : c = mix (colorYB x n x) (colorYB x n (x + n)).
+      apply TriangleN. apply conj. rewrite addn0 in Cpos0. done. done.
+
+    (* CposY の色が yel であることを示す *)
+    - have sameColor : colorYB x n x = colorYB x n (x + n).
+      apply lemYB3; done. rewrite- sameColor in ColorBelow.
+      have ColorY : colorYB x n x = yel.
+      rewrite /colorYB. rewrite x_minus_x_is_0. by rewrite range0a.
+      rewrite ColorY in ColorBelow. rewrite /= in ColorBelow.
+      rewrite ColorBelow in CposY.
+
+    (* falseColor より矛盾を示す *)
+    - apply (falseColor x (y+n) red yel).
+      apply conj. done. apply conj. done. done.  
+  Qed.
       
   (* Lemma Three_Color_Triangle_Problem_nec_even : *)
   (*   forall n x y: nat, *)
@@ -1505,21 +1597,43 @@ Section Three_Color_Triangle_Problem_nec.
 
   
   Lemma Three_Color_Triangle_Problem_nec' :
-    forall (n x y : nat),
-      ~(exists k :nat, n = 3 .^ k) -> ~(forall c0 c1 c2 : Color, Triangle x y n c0 c1 c2).
+    forall (n x y : nat), n > 0 ->
+      ~(exists k :nat, n = 3 .^ k) -> ~(forall c:Color, forall f:nat -> Color, Triangle x y n (f x) (f (x+n)) c).
   Proof.
-
-  Admitted.
+    move=> n x y NotZeroN_hyp Notexp3k.
+    case (rangeN n) => k rangeN; case rangeN => [ZeroN|NotZeroN].
+    - rewrite ZeroN in NotZeroN_hyp. done.
+    - case (odd_or_even n) => [OddN|EvenN].
+      + case NotZeroN => [Short|Long].
+        * apply (Three_Color_Triangle_Problem_nec_oddA x y n k).
+          apply /andP. apply conj. done. apply /eqP. done.
+        * apply (Three_Color_Triangle_Problem_nec_oddB x y n k). done.
+      + apply (Three_Color_Triangle_Problem_nec_even).
+        apply /andP. apply conj. done. apply /eqP. done.
+ Qed.
     
 
   Theorem Three_Color_Triangle_Problem_nec :
-    forall (n x y : nat),
+    forall (n x y : nat), n > 0 ->
       (forall c0 c1 c2 : Color, Triangle x y n c0 c1 c2) ->
       (exists k :nat, n = 3 .^ k).
   Proof.
-    move=> n x y.
-    apply Contraposition.
-    by apply Three_Color_Triangle_Problem_nec'.
+    move=> n x y NotZeroN_hyp.
+
+    (* 対偶を用いて示す *)
+    apply Contraposition. move=> Notexp3k.
+
+    (* "調和三角形の塗り方が存在しない" <-> "調和三角形が存在しない" *)
+    have T :
+      ~(forall c:Color, forall f:nat ->Color, Triangle x y n (f x) (f (x+n)) c) <->
+      ~ (forall c0 c1 c2 : Color, Triangle x y n c0 c1 c2).
+    apply conj.
+    - rewrite- Contraposition. move=> Triangle_hyp c f.
+      generalize (Triangle_hyp (f x) (f (x + y)) c) => TriangleN. done.
+    - move=> Triangle_hyp. by apply Three_Color_Triangle_Problem_nec'.
+
+    (* Three_Color_Triangle_Problem_nec' を用いて示す *)
+    apply T. apply Three_Color_Triangle_Problem_nec'. done. done.    
   Qed.
 
 End Three_Color_Triangle_Problem_nec.
@@ -1529,18 +1643,17 @@ End Three_Color_Triangle_Problem_nec.
 Section Three_Color_Triangle_Problem.
 
   Theorem Three_Color_Triangle_Problem_sufnec :
-    forall (n x y : nat) ,
+    forall (n x y : nat) , n > 0 ->
       (exists k : nat, n = 3 .^ k) <->
       (forall (c0 c1 c2 : Color), Triangle x y n c0 c1 c2).
   Proof.
-    move=> n x y.
-    apply conj.
+    move=> n x y NotZeroN. apply conj.
     - by apply Three_Color_Triangle_Problem_suf.
     - by apply Three_Color_Triangle_Problem_nec.
   Qed.
   
   Theorem Three_Color_Triangle_Problem :
-    forall (n : nat) ,
+    forall (n : nat) , n > 0 ->
       (exists k :nat, n = 3 .^ k) <->
       (forall c0 c1 c2 : Color, Triangle 0 0 n c0 c1 c2).
   Proof.
