@@ -1202,9 +1202,9 @@ Section Three_Color_Triangle_Problem_nec.
   Qed.
   
   (* colorYBBY の性質5 *)
-  Lemma lemYBBY5: forall x n i: nat, (odd n == true) -> colorYBBY x n x = colorYBBY x n (x+n).
+  Lemma lemYBBY5: forall x n : nat, (odd n == true) -> colorYBBY x n x = colorYBBY x n (x+n).
   Proof.
-    move=> x n i.  move /eqP => oddN.
+    move=> x n.  move /eqP => oddN.
     rewrite /colorYBBY. rewrite subnn.
     - have range0 : (0 <= 0 <= n./2) && (ssrnat.odd 0 == false).
       rewrite /=. done.
@@ -1326,14 +1326,29 @@ Section Three_Color_Triangle_Problem_nec.
       ((3.^k < n <= (3.^k).*2) && (odd n == true)) ->
       ~(forall c:Color, forall f:nat -> Color, Triangle x y n (f x) (f (x+n)) c).
   Proof.
-
-  Admitted.
-
-
-
-
-
-
+    - move=> x y n k cond triangle.
+      + move: (cond). move/andP. case=>[K1 K2].
+      + have tri3k: forall x y: nat, forall c0 c1 c2: Color, Triangle x y (3.^k) c0 c1 c2.
+        move=> x1 y1 c0 c1 c2. apply Three_Color_Triangle_Problem_suf. exists k. done. 
+      + have fromCpaint: forall i:nat,0<=i<=n -> Cpos (x+i) y (colorYBBY x n (x+i)).
+        move=> i rangeI. apply (C_paint x y i (colorYBBY x n)). 
+      + have fromOddC: Cpos x (y+n) red. apply (ShortOddC x y n k). done. done. done. 
+      + have A1: Cpos (x+0) y (colorYBBY x n (x+0)). apply fromCpaint. done. 
+      + have A2: Cpos (x+n) y (colorYBBY x n (x+n)). apply fromCpaint.
+        have B1: 0<=n. apply leq0n. have B2: n<=n. apply leqnn. rewrite B1. rewrite B2. done. 
+      + have [c' A3]: exists c':Color, Cpos x (y+n) c'. apply C_exists. 
+      + have A4: Triangle x y n (colorYBBY x n x) (colorYBBY x n (x+n)) c'. apply triangle. 
+      + have mix1: c' = mix (colorYBBY x n x) (colorYBBY x n (x+n)). apply A4.
+        split. rewrite- {1 3} (addn0 x). done. split. done. done. 
+      + have A5: colorYBBY x n x = colorYBBY x n (x+n). apply lemYBBY5. done. 
+      + have mix2: c' = mix (colorYBBY x n x) (colorYBBY x n x). rewrite {2} A5. done. 
+      + have CposYel: Cpos x (y+n) (mix (colorYBBY x n x) (colorYBBY x n (x+n))). rewrite- mix1. done. 
+      + have A6: colorYBBY x n x = yel. rewrite- {2} (addn0 x). apply lemYBBY1. done. 
+      + have A7: c' = yel. rewrite A6 in mix2. done. 
+      + have A8: Cpos x (y+n) yel. rewrite- A7. done. 
+      + have A9: yel = red. apply (C_uniq x (y+n)). split. done. done. 
+        done. 
+Qed.
   
   (* Three_Color_Triangle_Problem_nec_oddB のための定義と補題群 *)
   (* colorBYB x n k z : 最上段の x から x+n までの左端＋右端 3^k 個を青，中央を黄で塗る (範囲外は青にする) *)
