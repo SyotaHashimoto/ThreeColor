@@ -9,71 +9,26 @@ Notation "x .^ y" :=  (expn x y)%coq_nat (at level 30, right associativity).
 
 Section nat1.
 
-  (* --- _.+1 _.+2 _+3 の性質 --- *)  
-  Lemma addn1' : forall n :nat, n.+1 = n + 1.
-  Proof.
-    move=> n.
-    by rewrite addn1.
-  Qed.
-
-  Lemma addn10 : forall n : nat, n.+1 = 1 -> n = 0.
-  Proof.
-    elim=> [ | n IHn].
-    - by [].
-    - by [].
-  Qed.
-
   (* --- 加法の性質 --- *)
-
-  Lemma add11 : 1 + 1 = 2.
-  Proof. by rewrite /=. Qed.
-
+  
   Lemma add3 : 3 = 2 + 1.
   Proof. by rewrite /=. Qed.
-  
-  Lemma addpm : forall m n p : nat, m = n -> p + m = p + n.
-  Proof.
-    move=> m n p eq.
-    by rewrite eq.
-  Qed.
-
-  Lemma addmp : forall m n p : nat, m = n -> m + p = n + p.
-  Proof.
-    move=> m n p eq.
-    by rewrite eq.
-  Qed.
-
-Lemma x_plus_y_minus_x_is_y: forall x y : nat, x+y-x = y.
-Proof.
-  move=> x y.
-  have G1: x + y = y + x. apply Nat.add_comm.
-  rewrite G1. rewrite- addnBA.
-  have G2: (x-x)%coq_nat = 0.
-  apply Nat.sub_diag. rewrite- coqnat_minus in G2. rewrite G2.
-  apply Nat.add_0_r. apply coqnat_le, le_n.
-Qed.
 
   (* --- 減法の性質 --- *)
   Lemma x_minus_x_is_0 : forall x : nat, x - x = 0.
+  Proof. elim=> [ | x IHx]; by []. Qed.
+
+  Lemma x_plus_y_minus_x_is_y: forall x y : nat, x + y - x = y.
   Proof.
-    elim=> [ | x IHx].
-    done. by rewrite subSS.
+    move=> x y.
+    have G1: x + y = y + x. apply Nat.add_comm.
+    rewrite G1. rewrite- addnBA.
+    have G2: (x-x)%coq_nat = 0.
+    apply Nat.sub_diag. rewrite- coqnat_minus in G2. rewrite G2.
+    apply Nat.add_0_r. apply coqnat_le, le_n.
   Qed.
 
   (* --- 乗法の性質 --- *)
-
-  Lemma addnnmul2n : forall n : nat, n + n = 2 * n.
-  Proof.
-    elim=> [ | n IHn].
-    - by [].
-    - rewrite<- addn1; rewrite addnA.
-      rewrite [(n+1)+n]addnC.
-      rewrite [n+(n+1)]addnA.
-      rewrite IHn.
-      rewrite<- addnA.
-      by rewrite add11 mulnDr.
-  Qed.
-
   Lemma mulnDr' :
     forall m n p : nat, (m + n) * p = m * p + n * p.
   Proof.
@@ -81,128 +36,38 @@ Qed.
     elim=> [ | p IHp].
     - by rewrite 3!muln0.
     - rewrite mulnC.
-      rewrite [m * p.+1]mulnC; rewrite [n*p.+1]mulnC.
-      by apply mulnDr.
+      rewrite [m * p.+1]mulnC; rewrite [n*p.+1]mulnC. by apply mulnDr.
   Qed.
   
   (* --- 指数の性質 --- *)
-
-  Lemma mul1n' : forall n : nat, n = 1 * n.
-  Proof.
-    move=> n.
-    by rewrite mul1n.
-  Qed.
-    
+  
   Lemma add3n3n :
     forall n : nat, (3 .^ n) + (3 .^ n) = 2 * (3 .^ n).
-  Proof.
-    case=> [ | n].
-    - by rewrite expn0.
-    - by rewrite addnnmul2n.
-  Qed.
-
-  Lemma mul33n : forall n : nat, 3 * 3 .^ n = 3 .^ (n + 1).
-  Proof.
-    elim=> [ | n IHn].
-    - by [].
-    - rewrite expnS IHn.
-      rewrite<- expnS.
-      by rewrite 2!addn1.
-  Qed.
+  Proof. case=> [ | n]. by []. by rewrite addnn mul2n. Qed.
   
   Lemma add23n3n :
     forall n : nat, 2 * (3 .^ n) + (3 .^ n) = 3 .^ (n.+1).
-  Proof.
+  Proof. 
     move=> n.
-    rewrite {2}[3.^n]mul1n'.
-    rewrite<- mulnDr'.
-    rewrite mul33n.
-    rewrite addnS.
-    by rewrite addn0.
+    rewrite- {2}[3.^n]mul1n mulnC. rewrite [1*3.^n]mulnC. rewrite- mulnDr.
+    have Three : 2 + 1 = 3. by [].
+    rewrite Three. by rewrite expnS mulnC.
   Qed.
-
-  Lemma succ3n :
-    forall n : nat, 3 .^ (n.+1) = 3 .^ (n + 1).
-  Proof.
-    move=> n.
-    rewrite addnS.
-    by rewrite addn0.
-  Qed.
-
-  Lemma expn0' : forall n : nat,  n .^ 0 <= 1.
-  Proof.
-    move=> n.
-    by rewrite expn0.
-  Qed.
-
+  
   Lemma expnPos: forall n m : nat, 0 < n -> 0 < n .^ m.
   Proof.
-    move=> n m.
-    rewrite expn_gt0.
-    move=> pos_n.
-    apply/orP.
-    by left.
+    move=> n m. rewrite expn_gt0.
+    move=> pos_n. apply/orP. by left.
   Qed.
 
   Lemma expn3neq0 : forall m, 3.^m != 0.
-  Proof.
-    move=> m. rewrite- lt0n. by apply expnPos.  
-  Qed.
+  Proof. move=> m. rewrite- lt0n. by apply expnPos. Qed.
 
   Lemma expn3Pos : forall m, 0 < 3.^m .
-  Proof.
-    move=> m. by apply expnPos. 
-  Qed.
+  Proof. move=> m. by apply expnPos. Qed.
+
+  (* ---  不等式の性質 -- *)
   
-  Lemma expn2n0' : forall n : nat, 0 < 2 * n .^ 0.
-  Proof.
-    move=> n.
-    rewrite expn0.
-    by rewrite muln1.
-  Qed.
-
-  Lemma case0 : forall n : nat, n = 0 \/ n > 0.
-  Proof.
-    elim=> [ | n IHn].
-    - left. done.
-    - right; by apply ltn0Sn.
-  Qed.
-
-  Lemma case01 : forall n : nat, n = 0 \/ n = 1 \/ n > 1.
-  Proof.
-    elim=> [ | n IHn].
-    - by left.
-    - case IHn => H0.
-      + rewrite H0.
-        right; left.
-        by [].
-      + case H0 => H1.
-        rewrite H1.
-        right; right.
-        by [].
-        right; right.
-        apply /ltP; apply le_S; by apply /ltP.
-  Qed.
-
-  Lemma case1 : forall n : nat, n.+1 = 1 \/ n.+1 > 1.
-  Proof.
-    elim=> [ | n IHn].
-    - by left.
-    - case IHn => H0.
-      + rewrite H0.
-        by right.
-      + right.
-        apply /ltP; apply le_S; by apply /ltP.
-  Qed.
-
-  Lemma case3m1 :
-    forall (n m : nat), (n.+1 <= 3 .^ m.+1) -> ((n.+1 < 3 .^ (m.+1)) \/ (n.+1 = 3 .^ m.+1)).
-  Proof.
-    move=> n m.
-    rewrite 2!coqnat_lt.
-    by apply le_lt_or_eq.
-  Qed.
-
   Lemma leq23m_3m1 :
     forall (n m : nat), (n <= 2 * 3 .^ m) -> (n < 3 .^ m.+1).
   Proof.
@@ -252,86 +117,6 @@ Qed.
     apply PeanoNat.Nat.le_add_r.    
     by rewrite- plus_assoc_reverse.            
   Qed.
-
-  Lemma leqNatOr:
-    forall (n m : nat), (n <= m) \/ (m + 1 <= n).
-  Proof.
-    move=> n m.
-    have le_sum_gt: {(n <= m)%coq_nat} + {(m.+1 <= n)%coq_nat}.
-    apply Compare_dec.le_le_S_dec.
-    case le_sum_gt => [le|gt].
-    - left.
-      by apply coqnat_le.
-    - right.
-      rewrite (_: (m+1)= (m.+1)).
-      by apply coqnat_le.
-    by apply addn1.
-  Qed.
-  
-  Lemma leq23m_23m1 :
-    forall (n m : nat), (n <= 2 * 3 .^ m) \/ (2 * 3 .^ m + 1 <= n).
-  Proof.
-    move=> n m.
-    apply leqNatOr.
-  Qed.
-
-  Lemma connect :
-    forall n m : nat, (3 .^ m <= n /\ n <= 2 * 3 .^ m) \/ (2 * 3 .^ m + 1 <= n /\ n < 3 .^ m.+1) <-> (3 .^ m <= n /\ n < 3 .^ m.+1).
-  Proof.
-    move=> n m.
-    split.
-    - move=> H.
-      case H => [Left|Right].
-      + destruct Left as [Left1 Left2].
-        split.
-        * by [].
-        * by apply leq23m_3m1.
-      + destruct Right as [Right1 Right2].
-        split.
-        * by apply leq3m_23m1.
-        * by [].
-    - move=> H.
-      destruct H as [Left Right].
-      case (leq23m_23m1 n m).
-      + move=> H.
-        left.
-        split.
-        * by [].
-          by [].
-      + move=> H.
-        right.
-        split.
-        * by [].
-          by [].
-  Qed.
-
-  Lemma leq3m_3m1 :
-    forall (n : nat), 3 .^ n < 3 .^ n.+1.
-  Proof.
-    move=> n.
-    rewrite expnS.
-    rewrite {1} (mul1n' (3.^n)).
-    apply coqnat_lt.
-    apply Mult.mult_lt_compat_r.
-    apply coqnat_lt.
-    by [].
-    apply coqnat_lt.
-    by apply expnPos.       
-  Qed.
-
-  Lemma oddexpn: forall n m : nat, odd m -> odd (m.^n).
-  Proof.
-    move=> n. 
-    elim n. done. move=> k ind m. 
-    rewrite expnS. rewrite oddM. move=>odd. apply/andP. split. done.
-    by rewrite ind. 
-  Qed.
-
-  Lemma odd3m: forall m : nat, odd (3.^m).
-  Proof.
-    move=> m. by apply oddexpn. 
-  Qed.
-
   
   Lemma leqn_n1 :
     forall (n m : nat), 3 .^ m <= n -> 3 .^ m <= n.+1.
@@ -342,8 +127,7 @@ Qed.
     apply (PeanoNat.Nat.le_lt_trans (3 .^ m) n (n.+1)).
     by apply coqnat_le.
     by apply coqnat_le.
-    apply coqnat_le; by apply PeanoNat.Nat.lt_le_incl.
-    by []. 
+    apply coqnat_le; by apply PeanoNat.Nat.lt_le_incl. by []. 
   Qed.
 
   Lemma leq_false1 : forall n i : nat, n./2.+1 <= i <= n -> (0 <= i <= n./2 = false).
@@ -361,78 +145,171 @@ Qed.
     apply /orP. left. rewrite- leqNgt. done.
   Qed.
 
-  Lemma leq_half1 : forall n : nat, n./2 <= n.
-  Proof.
-    move=> n.
-    rewrite- {2} (odd_double_half n).
-    rewrite- addnn.
-    rewrite- eq_assoc_plus.
-    rewrite- eq_adjoint_minus_plus_le. 
-    by rewrite x_minus_x_is_0.
-  Qed.
+  (* Lemma leq_half1 : forall n : nat, n./2 <= n. *)
+  (* Proof. *)
+  (*   move=> n. *)
+  (*   rewrite- {2} (odd_double_half n). *)
+  (*   rewrite- addnn. *)
+  (*   rewrite- eq_assoc_plus. *)
+  (*   rewrite- eq_adjoint_minus_plus_le. *)
+  (*   by rewrite x_minus_x_is_0. *)
+  (* Qed. *)
 
   (*  odd n は n <> 0 でもよいが今後の証明がしやすいように odd n とする *)
-  Lemma leq_half2 : forall n : nat, odd n -> (n./2).+1 <= n.
-  Proof.
-    move=>n H.
-    rewrite- {2} (odd_double_half n).
-    rewrite- addnn.
-    rewrite- eq_assoc_plus.
-    rewrite- eq_S_le_add_r.
-    rewrite H. by [].
-  Qed.
+  (* Lemma leq_half2 : forall n : nat, odd n -> (n./2).+1 <= n. *)
+  (* Proof. *)
+  (*   move=>n H. *)
+  (*   rewrite- {2} (odd_double_half n). *)
+  (*   rewrite- addnn. *)
+  (*   rewrite- eq_assoc_plus. *)
+  (*   rewrite- eq_S_le_add_r. *)
+  (*   rewrite H. by []. *)
+  (* Qed. *)
 
-  Lemma OddS : forall n : nat, odd n.+1 = ~~ odd n.
+  
+  (* === ssrnat にあるはずだけど見つからない? === *)
+  Lemma oddS n : odd n.+1 = ~~ odd n.
   Proof. done. Qed.
 
+  Lemma oddD m n : odd (m + n) = odd m (+) odd n.
+  Proof. by elim: m => [|m IHn] //=; rewrite -addTb IHn addbA addTb. Qed.
+  
+  Lemma oddM m n : odd (m * n) = odd m && odd n.
+  Proof. by elim: m => //= m IHm; rewrite oddD -addTb andb_addl -IHm. Qed.
+
+  
+  (* --- odd に関する性質 --- *)
+  Lemma oddexpn : forall n m : nat, odd m -> odd (m.^n).
+  Proof.
+    move=> n. 
+    elim n. done. move=> k ind m. 
+    rewrite expnS.
+    rewrite oddM. move=>odd. apply/andP. split. done.
+    by rewrite ind.
+  Qed.
+
+  Lemma odd3m : forall m : nat, odd (3.^m).
+  Proof. move=> m. by apply oddexpn. Qed.
+
+  (* --- 場合分けに関する補題 --- *)
+  
+  Lemma case1 : forall n : nat, n.+1 = 1 \/ n.+1 > 1.
+  Proof.
+    elim=> [ | n IHn].
+    - by left.
+    - case IHn => H0.
+      + rewrite H0. by right.
+      + right. apply /ltP; apply le_S; by apply /ltP.
+  Qed.
+
+  Lemma leqNatOr:
+    forall (n m : nat), (n <= m) \/ (m + 1 <= n).
+  Proof.
+    move=> n m.
+    have le_sum_gt: {(n <= m)%coq_nat} + {(m.+1 <= n)%coq_nat}.
+    apply Compare_dec.le_le_S_dec.
+    case le_sum_gt => [le|gt].
+    - left. by apply coqnat_le.
+    - right. rewrite (_: (m+1)= (m.+1)). by apply coqnat_le.
+    by apply addn1.
+  Qed.
+  
+  Lemma leq23mOr :
+    forall (n m : nat), (n <= 2 * 3 .^ m) \/ (2 * 3 .^ m + 1 <= n).
+  Proof. by move=> n m; apply leqNatOr. Qed.
+  
   Lemma odd_or_even : forall n : nat, odd n \/ odd n = false.
   Proof.
     elim=> [ | n IHn].
     - right. done.
     - case IHn => [Odd|Even].
-      + right. by rewrite OddS Odd.
-      + left. by rewrite OddS Even.
+      + right. by rewrite oddS Odd.
+      + left.  by rewrite oddS Even.
+  Qed.
+
+  (* 不等式の書き換えに用いる補題 *)
+  Lemma  Short1 :
+    forall n k : nat, 3 .^ k <= n <= (3 .^ k).*2 <-> (3 .^ k <= n /\ n <= 2 * (3 .^ k)).
+  Proof.
+    move=> n k. apply conj.
+    move=> H. apply /andP. by rewrite mul2n.
+    move=> H. apply /andP. by rewrite mul2n in H.
+  Qed.
+
+  Lemma Long1 :
+    forall n k : nat, (3 .^ k).*2 + 1 <= n < 3 .^ k.+1 <-> 2 * (3 .^ k) + 1 <= n /\ n < 3 .^ k.+1.
+  Proof.
+    move=> n k. apply conj.
+    move=> H. apply /andP. by rewrite mul2n.
+    move=> H. apply /andP. by rewrite mul2n in H.
   Qed.
   
+  Lemma Short2 :
+    forall n k : nat, 3 .^ k <= n.+1 <= (3 .^ k).*2 <-> (3 .^ k <= n.+1 /\ n.+1 <= 2 * (3 .^ k)).
+  Proof.
+    move=> n k. apply conj.
+    move=> H. apply /andP. by rewrite mul2n.
+    move=> H. apply /andP. by rewrite mul2n in H.
+  Qed.
+
+  Lemma Long2 :
+    forall n k : nat, (3 .^ k).*2 + 1 <= n.+1 < 3 .^ k.+1 <-> 2 * (3 .^ k) + 1 <= n.+1 /\ n.+1 < 3 .^ k.+1.
+  Proof.
+    move=> n k. apply conj.
+    move=> H. apply /andP. by rewrite mul2n.
+    move=> H. apply /andP. by rewrite mul2n in H.
+  Qed.
+
+  Lemma  Boundary :
+    forall n k : nat, (n.+1 = 3 .^ k.+1) <-> (n.+1 == 3 .^ k.+1).
+  Proof. move=> n k. apply conj => H. by apply /eqP. by apply /eqP. Qed.
+
+  Lemma connect3m :
+    forall n m : nat,
+      (3 .^ m <= n /\ n <= 2 * 3 .^ m) \/ (2 * 3 .^ m + 1 <= n /\ n < 3 .^ m.+1) <->
+      (3 .^ m <= n /\ n < 3 .^ m.+1).
+  Proof.
+    move=> n m. apply conj.
+    - move=> Long; case Long.
+      + move=> []Left1 Left2; apply conj.
+        done. by apply leq23m_3m1.
+      + move=> [] Right1 Right2; apply conj.
+        apply leq3m_23m1. done. by [].
+    - move=> [] Short1 Short2.
+      have leq23mOr : forall m1 m2 : nat, (n <= 2 * 3 .^ m) \/ (2 * 3 .^ m + 1 <= n).
+      move=> m1 m2; by apply leqNatOr.
+      case (leq23mOr n m) => [Less|More].
+      + left.  apply conj. by []. by [].
+      + right. apply conj. by []. by [].
+  Qed.
+ 
 End nat1.
 
 
 Section Classical.
 
-  Definition LEM : Prop := forall P : Prop, P \/ ~P.
-  Definition DNE : Prop := forall P : Prop, ~(~P) -> P.
-  
-  Lemma LEMiffDNE : LEM <-> DNE.
-  Proof.
-    rewrite /LEM /DNE.
-    split.
-    - move=> LEM P.
-      have: P \/ ~P.
-      by apply LEM.
-      rewrite /not.
-      by case.
-    - move=> DNE P.
-      apply DNE.
-      move=> nLEM.
-      apply nLEM.
-      right.
-      move=> PisTrue.
-      apply nLEM.
-      by left.
-  Qed.
-  
-  (* Axiom classic : forall P : Prop, P \/ ~P. *)
-  (* Lemma NNPP : forall P : Prop, ~(~P) -> P. *)
-  (* Axiom classic と LEM，Lemma NNPP とDNE はそれぞれ同じ言明 *)
+  Definition Lem : Prop := forall P : Prop, P \/ ~P.
+  Definition Dne : Prop := forall P : Prop, ~(~P) -> P.
 
-  (* Lemma imply_to_or : forall P Q : Prop, (P -> Q) -> ~ P \/ Q. *)
-  
+  (* 排中律 と 二重否定除去 が同値であることを示す *)
+  Lemma Lem_iff_Dne : Lem <-> Dne.
+  Proof.
+    rewrite /Lem /Dne. apply conj.
+    - move=> Lem P.
+      have : P \/ ~P. by apply Lem.
+      rewrite /not. by case.
+    - move=> Dne P.
+      apply Dne => nLem.
+      apply nLem. right => PisTrue.
+      apply nLem; by left.
+  Qed.
+
+  (* 古典論理において任意の命題とその命題の対偶が同値であることを示す *)
   Lemma Contraposition : forall P Q : Prop, (P -> Q) <-> (~Q -> ~P).
   Proof.
-    split.
+    move=> P Q; apply conj.
     - move=> PtoQ nQ QisTrue.
-      apply nQ.
-      by apply PtoQ.
+      apply nQ; by apply PtoQ.
     - move=> nQtonP PisTrue.
       apply imply_to_or in nQtonP.
       case nQtonP.
@@ -444,6 +321,7 @@ End Classical.
 
 Section Three_Color_Triangle_Problem_suf.
 
+  (* --- 定義一覧 --- *)
   Inductive Color : Set :=
   | red
   | yel
@@ -468,8 +346,11 @@ Section Three_Color_Triangle_Problem_suf.
   Parameter Cpos : nat -> nat -> Color -> Prop.
   (* 逆三角形の左から x:nat 番目，上から y:nat 番目の色が c:Color である *)
 
-  Parameter Cconf : Color -> Color -> Color -> Prop.
-  (* c0  c1 c2 : Color が3色互いに 同じ色 または 異なる色 である *)
+  Definition Triangle x y n c0 c1 c2 :=
+    Cpos x y c0 /\ Cpos (x+n) y c1 /\ Cpos x (y+n) c2 -> c2 = mix c0 c1.
+
+  Definition Cconf (c0 c1 c2 : Color) :=
+    (c0 = c1 /\ c1 = c2 /\ c2 = c0) \/ (c0 <> c1 /\ c1 <> c2 /\ c2 <> c0).
 
   (* ----- 公理一覧 ----- *)
   Axiom C_exists : forall x y : nat, (exists c : Color, Cpos x y c).
@@ -485,15 +366,7 @@ Section Three_Color_Triangle_Problem_suf.
 
   Axiom C_paint : forall x y i : nat, forall f:nat -> Color, Cpos (x+i) y (f (x+i)).
   (* 最上行のどの場所も好きな色を塗ることができる *)
-
-  (* Axiom C_conf : *)
-  (*   forall x y : nat, forall c0 c1 c2 : Color, Cconf c0 c1 c2 <-> (c0 = c1 /\ c1 = c2 /\ c2 = c0) \/ (c0 <> c1 /\ c1 <> c2 /\ c2 <> c0). *)
-  (* c0 c1 c2 : Color が3色互いに 同じ色 または 異なる色 である *)
-  (* これは公理ではなく，Cconf の定義 (CHECK) *)
-
-
   
-  Definition Triangle x y n c0 c1 c2 := Cpos x y c0 /\ Cpos (x+n) y c1 /\ Cpos x (y+n) c2 -> c2 = mix c0 c1.
   (* ----- mix, Cconf の性質 ----- *)
   Lemma mixCom (c0 c1 : Color) : mix c0 c1 = mix c1 c0.
   Proof. case c0, c1; by rewrite /=. Qed.
@@ -539,9 +412,7 @@ Section Three_Color_Triangle_Problem_suf.
     have c_is_mix: c = mix c0 c1. by apply triangle.
     by rewrite- c_is_mix. 
   Qed.
-  
-    
-    
+     
   
   (* ----- 三角形三色問題 ----- *)
                                                                                                               
@@ -620,8 +491,7 @@ Section Three_Color_Triangle_Problem_suf.
       (* mixCut を用いて証明を完了させる *)
       rewrite mix568 mix679 in mix892.
       rewrite mix035 mix346 mix417 in mix892.
-      rewrite mix892.
-      by apply mixCut.
+      rewrite mix892. by apply mixCut.
   Qed.
 
   Theorem Three_Color_Triangle_Problem_suf :
@@ -638,56 +508,7 @@ End Three_Color_Triangle_Problem_suf.
 
 
 Section Three_Color_Triangle_Problem_nec.
-
-  (* Lemma caseN : *)
-  (*   forall n : nat, (exists k : nat, ( n = 0 \/ (3 .^ k <= n /\ n <= 2 * 3 .^ k) \/ (2 * 3 .^ k + 1 <= n /\ n < 3 .^ k.+1))). *)
-  (* Proof. *)
-  (*   elim=> [ | n IHn]. *)
-  (*   - exists 0. *)
-  (*     by left.  *)
-  (*   - destruct IHn as [m]. *)
-  (*     move: H => IHm. *)
-  (*     case IHm => IHm'. *)
-  (*     exists 0; rewrite IHm'. *)
-  (*     right; left. *)
-  (*     by split.  *)
-      
-  (*     have Case1 : n.+1 = 1 \/ n.+1 >= 2. *)
-  (*     by apply (case1 n).   *)
-
-  (*     case Case1 => Case1'. *)
-  (*     + exists 0. *)
-  (*       right; left. *)
-  (*       rewrite Case1'. *)
-  (*       by rewrite /=. *)
-
-  (*     + have Case3m1 : (n.+1 < 3 .^ m.+1) \/ (n.+1 = 3 .^ (m.+1)). *)
-  (*       apply case3m1. *)
-  (*       case IHm' => Range. *)
-  (*       destruct Range as [Range1 Range2]. *)
-  (*       by apply leq23m_3m1. *)
-  (*       by destruct Range as [Range1 Range2]. *)
-
-  (*       case Case3m1 => Case3m1'. *)
-  (*       * exists m. *)
-  (*         move: IHm'; rewrite connect; move=> IHm'. *)
-  (*         rewrite connect. *)
-  (*         destruct IHm' as [IHm'_left IHm'_right]. *)
-  (*         right. *)
-  (*         split. *)
-  (*         by apply leqn_n1. *)
-  (*         by [].  *)
-  (*       * exists (m.+1). *)
-  (*         move: IHm'; rewrite connect; move=> IHm'. *)
-  (*         rewrite connect. *)
-  (*         destruct IHm' as [IHm'_left IHm'_right]. *)
-  (*         right. *)
-  (*         rewrite Case3m1'. *)
-  (*         split. *)
-  (*         by []. *)
-  (*         by apply leq3m_3m1. *)
-  (* Qed. *)
-
+  
   Lemma rangeN : forall n : nat, exists k : nat, (n = 0) \/ (3.^k <= n <= (3.^k).*2) \/ ((3.^k).*2 + 1 <= n < (3.^(k.+1))).
   Proof.
     elim=> [ | n IHn].
@@ -696,37 +517,12 @@ Section Three_Color_Triangle_Problem_nec.
       case IHn.
       + move=> Zero.
         rewrite Zero. exists 0. rewrite /=. right; left. done.
-
-      (* 不等式を書き換えるための補題 *)  
-      + have Short1 : 3 .^ k <= n <= (3 .^ k).*2 <-> (3 .^ k <= n /\ n <= 2 * (3 .^ k)).
-        apply conj.
-        move=> H. apply /andP. by rewrite mul2n.
-        move=> H. apply /andP. by rewrite mul2n in H.
-        
-      + have Long1 : (3 .^ k).*2 + 1 <= n < 3 .^ k.+1 <-> 2 * (3 .^ k) + 1 <= n /\ n < 3 .^ k.+1.
-        apply conj.
-        move=> H. apply /andP. by rewrite mul2n.
-        move=> H. apply /andP. by rewrite mul2n in H.
-      + have Short2 : 3 .^ k <= n.+1 <= (3 .^ k).*2 <-> (3 .^ k <= n.+1 /\ n.+1 <= 2 * (3 .^ k)).
-        apply conj.
-        move=> H. apply /andP. by rewrite mul2n.
-        move=> H. apply /andP. by rewrite mul2n in H.
-        
-      + have Long2 : (3 .^ k).*2 + 1 <= n.+1 < 3 .^ k.+1 <-> 2 * (3 .^ k) + 1 <= n.+1 /\ n.+1 < 3 .^ k.+1.
-        apply conj.
-        move=> H. apply /andP. by rewrite mul2n.
-        move=> H. apply /andP. by rewrite mul2n in H.
-
-      + have Boundary : (n.+1 = 3 .^ k.+1) <-> (n.+1 == 3 .^ k.+1).
-        apply conj => H. by apply /eqP. by apply /eqP.
-
-      (* 証明再開 *)
       (* n.+1 = 1 と n.+1 > 1 で場合分け *)
       + case (case1 n) => [Zero|NotZero].      
         (* n.+1 = 1 のとき *)
         * rewrite Zero. exists 0. right; left. by rewrite /=.
         (* n.+1 > 1 のとき *)
-        * rewrite Short1 Long1 connect. move /andP. move => rangeN.          
+        * rewrite Short1 Long1 connect3m. move /andP. move => rangeN.         
           (* n.+1 = 3 .^ k と n.+1 < 3 .^ k.+1で場合分け *)
           have rangeBoundary : (n.+1 = 3 .^ k.+1) \/ (n.+1 < 3 .^ k.+1).
           move: rangeN. move /andP; move=> [] ranegeN1 rangeN2.
@@ -737,13 +533,10 @@ Section Three_Color_Triangle_Problem_nec.
              apply /andP. apply conj. done.
              rewrite- addnn. rewrite- eql_minus_le_le_plus_l.
              rewrite x_minus_x_is_0. done.
-          ** exists k. rewrite Short2 Long2 connect. right. apply conj.
+          ** exists k. rewrite Short2 Long2 connect3m. right. apply conj.
              move: rangeN. move /andP. move=> [] range1 range2.
              apply leqW. done. done.
   Qed.        
-               
-  (* Lemma caseN' : *)
-  (*   forall (n : nat), ( even n \/ ( odd n /\ exists k : nat, (3 .^ k <= n <= 2 * 3 .^ k) \/ (2 * 3 .^ k + 1 <= n < 3 .^ k.+1))). *)  
 
   (* Lemma Paint_Alternate : *)
   (*   forall y : nat, *)
@@ -1732,7 +1525,7 @@ Qed.
     (* 対偶を用いて示す *)
     apply Contraposition. move=> Notexp3k.
 
-    (* "調和三角形の塗り方が存在しない" <-> "調和三角形が存在しない" *)
+    (* "調和三角形の塗り方が存在しない" <-> "調和三角形が存在しない" を示す *)
     have T :
       ~(forall c:Color, forall f:nat ->Color, Triangle x y n (f x) (f (x+n)) c) <->
       ~ (forall c0 c1 c2 : Color, Triangle x y n c0 c1 c2).
