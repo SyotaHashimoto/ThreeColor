@@ -182,11 +182,6 @@ Proof.
   move /eqP. move=> H1. rewrite H1. done.
 Qed.
 
-Lemma eq_S_lt_P: forall m n : nat, (n.+1 < m) = (n < m.-1).
-Proof.
-  move => m n. apply conv_iff_eql. by rewrite ltn_predRL.
-Qed.
-
 Lemma eq_S_le_lt: forall m n : nat, (m.+1 <= n) = (m < n). 
 Proof.
   move=> m n. apply conv_iff_eql. by apply conv_iff_eql.
@@ -583,3 +578,38 @@ Proof.
   have B: (n <= m./2) = (n.*2 <= m). by rewrite eq_adjoint_double_half_le.
   rewrite- !eq_lele_eq. rewrite A. rewrite B. done. 
 Qed.
+
+Lemma self_plus: forall n:nat, n <= n+n.
+Proof.
+  move=>n. rewrite- eq_le_plus_r. done. 
+Qed.
+
+Lemma self_double: forall n:nat, n <= n.*2.
+Proof.
+  move=>n. rewrite- addnn. apply self_plus.
+Qed.
+
+Lemma self_half: forall n:nat, n./2 <= n.
+Proof.
+  move=>n. rewrite- {2} (half_bit_double n false). simpl. rewrite add0n. 
+  apply imp_mono_half_le. apply self_double. 
+Qed.
+
+(*
+Lemma self_double': forall n:nat, n>1 -> n < n.*2.
+Proof.
+  move=>n H.
+
+Search (_.*2).
+  
+
+Qed.
+
+Lemma self_half_pos: forall n:nat, n>0 -> n./2 < n.
+Proof.
+  move=>n H. rewrite eq_adjoint_half_double_lt. 
+  apply imp_mono_half_le. apply self_double. 
+
+
+Qed.
+*)

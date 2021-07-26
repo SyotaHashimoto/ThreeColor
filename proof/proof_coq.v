@@ -509,7 +509,7 @@ End Three_Color_Triangle_Problem_suf.
 
 Section Three_Color_Triangle_Problem_nec.
   
-  Lemma rangeN : forall n : nat, exists k : nat, (n = 0) \/ (3.^k <= n <= (3.^k).*2) \/ ((3.^k).*2 + 1 <= n < (3.^(k.+1))).
+  Lemma rangeN3 : forall n : nat, exists k : nat, (n = 0) \/ (3.^k <= n <= (3.^k).*2) \/ ((3.^k).*2 + 1 <= n < (3.^(k.+1))).
   Proof.
     elim=> [ | n IHn].
     - exists 0. left. done.
@@ -531,13 +531,32 @@ Section Three_Color_Triangle_Problem_nec.
           (* n.+1 = 3 .^ k のとき *)
           ** exists (k.+1). rewrite rangeN1. right; left.
              apply /andP. apply conj. done.
-             rewrite- addnn. rewrite- eql_minus_le_le_plus_l.
-             rewrite x_minus_x_is_0. done.
+             rewrite- addnn. rewrite- {1} (add0n (3.^k.+1)). rewrite- eq_mono_plus_le_plus. done. 
           ** exists k. rewrite Short2 Long2 connect3m. right. apply conj.
              move: rangeN. move /andP. move=> [] range1 range2.
              apply leqW. done. done.
   Qed.        
 
+  Lemma rangeN4 : forall n : nat, exists k : nat, (n = 0) \/ (n = 3.^k) \/ (3.^k < n <= (3.^k).*2) \/ ((3.^k).*2 + 1 <= n < (3.^(k.+1))).
+  Proof.
+    move=> n.
+    have [k H]: exists k:nat, (n = 0) \/ (3.^k <= n <= (3.^k).*2) \/ ((3.^k).*2 + 1 <= n < (3.^(k.+1))).
+    apply rangeN3. exists k.
+    suff K: ((n = 3 .^ k) \/ (3 .^ k < n <= (3.^k).*2)) <-> (3.^k <= n <= (3.^k).*2).
+    + destruct H. by left. 
+      destruct H. right. apply/or_assoc. left. by apply/K.
+      right. right. right. done.       (* proof end *)
+      (* proof of K *) split.
+    + (* -> of K *)
+      case. move=>L. rewrite- L. rewrite leqnn. rewrite self_double. done.
+      move/andP. move=>[L1 L2]. rewrite L2. rewrite Bool.andb_true_r. by apply ltnW. 
+    + (* <- of K *)
+      move/andP. move=>[L1 L2]. rewrite L2. rewrite Bool.andb_true_r. 
+      rewrite leq_eqVlt in L1. apply Bool.orb_true_iff in L1.
+      destruct L1. move/eqP in H0. rewrite H0. by left. move/ltP in H0. right. by apply/coqnat_lt. 
+  Qed.
+  
+  
   (* Lemma Paint_Alternate : *)
   (*   forall y : nat, *)
   (*     ((forall (x1 : nat), (exists k1, x1 = 2 * k1) -> Cpos x1 y blu) /\ (forall (x2 : nat), (exists k2, x2 = 2 * k2 + 1) -> Cpos x2 y yel)) -> *)
@@ -756,7 +775,7 @@ Section Three_Color_Triangle_Problem_nec.
         rewrite rangetop1 OddI. done.
       + have Color2 : colorYB x n (x + (i + 1)) = yel.
         have OddI1 : odd (i+1) = false.
-        rewrite addn1 OddS. by rewrite OddI.
+        rewrite addn1 oddS. by rewrite OddI.
         rewrite /colorYB. rewrite x_plus_y_minus_x_is_y.
         rewrite rangetop2 OddI1. done.
       + rewrite Color1 Color2 in Cpos3. by rewrite /= in Cpos3.
@@ -767,7 +786,7 @@ Section Three_Color_Triangle_Problem_nec.
         rewrite rangetop1 EvenI. done.
       + have Color2 : colorYB x n (x + (i + 1)) = blu.
         have OddI1 : odd (i+1) = true.
-        rewrite addn1 OddS. by rewrite EvenI.
+        rewrite addn1 oddS. by rewrite EvenI.
         rewrite /colorYB. rewrite x_plus_y_minus_x_is_y.
         rewrite rangetop2 OddI1. done.
       + rewrite Color1 Color2 in Cpos3. by rewrite /= in Cpos3.
@@ -1098,7 +1117,8 @@ Section Three_Color_Triangle_Problem_nec.
       have rangeN1 : ((0 <= n <= n./2) && (true == false)) = false.
       rewrite andbF. done. rewrite rangeN1.
     - have rangeN2 : n./2.+1 <= n <= n.
-      apply /andP. apply conj. apply leq_half2. by rewrite oddN. apply leqnn.
+      apply /andP. apply conj. rewrite eq_adjoint_half_double_lt. rewrite- addnn. 
+      rewrite- eq_S_le_add_r. by apply odd_gt0. done. 
       rewrite rangeN2. by rewrite /=.
   Qed.
 
@@ -1117,9 +1137,9 @@ Section Three_Color_Triangle_Problem_nec.
     - have E: 3 .^ k <= n. by apply ltnW.       
     - have C1: 1+(n./2).*2 = n. rewrite- {2} (odd_double_half n). rewrite B'. done.
     - have C2: (n./2).*2 = n.-1. apply/eqP. rewrite- eq_adjoint_S_P_eq. apply/eqP. done. by apply odd_gt0.
-    - have C3: n-(n./2) = (n./2).+1. apply/eqP. rewrite eq_adjoint_minus_plus_eq. apply/eqP.
+    - have C3: n-(n./2) = (n./2).+1. apply/eqP. rewrite eq_adjoint_minus_plus_eq. apply/eqP.     
       rewrite- addn1. rewrite eq_comm_plus. rewrite- eq_assoc_plus. rewrite addnn. by rewrite eq_comm_plus.
-      apply leq_half1.
+      apply self_half. 
     - have C4: n./2 < 3.^k. by rewrite eq_adjoint_half_double_lt.
     - have C5: n-3.^k <= n./2. rewrite eq_adjoint_minus_plus_le. rewrite eq_comm_plus.
       rewrite- eq_adjoint_minus_plus_le. rewrite C3. done. 
@@ -1247,10 +1267,10 @@ Qed.
       by rewrite- {2 3} (x_plus_y_minus_x_is_y x i). 
     - have H: (3 .^ k <= i <= n - 3 .^ k) = false.
       apply/eqP.
-      rewrite eql_false. rewrite eql_dual_and. rewrite ! eql_dual_le.
+      rewrite eq_false. rewrite eq_dual_and. rewrite ! eq_dual_le.
       apply/orP. left. move: range. move/andP. move=> [A B].
       have H1: (0 < 3.^k) = true. by apply expn3Pos.
-        by rewrite (ceql_S_le_le_P i H1).
+      by rewrite- eq_adjoint_S_P_le in B. 
     - by rewrite H in T.
   Qed.
 
@@ -1270,8 +1290,8 @@ Qed.
     - have T: (colorBYB x n k (x+i) = if 3.^k <= i <= n-(3.^k) then yel else blu).
       rewrite- {2 3} (x_plus_y_minus_x_is_y x i). done. 
     - have H: (3 .^ k <= i <= n - 3 .^ k) = false.
-      apply/eqP.
-      rewrite eql_false. rewrite eql_dual_and. rewrite ! eql_dual_le.
+      apply/eqP.      
+      rewrite eq_false. rewrite eq_dual_and. rewrite ! eq_dual_le.
       apply/orP. right. move: range. move/andP. move=> [A B]. done.
     - by rewrite H in T.
   Qed.
@@ -1284,7 +1304,7 @@ Qed.
     move => k n. move/andP. move=> [rangeN1 rangeN2]. apply conj. 
     - (* first goal *)
       have X1: ((3.^k) <= (3.^k).*2 + 1).
-      rewrite- addnn. rewrite eql_assoc_plus. rewrite- eql_le_plus_l. by apply leq0n.
+      rewrite- addnn. rewrite eq_assoc_plus. rewrite- eq_le_plus_l. by apply leq0n.
       by apply (trans_lelele X1).
     - (* second goal *)
       have X2: ((3.^k).*2 <= n). 
@@ -1292,13 +1312,12 @@ Qed.
       apply conj. done. 
     - (* third goal *)
       have X3: (0 < 3.^k) = true. by apply expn3Pos.
-      rewrite- (ceql_S_le_le_P (n - (3 .^ k).*2) X3). 
-      rewrite (ceql_minus_lt_lt_plus_l (3 .^ k) X2).
-      rewrite expnS in rangeN2.
+      rewrite- (eq_adjoint_S_P_le (n - (3 .^ k).*2)).
+      rewrite eq_adjoint_minus_plus_lt.
+      rewrite expnS in rangeN2.        
       rewrite (mulnDr' 1 2 (3.^k)) in rangeN2.
-      rewrite mul2n in rangeN2. 
-      rewrite mul1n in rangeN2.
-      rewrite eql_comm_plus. done. 
+      rewrite mul2n in rangeN2.
+      rewrite mul1n in rangeN2. done. done. done. 
   Qed.
 
   (* (* ある段が全て赤ならその下はずっと赤 (Red_N と似ているが，x の範囲制限つき) *)   *)
@@ -1370,18 +1389,18 @@ Qed.
         ++ rewrite- colB. by apply C_paint. 
       + have CposY: Cpos (x+(3.^k)+i) y yel.
         ++ have A5: 3.^k <= (3.^k)+i <= n-(3.^k).
-           apply /andP. apply conj. by rewrite- eql_le_plus_l.
-           rewrite- (ceql_plus_le_le_minus_r ((3.^k)+i) A1).
-           rewrite- eql_assoc_plus. rewrite addnn.
-             by rewrite (ceql_plus_le_le_minus_r i A2).
+           apply /andP. apply conj. by rewrite- eq_le_plus_l.
+           rewrite- (eq_adjoint_plus_minus_le ((3.^k)+i) A1).
+           rewrite eq_comm_plus. rewrite- eq_assoc_plus. rewrite addnn.
+           rewrite eq_comm_plus. rewrite eq_adjoint_plus_minus_le. done. done. 
         ++ have colY: colorBYB x n k (x+(3.^k)+i) = yel.
-           rewrite eql_assoc_plus. apply (lemBYB2 x y n k ((3.^k)+i) A5).
+           rewrite eq_assoc_plus. apply (lemBYB2 x y n k ((3.^k)+i) A5).
         ++ rewrite- colY. by apply C_paint. 
       + have CposR: Cpos (x+i) (y+(3.^k)) red.
         have mixR: red = mix blu yel. done. 
         rewrite mixR.
         apply Bottom_color_of_triangle. done. done.
-        rewrite eql_assoc_plus. rewrite (eql_comm_plus i (3.^k)). rewrite- eql_assoc_plus. done.
+        rewrite eq_assoc_plus. rewrite (eq_comm_plus i (3.^k)). rewrite- eq_assoc_plus. done.
         done.
       + (* second part *)
         move=> i. move /andP. move => [C D].      
@@ -1389,31 +1408,28 @@ Qed.
         apply /andP. apply conj. done.
         apply (trans_lelele D), leq_subr.
       + have A4: 3.^k <= i <= n-(3.^k).
-        apply/andP. apply conj. done. done. 
+        apply/andP. apply conj. done. done.
       + have CposY: Cpos (x+i) y yel. 
         ++ have colY: colorBYB x n k (x+i) = yel. apply (lemBYB2 x y n k i A4).
         ++ rewrite- colY. by apply C_paint. 
       + have CposB: Cpos (x+(3.^k)+i) y blu.
+        ++ have X: n < 3 .^ k.+1. move: rangeN. move/andP. move=>[rangeN1 rangeN2]. done.
+        ++ have Y: i <= n - 3 .^ k. done.
+        ++ have Z: (3.^k) + i <= n. rewrite eq_comm_plus. rewrite eq_adjoint_plus_minus_le. done. done. 
         ++ have A5: n - 3 .^ k < 3 .^ k + i <= n. 
            apply /andP. apply conj.
-           rewrite (ceql_minus_lt_lt_plus_r (3.^k+i) A1).
-           rewrite (eql_comm_plus (3.^k) i).
-           have X: n < 3 .^ k.+1. move: rangeN. move/andP. move=>[rangeN1 rangeN2]. done.
-           apply (trans_ltlelt X). rewrite expnS. 
-           rewrite (mulnDr' 1 2 (3.^k)). 
-           rewrite mul1n. rewrite mul2n. rewrite eql_assoc_plus. rewrite addnn.
-           rewrite- (eql_mono_plus_le_plus (3.^k) i). done. 
-           have Y: i <= n - 3 .^ k. done.
-           rewrite- (ceql_plus_le_le_minus_l i A1) in Y.
-           rewrite eql_comm_plus. done.
+           rewrite eq_adjoint_minus_plus_lt. 
+           rewrite (eq_comm_plus (3.^k) i). rewrite eq_assoc_plus. rewrite addnn. 
+           apply (trans_lelele X). rewrite expnS. rewrite (mulnDr' 1 2 (3.^k)). rewrite mul2n. rewrite mul1n.
+           rewrite- eq_mono_plus_le_plus. done. done. done. 
         ++ have colB: colorBYB x n k (x+(3.^k)+i) = blu.
-           rewrite eql_assoc_plus. apply (lemBYB3 x y n k ((3.^k)+i)). done. 
+           rewrite eq_assoc_plus. apply (lemBYB3 x y n k ((3.^k)+i)). done. 
         ++ rewrite- colB. by apply C_paint.            
       + have CposR: Cpos (x+i) (y+(3.^k)) red.
         have mixR: red = mix yel blu. done. 
         rewrite mixR.
         apply Bottom_color_of_triangle. done. done. 
-        rewrite eql_assoc_plus. rewrite (eql_comm_plus i (3.^k)). rewrite- eql_assoc_plus. done.
+        rewrite eq_assoc_plus. rewrite (eq_comm_plus i (3.^k)). rewrite- eq_assoc_plus. done.
         done.
   Qed.
   
@@ -1436,13 +1452,13 @@ Qed.
         apply fromA1. done.
       + have CposR2: Cpos (x+i) (y+(3.^k).*2) red.
       + have mixR: red = mix red red. done.
-      + rewrite mixR. rewrite- addnn. rewrite- (eql_assoc_plus y (3.^k) (3.^k)).
-        apply Bottom_color_of_triangle. done. done. rewrite (eql_assoc_plus x i (3.^k)). apply fromA2.
-        apply /andP. rewrite- (eql_le_plus_r (3.^k) i). apply conj. done.
-        rewrite- (ceql_plus_le_le_minus_l (i+3.^k) A1).
-        rewrite eql_assoc_plus. rewrite addnn.
+      + rewrite mixR. rewrite- addnn. rewrite- (eq_assoc_plus y (3.^k) (3.^k)).
+        apply Bottom_color_of_triangle. done. done. rewrite (eq_assoc_plus x i (3.^k)). apply fromA2.
+        apply /andP. rewrite- (eq_le_plus_r (3.^k) i). apply conj. done.
+        rewrite- (eq_adjoint_plus_minus_le (i+3.^k) A1).
+        rewrite eq_assoc_plus. rewrite addnn.
         move:rangeI. move/andP. move =>[P Q].
-          by rewrite (ceql_plus_le_le_minus_l i A2).
+          by rewrite (eq_adjoint_plus_minus_le i A2).
           done.
   Qed.
   
@@ -1460,7 +1476,7 @@ Qed.
         move=> i rangeI. apply C_paint.
       + have fromRR: Cpos x (y + (3 .^ k).*2 + (n - (3 .^ k).*2)) red.
         apply (AllRed x (y+(3.^k).*2) (n-((3.^k).*2))). done. 
-        rewrite eql_assoc_plus in fromRR.
+        rewrite eq_assoc_plus in fromRR.
         rewrite (addnBA ((3.^k).*2) rangeN1) in fromRR.
         rewrite x_plus_y_minus_x_is_y in fromRR. done. 
   Qed.
@@ -1485,8 +1501,8 @@ Qed.
         apply (lemBYB1 x y). done. 
       + have colB2: colorBYB x n k (x+n) = blu.
         apply (lemBYB3 x y). apply/andP. apply conj. 
-        rewrite (ceql_minus_lt_lt_plus_l n A1).
-        rewrite- (eql_lt_plus_r n (3.^k)). apply expn3Pos. done. 
+        rewrite (eq_adjoint_minus_plus_lt n A1).
+        rewrite- eq_lt_plus_l. apply expn3Pos. done. 
       + have triBBR: Triangle x y n blu blu red.
         rewrite- {1} colB1. rewrite- {1} colB2. done.
       + have CposB1: Cpos x y blu.
@@ -1503,15 +1519,19 @@ Qed.
       ~(exists k :nat, n = 3 .^ k) -> ~(forall c:Color, forall f:nat -> Color, Triangle x y n (f x) (f (x+n)) c).
   Proof.
     move=> n x y NotZeroN_hyp Notexp3k.
-    case (rangeN n) => k rangeN; case rangeN => [ZeroN|NotZeroN].
+    case (rangeN4 n) => k rangeN. case rangeN => [ZeroN|NotZeroN].
     - rewrite ZeroN in NotZeroN_hyp. done.
     - case (odd_or_even n) => [OddN|EvenN].
-      + case NotZeroN => [Short|Long].
+      + case NotZeroN => [Is3k|Not3k]. have Isexp3k: exists k:nat,n=3.^k. by exists k. done. 
+      + case Not3k => [Short|Long].
+        * move:(Short). move/andP. case=>[Short1 Short2]. 
         * apply (Three_Color_Triangle_Problem_nec_oddA x y n k).
-          apply /andP. apply conj. done. apply /eqP. done.
+          rewrite Short2. rewrite OddN. 
+          apply /andP. rewrite Short1. done. 
         * apply (Three_Color_Triangle_Problem_nec_oddB x y n k). done.
       + apply (Three_Color_Triangle_Problem_nec_even).
-        apply /andP. apply conj. done. apply /eqP. done.
+        (* Look at this *) rewrite NotZeroN_hyp.         
+        (* Look at this *) rewrite EvenN. done. 
  Qed.
     
 
