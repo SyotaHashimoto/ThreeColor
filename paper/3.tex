@@ -1,4 +1,30 @@
 % 三角形三色問題の証明の Coq の実装の準備
+\def\colorYBBY{\textit{colorYBBY}}
+\def\Color{\textit{Color}}
+\def\mix{\textit{mix}}
+\def\red{\textit{red}}
+\def\blu{\textit{blu}}
+\def\yel{\textit{yel}}
+\def\Cpos{\textit{Cpos}}
+
+------------------
+比較
+
+$colorYBBY$ $\colorYBBY$
+
+$Color$ $\Color$
+
+$mix$ $\mix$
+
+$red$ $\red$
+
+$blu$ $\blu$
+
+$yel$ $\yel$
+
+$Cpos$ $\Cpos$
+------------------
+
 \section{ Coq に実装するための準備}
 % 3.1 定義
 % 関数 mix・記号の説明
@@ -11,13 +37,13 @@ Coqは三角形三色問題のような幾何的な内容をそのまま実装�
 \begin{dfn}[$Color$]
   マスに塗る色の集合を次のように定義する．
   \[
-  Color \eqDef \{red, yel, blu\}
+  \Color \eqDef \{red, yel, blu\}
   \]
   このとき，$red$はred，$yel$はyellow，$blu$はblueを表している．
   以降，$red$を$r$，$yel$は$y$，$blu$は$b$として略記することもある．
 \end{dfn}
 \begin{dfn}[$mix$]
-  $mix : (Color \times Color ) \to Color$ を以下で定義する．
+  $\mix : (Color \times Color ) \to Color$ を以下で定義する．
   \[
   \begin{tabular}{ccccc}
     $(r,r) \Pto r,$ & $(r,y) \Pto b,$ & $(r,b) \Pto y,$ \\
@@ -45,10 +71,10 @@ Coqは三角形三色問題のような幾何的な内容をそのまま実装�
   つまり，$z-x$は基準となるマスから離れているマス数を表している．
   $colorYB$は最上段のマスを交互に塗っていることを$z-x$の偶奇によって再現している．
 \end{dfn}
-\begin{dfn}[$colorYBBY$]
-  $colorYBBY : (\N \times \N \times \N) \to Color$ を以下で定義する．
+\begin{dfn}[$\colorYBBY$]
+  $\colorYBBY : (\N \times \N \times \N) \to \Color$ を以下で定義する．
 
-  $colorYBBY(x,n,z) \eqDef$
+  $\colorYBBY(x,n,z) \eqDef$
   \[
   \begin{cases}
     yel & (0 \leq z-x \leq n/2 \land z-x\text{が偶数}) \\
