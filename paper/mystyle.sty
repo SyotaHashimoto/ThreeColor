@@ -32,14 +32,15 @@
 \def\alart#1{{\color{red} #1}}
 
 %% Environments
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
-\newtheorem{corollary}{Corollary}
-\newtheorem{example}{Example}
+\newtheorem{dfn}{定義}[section]
+\newtheorem{thm}[dfn]{定理}
+\newtheorem{lem}[dfn]{補題}
+\newtheorem{pro}{命題}
+\newtheorem{axm}{公理}
+\newtheorem{exm}[dfn]{例}
 \newtheorem{remark}{Remark}
 \newtheorem{caution}{Caution}
+\renewcommand{\proofname}{証明}
 %\renewcommand{\thedefinition}{}
 %\renewcommand{\theexample}{}
 %\renewcommand{\thetheorem}{}

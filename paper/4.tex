@@ -1,0 +1,38 @@
+% 三角形三色問題の概要（数学）
+\section{Coqにおける三角形三色問題}
+
+% 4.1 三角形三色問題の証明の Coq の実装(=>)
+\subsection{十分条件}
+補題\ref{lem:tri_suf}をCoqに実装するために論理式の形にしたものが次の定理\ref{thm:tri_suf}である．
+\begin{thm} \label{thm:tri_suf}
+  $\forall k, n, x, y \in \N, c_0 c_1 c_2 \in Color, n = 3 ^ k \Imp WellColoredTriangle(x,y,n,c_0,c_1,c_2)$.
+\end{thm}
+\begin{proof}
+  $k$に関する数学的帰納法を用いて証明する．
+  $k=0$のときは$n=1$となるので明らかに成立する．
+  次に$k$のとき成立すると仮定して$k+1$のときも成立することを示す．
+  まず最初に，\ref{fig:suf_steps}における10色の$c^x_y$が存在することを
+  公理\ref{axm:exists}より示す．
+  例えば，基準となるマス$(x,y)$から$3^k$マス右にあるマス$(x+3^k,y)$に色が存在していることを示すときには，\verb|exists| \verb|c| \verb|:| \verb|Color,| \verb|Cpos| \verb|(x+3^k)| \verb|y| \verb|c.| として新たにサブゴールをつくる．
+  これは \verb|by| \verb|apply| \verb|C_exists.| をすればよい．
+  以降，証明して得られた命題にあるそれぞれのマスに存在する色を図\ref{fig:suf_steps}のように名前をつけておく．
+  \begin{figure}[h]
+    \centering
+    \input{suf_steps}
+    \caption{三色三角形（$n=3^{k'+1}$のとき）}
+    \label{fig:suf_steps}
+  \end{figure} 
+  次に$6$個の$3^k$段の調和三角形三角形があることを示す．
+  例えば，図\ref{fig:suf_steps}における$3$つの端点$\left(c_{0},c_{3},c_{5}\right)$をもつ$3^k$段の逆三角形は，\verb|WellColoredTriangle| \verb|x| \verb|y| \verb|(3.^k)| \verb|c0| \verb|c3| \verb|c5.| として新たにサブゴールをつくる．
+  これは$k$に関する数学的帰納法の仮定(\verb|IHk|)からすぐに示せるので \verb|by| \verb|apply| \verb|IHk.| をすればよい．
+  すると，ここまでに証明した$10$個の$Cpos$に関する命題と$6$個の$3^k$段の調和三角形三角形に関する命題から命題\verb|mix| \verb|c0| \verb|c1| \verb|=| \verb|mix| \verb|(mix| \verb|(mix| \verb|c0| \verb|c3)| \verb|(mix| \verb|c3| \verb|c4))| \verb|(mix| \verb|(mix| \verb|c3| \verb|c4)| \verb|(mix| \verb|c4| \verb|c1))| にサブゴールを書き換える．
+  最後に$mixCut$を適用させることで証明を終了させる．
+\end{proof}
+
+% 4.2 三角形三色問題の証明の Coq の実装(<=)
+% n が偶数の場合，n が奇数で短い場合，n が奇数で長い場合
+% $n$が偶数のとき
+% $n$が奇数 かつ $3^{k'} < n \leq 2 \cdot 3^{k'}$のとき
+% $n$が奇数 かつ $2 \cdot 3^{k'} + 1 \leq n < 3^{k'+1}$のとき
+
+\subsection{必要条件}

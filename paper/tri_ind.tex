@@ -1,0 +1,48 @@
+% menu_ind
+\begin{tikzpicture}[scale=0.35]
+  %0段目
+  \draw (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[above=0.05cm](0,0){$d_0$};
+  %1,2段目
+  \node[xshift={-1.5*8.75},yshift={1.5*8.75*sqrt(3)},above=0.05cm](0,0){$\ddots$};
+  \node[xshift={1.5*8.75},yshift={1.5*8.75*sqrt(3)},above=0.05cm](0,0){$\iddots$};
+  %3段目
+  \draw[xshift={-25*3},yshift={25*sqrt(3)*3}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={-3*8.75},yshift={3*8.75*sqrt(3)},above=0.05cm](0,0){$c_0$};
+  \node[yshift={3*8.75*sqrt(3)},above=0.05cm](0,0){$\cdots$};
+  \draw[xshift={25*3},yshift={25*sqrt(3)*3}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={3*8.75},yshift={3*8.75*sqrt(3)},above=0.05cm](0,0){$c_{3^{k'}}$};
+  %4,5段目
+  \node[xshift={-4.5*8.75},yshift={4.5*8.75*sqrt(3)},above=0.05cm](0,0){$\ddots$};
+  \node[xshift={-1.5*8.75},yshift={4.5*8.75*sqrt(3)},above=0.05cm](0,0){$\iddots$};
+  \node[xshift={1.5*8.75},yshift={4.5*8.75*sqrt(3)},above=0.05cm](0,0){$\ddots$};
+  \node[xshift={4.5*8.75},yshift={4.5*8.75*sqrt(3)},above=0.05cm](0,0){$\iddots$};
+  %6段目
+  \draw[xshift={-25*6},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={-6*8.75},yshift={6*8.75*sqrt(3)},above=0.05cm](0,0){$b_0$};
+  \node[xshift={-3*8.75},yshift={6*8.75*sqrt(3)},above=0.05cm](0,0){$\cdots$};
+  \draw[yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[yshift={6*8.75*sqrt(3)},above=0.05cm](0,0){$b_{3^{k'}}$};
+   \node[xshift={3*8.75},yshift={6*8.75*sqrt(3)},above=0.05cm](0,0){$\cdots$};
+  \draw[xshift={25*6},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={6*8.75},yshift={6*8.75*sqrt(3)},above=0.05cm](0,0){\footnotesize{$b_{2 \cdot 3^{k'}}$}};
+  %7,8段目
+  \node[xshift={-7.5*8.75},yshift={7.5*8.75*sqrt(3)},above=0.05cm](0,0){$\ddots$};
+  \node[xshift={-4.5*8.75},yshift={7.5*8.75*sqrt(3)},above=0.05cm](0,0){$\iddots$};
+  \node[xshift={-1.5*8.75},yshift={7.5*8.75*sqrt(3)},above=0.05cm](0,0){$\ddots$};
+  \node[xshift={1.5*8.75},yshift={7.5*8.75*sqrt(3)},above=0.05cm](0,0){$\iddots$};
+  \node[xshift={4.5*8.75},yshift={7.5*8.75*sqrt(3)},above=0.05cm](0,0){$\ddots$};
+  \node[xshift={7.5*8.75},yshift={7.5*8.75*sqrt(3)},above=0.05cm](0,0){$\iddots$};
+  %9段目
+  \draw[xshift={-25*9},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={-9*8.75},yshift={9*8.75*sqrt(3)},above=0.05cm](0,0){$a_0$};
+  \node[xshift={-6*8.75},yshift={9*8.75*sqrt(3)},above=0.05cm](0,0){$\cdots$};
+  \draw[xshift={-25*3},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={-3*8.75},yshift={9*8.75*sqrt(3)},above=0.05cm](0,0){$a_{3^{k'}}$};
+  \node[yshift={9*8.75*sqrt(3)},above=0.05cm](0,0){$\cdots$};
+  \draw[xshift={25*3},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={3*8.75},yshift={9*8.75*sqrt(3)},above=0.05cm](0,0){\footnotesize{$a_{2 \cdot 3^{k'}}$}};
+  \node[xshift={6*8.75},yshift={9*8.75*sqrt(3)},above=0.05cm](0,0){$\cdots$};
+  \draw[xshift={25*9},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={9*8.75},yshift={9*8.75*sqrt(3)},above=0.05cm](0,0){\footnotesize{$a_{3^{k'+1}}$}};
+\end{tikzpicture}
