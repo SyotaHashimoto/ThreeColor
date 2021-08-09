@@ -1512,7 +1512,6 @@ Qed.
       + have mixRBB: red = mix blu blu.
         apply triBBR. apply conj. done. done. done.         
   Qed.
-
   
   Lemma Three_Color_Triangle_Problem_nec' :
     forall (n x y : nat), n > 0 ->

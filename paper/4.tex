@@ -174,12 +174,23 @@ $n$が奇数 かつ$3^{k'} < n \leq 2 \cdot 3^{k}$のときは補題\ref{lem:sho
   $(3^k < n \leq (3^k\cdot2) \land odd n = true) \Imp$
   $\lnot(\forall c \in \Color, \forall f:\N \to \Color, \WCT(x,y,n,f(x),f(x+n), c).$
 \end{lem}
+\begin{proof}
+  公理\ref{axm:paint}より$f=\colorYBBY$とすると$\Cpos(x,y,\colorYBBY(x,n,x))$，$\Cpos(x,n,\colorYBBY$ $(x,n,x+n))$．
+  このとき，$odd(n)=true$であるから$\colorYBBY(x,n,x)=\colorYBBY(x,n,x+n)$．
+  公理\ref{axm:exists}より$\Cpos(x,y+n,c)$となる$c\in\Color$が存在するので，
+  存在するこの色に$c$と名前をつける．
+  すると，$odd(n)=true$であるから$\colorYBBY(x,n,x)=\colorYBBY(x,n,x+n)$である．
+  さらに，定理\ref{thm:tri_suf}より$\WCT(x,y,n,\colorYBBY(x,n,x),$ $\colorYBBY$ $(x,n,x+n),c)$であるから$c=\mix(\colorYBBY(x,n,x),$ $\colorYBBY$ $(x,n,x+n))$．
+  よって，$\colorYBBY(x,n,x)=\yel$であるから$c=\mix(\yel,\yel)=\yel$．
+  一方で，補題\ref{lem:shortoddC}より$c=\red$となるので補題\ref{lem:falseColor}より矛盾が導ける．
+\end{proof}
+
 
 \subsubsection{$n$が奇数 かつ $2 \cdot 3^{k'} + 1 \leq n < 3^{k+1}$}
 $n$が奇数 かつ$2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$のときは補題\ref{lem:longoddA}，\ref{lem:longoddB}，\ref{lem:longoddC}を証明してから，補題\ref{lem:longodd}を証明して矛盾することを示す．
 \begin{lem}[\LongOddA] \label{lem:longoddA}
   $\forall k,n,x,y \in \N,$
-  $(3.^k\cdot2 + 1 \leq n < 3^{k+1}) \Imp$
+  $(3^k\cdot2 + 1 \leq n < 3^{k+1}) \Imp$
   $(\forall x_1,y_1 \in \N, \forall c_0,c_1,c_2 \in \Color, \WCT(x_1,y_1,3^k,c_0,c_1,c_2)) \Imp$
   $(\forall i \in \N,(0 <= i <= n \Imp Cpos(x+i,y,\colorBYB(x,n,k,x+i)))) \Imp$ 
       $($
@@ -188,6 +199,23 @@ $n$が奇数 かつ$2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$のときは補題\ref{le
         $(\forall i \in \N,(3^k <= i <= n - 3^k \Imp Cpos(x+i,y+3^k,\red)))$
       $)$.
 \end{lem}
+仮定より任意に$i$をとると$0$ $\leq$ $i$ $\leq$ $n-3^k$であるから，
+  $0 \leq i \leq n$，$0 \leq i+3^k \leq n$を満たすので，
+  $\Cpos(x+i,y,\colorYBBY(x,n,x+i))$，$\Cpos(x+i+3^k,y,\colorYBBY(x,n,x+i+3^k))$が導ける．
+  公理\ref{axm:exists}より$\Cpos(x+i,y+3^k,c)$となる$c\in\Color$が存在するので，
+  存在するこの色に$c$と名前をつける．
+  すると，仮定より$\WCT(x,y,n,\colorYBBY(x,n,x+i),$ $\colorYBBY(x,n,x+i+3^k),c)$だから$c=\mix(\colorYBBY(x,n,x+i),\colorYBBY(x,n,x+i+3^k))$が成立する．
+  \begin{itemize}
+  \item
+    $i$が偶数のとき \\
+    $\colorYBBY$の定義より，$\colorYBBY(x,n,x+i)=\yel$，$\colorYBBY(x,n,x+i+3^k)=\yel$．
+    よって，$\colorYB$の定義より，$c=\yel=\colorYB(x,n-3^k,x+i)$
+  \item
+    $i$が奇数のとき \\
+    $\colorYBBY$の定義より，$\colorYB(x,n,x+i)=\blu$，$\colorYB(x,n,x+i+3^k)=\blu$であるから$c=\blu$．
+    よって，$\colorYB$の定義より，$c=\blu=\colorYB(x,n-3^k,x+i)$
+  \end{itemize}
+  以上より，$i$の遇奇にかかわらず$\colorYBBY(x,n,x+i)=\colorYB(x,n-3^k,x+i)$となるので$\Cpos(x+i,y+3^k,\colorYB(x,n-3^k,x+i))$．
 \begin{lem}[\LongOddB] \label{lem:longoddB}
   $\forall k,n,x,y \in \N,$
   $(3.^k\cdot2 + 1 \leq n < 3^{k+1}) \Imp$

@@ -1,20 +1,20 @@
-% 3^{k'+1} 段の三角形
+% 3^{k+1} 段の三角形
 \begin{tikzpicture}
   {\footnotesize{
       % 3^(k+1)段目
-      \node (a0) {$c^{0}_{3^{k'+1}}$};
+      \node (a0) {$c^{0}_{3^{k+1}}$};
       % 2*3^k段目
-      \node[above left=0.2cm of a0] (b0) {$c^{0}_{2\cdot3^{k'}}$};
-      \node[above right=0.2cm of a0] (b1) {$c^{3^{k'}}_{2\cdot3^{k'}}$};
+      \node[above left=0.2cm of a0] (b0) {$c^{0}_{2\cdot3^{k}}$};
+      \node[above right=0.2cm of a0] (b1) {$c^{3^{k}}_{2\cdot3^{k}}$};
       % 3^k段目
-      \node[above left=0.25cm of b0] (c0) {$c^{0}_{3^{k'}}$};
-      \node[above right=0.25cm of b0] (c1) {$c^{3^{k'}}_{3^{k'}}$};
-      \node[above right=0.1cm of b1] (c2) {$c^{2\cdot3^{k'}}_{3^{k'}}$};
+      \node[above left=0.25cm of b0] (c0) {$c^{0}_{3^{k}}$};
+      \node[above right=0.25cm of b0] (c1) {$c^{3^{k}}_{3^{k}}$};
+      \node[above right=0.1cm of b1] (c2) {$c^{2\cdot3^{k}}_{3^{k}}$};
       % 0段目
       \node[above left=0.3cm of c0] (d0) {$c^{0}_{0}$};
-      \node[above right=0.3cm of c0] (d1) {$c^{3^{k'}}_{0}$};
-      \node[above left=0.1cm of c2] (d2) {$c^{2\cdot3^{k'}}_{0}$};
-      \node[above right=0.1cm of c2] (d3) {$c^{3^{k'+1}}_{0}$};
+      \node[above right=0.3cm of c0] (d1) {$c^{3^{k}}_{0}$};
+      \node[above left=0.1cm of c2] (d2) {$c^{2\cdot3^{k}}_{0}$};
+      \node[above right=0.1cm of c2] (d3) {$c^{3^{k+1}}_{0}$};
       % 点線 [3^(k+1)段 〜 2*3^k 段]
       \node[blue] at ($(a0)!.5!(b0)$) {$\ddots$};
       \node[blue] at ($(b0)!.5!(b1)$) {$\cdots$};
