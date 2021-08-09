@@ -1,49 +1,23 @@
 % 三角形三色問題の証明の Coq の実装の準備
-\def\colorYBBY{\textit{colorYBBY}}
-\def\Color{\textit{Color}}
-\def\mix{\textit{mix}}
-\def\red{\textit{red}}
-\def\blu{\textit{blu}}
-\def\yel{\textit{yel}}
-\def\Cpos{\textit{Cpos}}
-
-------------------
-比較
-
-$colorYBBY$ $\colorYBBY$
-
-$Color$ $\Color$
-
-$mix$ $\mix$
-
-$red$ $\red$
-
-$blu$ $\blu$
-
-$yel$ $\yel$
-
-$Cpos$ $\Cpos$
-------------------
-
 \section{ Coq に実装するための準備}
 % 3.1 定義
-% 関数 mix・記号の説明
+% 関数 \mix・記号の説明
 % WellColoredTriangle x y n c0 c1 c2 :=
-% Cpos x y c0 /\ Cpos (x+n) y c1 /\ Cpos x (y+n) c2 -> Cconf c0 c1 c2
+% Cpos x y c0 /\ Cpos (x+n) y c1 /\ Cpos x (y+n) c2 -> c2 = \mix c0 c1
 \subsection{定義}
 Coqは三角形三色問題のような幾何的な内容をそのまま実装することができない．
 そのため，三角形三色問題を実装するためには問題やその解答（証明）を論理式になおす必要がある．
 ここでは実装する際に用いた定義や公理について述べる．
-\begin{dfn}[$Color$]
+\begin{dfn}[$\Color$]
   マスに塗る色の集合を次のように定義する．
   \[
-  \Color \eqDef \{red, yel, blu\}
+  \Color \eqDef \{\red, \yel, \blu\}
   \]
-  このとき，$red$はred，$yel$はyellow，$blu$はblueを表している．
-  以降，$red$を$r$，$yel$は$y$，$blu$は$b$として略記することもある．
+  このとき，$\red$はred，$\yel$はyellow，$\blu$はblueを表している．
+  以降，$\red$を$r$，$\yel$は$y$，$\blu$は$b$として略記することもある．
 \end{dfn}
-\begin{dfn}[$mix$]
-  $\mix : (Color \times Color ) \to Color$ を以下で定義する．
+\begin{dfn}[$\mix$]
+  $\mix : (\Color \times \Color ) \to \Color$ を以下で定義する．
   \[
   \begin{tabular}{ccccc}
     $(r,r) \Pto r,$ & $(r,y) \Pto b,$ & $(r,b) \Pto y,$ \\
@@ -51,21 +25,21 @@ Coqは三角形三色問題のような幾何的な内容をそのまま実装�
     $(b,r) \Pto y,$ & $(b,y) \Pto r,$ & $(b,b) \Pto b.$ \\
   \end{tabular}
   \]
-  演算 $mix$ は規則$\ref{rul:1}$，$\ref{rul:2}$を再現するための関数である．
+  演算 $\mix$ は塗り方の規則を再現するための関数である．
 引数となる$2$色が同じ場合は同じ色を返し，異なる場合は$2$色とも異なる第三の色を返す関数である．
 \end{dfn}
-\begin{dfn}[$colorYB$]
-  $colorYB : (\N \times \N \times \N) \to Color$ を以下で定義する．
+\begin{dfn}[$\colorYB$]
+  $\colorYB : (\N \times \N \times \N) \to \Color$ を以下で定義する．
 
-  $colorYB(x,n,z) \eqDef$
+  $\colorYB (x,n,z) \eqDef$
   \[
   \begin{cases}
-    yel & (0 \leq z-x \leq n \land z-x\text{が奇数}) \\
-    blu & (0 \leq z-x \leq n \land z-x\text{が偶数}) \\
-    blu & (\text{otherwises})
+    \yel & (0 \leq z-x \leq n \land z-x\text{が奇数}) \\
+    \blu & (0 \leq z-x \leq n \land z-x\text{が偶数}) \\
+    \blu & (\text{otherwises})
   \end{cases}
   \]
-  演算$colorYB$は補題$\ref{lem:tri_nec}$の証明において$n$が偶数のときの最上段のマスの塗り方を表した関数である．
+  演算$\colorYB$は補題$\ref{lem:tri_nec}$の証明において$n$が偶数のときの最上段のマスの塗り方を表した関数である．
   この関数は一番左端にあるマスを基準として逆三角形の一辺の長さ$n$まで
   変数$z$の値を変化させて最上段のマスの場所をすべて表している．
   つまり，$z-x$は基準となるマスから離れているマス数を表している．
@@ -77,77 +51,77 @@ Coqは三角形三色問題のような幾何的な内容をそのまま実装�
   $\colorYBBY(x,n,z) \eqDef$
   \[
   \begin{cases}
-    yel & (0 \leq z-x \leq n/2 \land z-x\text{が偶数}) \\
-    yel & (n/2+1 \leq z-x \leq n \land z-x\text{が奇数}) \\
-    blu & (0 \leq z-x \leq n/2 \land z-x\text{が奇数}) \\
-    blu & (n/2+1 \leq z-x \leq n \land z-x\text{が偶数}) \\
-    yel & (\text{otherwises})
+    \yel & (0 \leq z-x \leq n/2 \land z-x\text{が偶数}) \\
+    \yel & (n/2+1 \leq z-x \leq n \land z-x\text{が奇数}) \\
+    \blu & (0 \leq z-x \leq n/2 \land z-x\text{が奇数}) \\
+    \blu & (n/2+1 \leq z-x \leq n \land z-x\text{が偶数}) \\
+    \yel & (\text{otherwises})
   \end{cases}
   \]
-  演算$colorYBBY$は補題$\ref{lem:tri_nec}$の証明において$n$が奇数かつ$3^{k'} < n \leq 2 \cdot 3^{k'}$のときの最上段のマスの塗り方を表した関数である．
+  演算$\colorYBBY$は補題$\ref{lem:tri_nec}$の証明において$n$が奇数かつ$3^{k'} < n \leq 2 \cdot 3^{k'}$のときの最上段のマスの塗り方を表した関数である．
   この関数は一番左端にあるマスを基準として逆三角形の一辺の長さ$n$または$(n/2)$まで変数$z$の値を変化させて最上段のマスの場所をすべて表している．
-  $colorYBBY$は外側から内側に向かって対称的に最上段のマスを交互に塗っていることをこれも$z-x$の偶奇によって再現している．
+  $\colorYBBY$は外側から内側に向かって対称的に最上段のマスを交互に塗っていることをこれも$z-x$の偶奇によって再現している．
 \end{dfn}
-\begin{dfn}[$colorBYB$]
-  $colorBYB : (\N \times \N \times \N \times \N ) \to Color$ を以下で定義する．
+\begin{dfn}[$\colorBYB$]
+  $\colorBYB : (\N \times \N \times \N \times \N ) \to \Color$ を以下で定義する．
 
-  $colorBYB(x,n,k,z) \eqDef$
+  $\colorBYB(x,n,k,z) \eqDef$
   \[
   \begin{cases}
-    yel & (3^k \leq z-x \leq n-3^k) \\
-    blu & (\text{otherwises})
+    \yel & (3^k \leq z-x \leq n-3^k) \\
+    \blu & (\text{otherwises})
   \end{cases}
   \]
-  演算$colorBYB$は補題$\ref{lem:tri_nec}$の証明において$n$が奇数かつ$2 \cdot 3^{k'} + 1 \leq n < 3^{k'+1}$のときの最上段のマスの塗り方を表した関数である．
-  $colorYBBY$は基準となるマスから$3^k$から$n-3^k$まで右のマスの色を黄色で塗り，
+  演算$\colorBYB$は補題$\ref{lem:tri_nec}$の証明において$n$が奇数かつ$2 \cdot 3^{k'} + 1 \leq n < 3^{k'+1}$のときの最上段のマスの塗り方を表した関数である．
+  $\colorYBBY$は基準となるマスから$3^k$から$n-3^k$まで右のマスの色を黄色で塗り，
   その他を青で塗ることで再現している．
 \end{dfn}
-\begin{dfn}[$Cpos$]
-  $x, y$ $\in$ $\N$，$c$ $\in$ $Color$に対して$Cpos(x,y,c)$を以下の述語として定義する．
+\begin{dfn}[$\Cpos$]
+  $x, y$ $\in$ $\N$，$c$ $\in$ $\Color$に対して$\Cpos(x,y,c)$を以下の述語として定義する．
   
-  $Cpos(x,y,c)$ $\iffDef$
+  $\Cpos (x,y,c)$ $\iffDef$
   左から$x$番目，上から$y$番目のマスに塗られている色が$c$である．
   さらに，左から$x$番目，上から$y$番目のマスの座標を$(x,y)$と表す．
-  ただし，マスの座標の表し方はCoqに実装しておらず，$Cpos$のみ実装している．
+  ただし，マスの座標の表し方はCoqに実装しておらず，$\Cpos$のみ実装している．
 \end{dfn}
 \begin{exm}
-  図$\ref{fig:nine_steps}$において，最上段の左端，右端と最下段のマスに関するそれぞれの命題$Cpos(0,0,yel)$，$Cpos(9,0,blu)$，$Cpos(9,0,red)$は正しい．
+  図$\ref{fig:nine_steps}$において，最上段の左端，右端と最下段のマスに関するそれぞれの命題$\Cpos(0,0,yel)$，$\Cpos(9,0,blu)$，$\Cpos(9,0,red)$は正しい．
 \end{exm}
-\begin{dfn}[$WellColoredTriangle$]
-  $x, y, n \in \N$，$c_0, c_1, c_2 \in Color$に対して，
-  WellColoredTriangle$($x, y, n, $c_0, c_1, c_2)$を次のように定義する．
+\begin{dfn}[$\WCT$]
+  $x, y, n \in \N$，$c_0, c_1, c_2 \in \Color$に対して，
+  \WCT$($x, y, n, $c_0, c_1, c_2)$を次のように定義する．
   
-  WellColoredTriangle$(x, y, n, c0, c1, c2)$ $\iffDef$
-  $($Cpos \\ $(x,y,c_0)$ $\land$ Cpos$(x+n,y,c_1)$ $\land$ Cpos$(x,y+n,c_2))$ $\Imp$ $c_2 = mix(c_0,c_1)$.
+  \WCT$(x, y, n, c0, c1, c2)$ $\iffDef$
+  $($\Cpos $(x,y,c_0)$ $\land$ \Cpos$(x+n,y,c_1)$ $\land$ \Cpos$(x,y+n,c_2))$ $\Imp$ $c_2 = \mix(c_0,c_1)$.
   
-  $WellColoredTriangle$は定義$\ref{dfn:wc_tri}$で述べた$n$段の調和彩色三角形の定義を$Cpos$や$mix$を用いて論理式に書き直したものである．
+  $\WCT$は定義$\ref{dfn:wc_tri}$で述べた$n$段の調和彩色三角形の定義を$\Cpos$や$\mix$を用いて論理式に書き直したものである．
   $x$，$y$は逆三角形の左端のマスを基準として定めるために用いており，$n$は逆三角形の一辺の長さを表している．
-  つまり，$Cpos(x,y,c_0)$，$Cpos(x+n,y,c_1)$，$Cpos(x,y+n,c_2)$はそれぞれ最上段の左端，右端と最下段のマスに関する命題である．
+  つまり，$\Cpos (x,y,c_0)$，$\Cpos (x+n,y,c_1)$，$\Cpos (x,y+n,c_2)$はそれぞれ最上段の左端，右端と最下段のマスに関する命題である．
 \end{dfn}
 
 % 3.2 公理
 \subsection{公理}
 ここからは三角形三色問題を再現するための$4$つ公理を述べる．
-\begin{axm}[$C\_exists$] \label{axm:exists}
+\begin{axm}[$\Cexists$] \label{axm:exists}
   $\forall$ x, y $\in$ $\N$に対して，
   $\exists$ c $\in$ $Color$, $Cpos(x,y,c)$.
   
   この公理はすべてのマスには色が塗られていることを表している．
 \end{axm}
-\begin{axm}[$C\_uniq$] \label{axm:uniq}
+\begin{axm}[$\Cuniq$] \label{axm:uniq}
   $\forall x, y \in \N, \forall c_0, c_1 \in Color$に対して，
   $(Cpos(x,y,c_0) \land Cpos(x,y,c_1)) \Imp c_0 = c_1.$
   
   この公理は$1$つのマスに$2$色塗られているときは，その$2$色が同じ色であることを表している．
   すなわち，$1$つのマスに塗れる色は$1$色までであることを表している．
 \end{axm}
-\begin{axm}[$C\_mix$] \label{axm:mix}
+\begin{axm}[$\Cmix$] \label{axm:mix}
   $\forall x, y \in \N, \forall c_0, c_1, c_2 \in Color$に対して，
-  $(Cpos(x,y,c_0) \land Cpos(x+1,y,c_1) \land Cpos(x,y+1,c_2)) \Imp c_2 = mix(c_0,c_1)$.
+  $(Cpos(x,y,c_0) \land Cpos(x+1,y,c_1) \land Cpos(x,y+1,c_2)) \Imp c_2 = \mix(c_0,c_1)$.
   
-  この公理は隣接する$2$つのマスの色に演算$mix$を適用すると下のマスの色が決まるという三角形三色問題の規則$\ref{rul:1}$，$\ref{rul:2}$を表している．
+  この公理は隣接する$2$つのマスの色に演算$\mix$を適用すると下のマスの色が決まるという三角形三色問題の規則をしている．
 \end{axm}
-\begin{axm}[$C\_mix$] \label{axm:mix}
+\begin{axm}[$C\_paint$] \label{axm:paint}
   $\forall x, y, i \in \N, \forall f:\N \to Color$に対して，
   $Cpos(x+i,y,f(x+i))$.
   
@@ -159,26 +133,28 @@ Coqは三角形三色問題のような幾何的な内容をそのまま実装�
 % mixCut, AllRed, falseColor
 \subsection{補題} \label{sec:lem}
 次に証明を円滑に進めていくために用いた補題について述べる．
-\begin{lem}[$mixCut$] \label{lem:mixCut}
+\begin{lem}[$\mixCut$] \label{lem:mixCut}
   $\forall c_0, c_1 c_2 c_3 \in Color$に対して，
-  $mix( mix ( mix(c_0,c_1) , mix(c_1,c_2) ),$ $mix( mix(c_1 c_2),$ $mix(c_2,c_3) ) )$ $=$ $mix(c_0,c_3)$.
+  $\mix( \mix ( \mix(c_0,c_1) , \mix(c_1,c_2) ), \mix( \mix(c_1 c_2),$\\
+  $\mix(c_2,c_3) ) )$ $=$ $\mix(c_0,c_3)$.
 
-  mixCutは演算$mix$のもつ性質を論理式にしたものであり，
-  $mix$と$4$色を用いて表された色は$2$色のみを用いて書き換えることができることを表している．
-  証明する際には各色が$3$通りずつ取り得るので合計$3^4=81$通りの場合分けをおこなって$mix$の計算をすれば証明することができる．
+  $\mixCut$は演算$\mix$のもつ性質を論理式にしたものであり，
+  $\mix$と$4$色を用いて表された色は$2$色のみを用いて書き換えることができることを表している．
+  証明する際には各色が$3$通りずつ取り得るので合計$3^4=81$通りの場合分けをおこなって$\mix$の計算をすれば証明することができる．
   三角形三色問題の十分条件$(\text{補題}\ref{lem:tri_suf})$を証明する際に用いる補題である．
+
 \end{lem}
-\begin{lem}[$AllRed$] \label{lem:AllRed}
+\begin{lem}[$\AllRed$] \label{lem:AllRed}
   $\forall x, y, n\in \N$ に対して，
-  $(\forall i. \in \N,$ $(0 \leq i \leq n \Imp Cpos(x+i,y,red)))$ $\Imp$ $Cpos(x,y+n,red)$. 
+  $(\forall i. \in \N,$ $(0 \leq i \leq n \Imp Cpos(x+i,y,red)))$ $\Imp$ $\Cpos(x,y+n,red)$. 
 
   三角形三色問題の必要条件$(\text{補題}\ref{lem:tri_nec})$の証明において，
   $n$がどの場合でもすべてのマスが赤に塗られている段があることに帰着させて矛盾を導いている．
   AllRedにより，すべてのマスが赤で塗られている段があるときは最下段のマスは赤であることを推測できるという補題である．
 \end{lem}
-\begin{lem}[$falseColor$] \label{lem:falseColor}
-  $\forall x, y \in \N,$ $\forall c_0, c_1 \in$ $Color$に対して，
-  $((c_0 \neq c_1$ $\land$ $Cpos(x,y,c_0)$ $\land$ $Cpos(x,y,c_1))$ $\Imp$ $\bot$.
+\begin{lem}[$\falseColor$] \label{lem:falseColor}
+  $\forall x, y \in \N,$ $\forall c_0, c_1 \in$ $\Color$に対して，
+  $((c_0 \neq c_1$ $\land$ $\Cpos(x,y,c_0)$ $\land$ $\Cpos(x,y,c_1))$ $\Imp$ $\bot$.
 
   falseColorは$3^2=9$通りの場合分けと公理$\ref{axm:uniq}$より証明できる．
   同じマスに対して異なる色が塗れてしまっているときには矛盾するという補題である．
