@@ -1,5 +1,5 @@
-\beamer@sectionintoc {1}{本研究の概要}{3}{0}{1}
-\beamer@sectionintoc {2}{定義と公理}{6}{0}{2}
-\beamer@sectionintoc {3}{十分条件の証明}{7}{0}{3}
-\beamer@sectionintoc {4}{必要条件の証明}{8}{0}{4}
-\beamer@sectionintoc {5}{まとめ}{9}{0}{5}
+\beamer@sectionintoc {1}{本研究の概要}{4}{0}{1}
+\beamer@sectionintoc {2}{定義と公理}{7}{0}{2}
+\beamer@sectionintoc {3}{十分条件の証明}{8}{0}{3}
+\beamer@sectionintoc {4}{必要条件の証明}{9}{0}{4}
+\beamer@sectionintoc {5}{まとめ}{10}{0}{5}
