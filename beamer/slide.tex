@@ -1,0 +1,155 @@
+\documentclass[dvipdfmx,cjk]{beamer}
+\usepackage{mymacro}
+\usepackage{tikz,here} % 図・コード
+\usetikzlibrary{intersections,calc,arrows.meta,positioning}
+
+\AtBeginDvi{\special{pdf:tounicode 90ms-RKSJ-UCS2}}
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+
+\setbeamertemplate{navigation symbols}{} %% 右下のアイコンを消す
+
+%フレーム
+%\usetheme{CambridgeUS}
+%\usetheme{Boadilla}
+\usetheme{Madrid}
+%\usetheme{Antibes}
+%\usetheme{Montpellier}
+%\usetheme{Berkeley}
+%\usetheme{Goettingen}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+
+%色，フォント，内枠，外枠
+%\usecolortheme{rose}
+%\usecolortheme{albatross}
+%\useoutertheme{shadow}                
+\usefonttheme{professionalfonts}
+
+%オプション
+%\setbeamercovered{transparent}         %% 消えている文字をうっすらと表示する
+\setbeamertemplate{theorems}[numbered] %% theorem 環境の冒頭に番号をつける
+
+% 定理環境
+\newtheorem{dfn}{定義}[section]
+\newtheorem{thm}[dfn]{定理}
+\newtheorem{exm}[dfn]{例}
+\renewcommand{\proofname}{証明}
+
+% マクロ
+\def\Color{\textit{Color}}
+\def\mix{\textit{mix}}
+\def\red{\textit{red}}
+\def\blu{\textit{blu}}
+\def\yel{\textit{yel}}
+\def\mix{\textit{mix}}
+\def\colorYB{\textit{colorYB}}
+\def\colorBYB{\textit{colorBYB}}
+\def\colorYBBY{\textit{colorYBBY}}
+\def\Cpos{\textit{Cpos}}
+\def\WCT{\textit{WellColoredTriangle}}
+\def\mixCut{\textit{mixCut}}
+\def\AllRed{\textit{AllRed}}
+\def\falseColor{\textit{falseColor}}
+\def\Cexists{\textit{C\_exists}}
+\def\Cuniq{\textit{C\_uniq}}
+\def\Cmix{\textit{C\_mix}}
+\def\Cpaint{\textit{C\_paint}}
+\def\EvenA{\textit{EvenA}}
+\def\EvenB{\textit{EvenB}}
+\def\Even{\textit{Even}}
+\def\ShortOddA{\textit{ShortOddA}}
+\def\ShortOddB{\textit{ShortOddB}}
+\def\ShortOddC{\textit{ShortOddC}}
+\def\ShortOdd{\textit{ShortOdd}}
+\def\LongOddA{\textit{LongOddA}}
+\def\LongOddB{\textit{LongOddB}}
+\def\LongOddC{\textit{LongOddC}}
+\def\LongOdd{\textit{LongOdd}}
+
+\begin{document}
+\title[Coqによる三角形三色問題の証明]{Coqによる三角形三色問題の証明} 
+\author[Syota Hashimoto]{橋本 翔太}
+\institute[Toho Univ.]{東邦大学}
+\date{September 1, 2, or 3, 2021}
+
+% タイトルページ
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% 目次
+\begin{frame}
+\tableofcontents
+\end{frame}
+
+\section{本研究の概要}
+
+\begin{frame}
+  \frametitle{本研究の概要}
+  \begin{block}{研究内容}
+    三角形三色問題の解決するための定理証明をCoqで形式化する．
+  \end{block}
+
+  \vspace{10pt}
+  三角形三色問題 $\cdots$ $3$色を用いてある規則に従って逆三角形に配置されたマスを塗り分けた図形に関する$2$つの問題
+  \[
+  \input{nine_steps}
+  \text{段数}n=9\text{のとき}
+  \]
+\end{frame}
+
+\begin{frame}
+  \frametitle{三角形三色問題(規則)}
+  次の$2$つ規則に従い逆三角形の上の段から下の段に向かって$3$色(赤，黄，青)で塗り分ける．
+
+  \vspace{10pt}
+  \begin{itemize}
+  \item
+    隣り合う色が同じとき同じ色をそれらと接する下の段のマスに塗る．
+    \[
+    \input{rule1}
+    \]
+  \item
+    隣り合う色が異なるとき第三の色をそれらと接する下の段のマスに塗る．
+    \[
+    \input{rule2}
+    \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{三角形三色問題(問題)}
+  \begin{block}{仮説}
+    最上段をどのように塗っても逆三角形の端点の$3$マスの色はすべて同じ色 または すべて相異なる．
+  \end{block}
+
+  \vspace{10pt}
+  三角形三色問題は次の$2$つである．
+  \begin{block}{問題}
+    \begin{itemize}
+    \item
+      $n=9$のとき仮説が成立することを証明せよ．
+    \item
+      $n=9$以外のときに仮説が成立する段数が存在するか調べ，
+      存在するならば$n$の一般式を求めよ．
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\section{定義と公理}
+\begin{frame}
+  
+\end{frame}
+\section{十分条件の証明}
+\begin{frame}
+  
+\end{frame}
+\section{必要条件の証明}
+\begin{frame}
+  
+\end{frame}
+\section{まとめ}
+\begin{frame}
+  
+\end{frame}
+\end{document}
