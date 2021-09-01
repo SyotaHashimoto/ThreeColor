@@ -86,7 +86,7 @@
     }
 \end{dfn}
 \begin{exm}
-  図$\ref{fig:nine_steps}$において，逆三角形の$3$つの端点のマスに関するそれぞれの命題$\Cpos(0,0,yel)$，$\Cpos(9,0,blu)$，$\Cpos(9,0,red)$は正しい．
+  図$\ref{fig:nine_steps}$において，逆三角形の$3$つの端点のマスに関するそれぞれの命題$\Cpos(0,0,\yel)$，$\Cpos(9,0,\blu)$，$\Cpos(0,9,\red)$は正しい．
 \end{exm}
 \begin{dfn}[$\WCT$]
   $x, y, n \in \N$，$c_0, c_1,$ $c_2 \in \Color$に対して，
@@ -135,7 +135,7 @@
 次に証明を円滑に進めていくために用いた補題について述べる．
 \begin{lem}[$\mixCut$] \label{lem:mixCut}
   $\forall c_0, c_1, c_2, c_3 \in Color$に対して，
-  $\mix( \mix ( \mix(c_0,c_1) , \mix(c_1,c_2) ), \mix( \mix(c_1 c_2),$\\
+  $\mix( \mix ( \mix(c_0,c_1) , \mix(c_1,c_2) ), \mix( \mix(c_1,c_2),$\\
   $\mix(c_2,c_3) ) )$ $=$ $\mix(c_0,c_3)$.
 
   $\mixCut$は演算$\mix$のもつ性質を論理式にしたものであり，$\mix$と$4$色を用いて表された色は$2$色のみを用いて書き換えることができることを表している．
