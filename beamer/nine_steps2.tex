@@ -1,5 +1,5 @@
 % 9steps
-\begin{tikzpicture}[scale=0.15]
+\begin{tikzpicture}[scale=0.25]
   %9段目
   \filldraw[fill=red] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
   %8段目
@@ -65,4 +65,8 @@
   \filldraw[fill=blue,xshift={25*5},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
   \filldraw[fill=yellow,xshift={25*7},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
   \filldraw[fill=blue,xshift={25*9},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+
+  \node[xshift={25*-3.5},yshift={25*sqrt(3)*2.5}](0,0){$c_0=c_y^x$};
+  \node[xshift={25*3.7},yshift={25*sqrt(3)*2.5}](0,0){$c_1=c_y^{x+n}$};
+  \node[xshift={25*0.25},yshift={25*sqrt(3)*-0.2}](0,0){$c_2=c_{y+n}^x$};
 \end{tikzpicture}

@@ -1,4 +1,4 @@
-This is e-upTeX, Version 3.14159265-p3.8.2-u1.24-190131-2.6 (utf8.uptex) (TeX Live 2019) (preloaded format=uplatex 2020.4.4)  22 AUG 2021 11:36
+This is e-upTeX, Version 3.14159265-p3.8.2-u1.24-190131-2.6 (utf8.uptex) (TeX Live 2019) (preloaded format=uplatex 2020.4.4)  1 SEP 2021 10:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -663,6 +663,121 @@ y
 )
 (/usr/local/texlive/2019/texmf-dist/tex/latex/beamer/beamerouterthemedefault.st
 y))) (./mymacro.sty)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xy.sty
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xy.tex Bootstrap'ing:
+catcodes, docmode,
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xyrecat.tex)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xyidioms.tex)
+
+ Xy-pic version 3.8.9 <2013/10/06>
+ Copyright (c) 1991-2013 by Kristoffer H. Rose <krisrose@tug.org> and others
+ Xy-pic is free software: see the User's Guide for details.
+
+Loading kernel: messages; fonts; allocations: state,
+\X@c=\dimen259
+\Y@c=\dimen260
+\U@c=\dimen261
+\D@c=\dimen262
+\L@c=\dimen263
+\R@c=\dimen264
+\Edge@c=\toks44
+\X@p=\dimen265
+\Y@p=\dimen266
+\U@p=\dimen267
+\D@p=\dimen268
+\L@p=\dimen269
+\R@p=\dimen270
+\Edge@p=\toks45
+\X@origin=\dimen271
+\Y@origin=\dimen272
+\X@xbase=\dimen273
+\Y@xbase=\dimen274
+\X@ybase=\dimen275
+\Y@ybase=\dimen276
+\X@min=\dimen277
+\Y@min=\dimen278
+\X@max=\dimen279
+\Y@max=\dimen280
+\lastobjectbox@=\box71
+\zerodotbox@=\box72
+\almostz@=\dimen281
+ direction,
+\d@X=\dimen282
+\d@Y=\dimen283
+\K@=\count163
+\KK@=\count164
+\Direction=\count165
+\K@dXdY=\dimen284
+\K@dYdX=\dimen285
+\xyread@=\read2
+\xywrite@=\write5
+\csp@=\count166
+\quotPTK@=\dimen286
+
+utility macros; pictures: \xy, positions,
+\swaptoks@@=\toks46
+\connectobjectbox@@=\box73
+ objects,
+\styletoks@=\toks47
+ decorations;
+kernel objects: directionals, circles, text; options; algorithms: directions,
+edges, connections;  Xy-pic loaded)
+Package: xy 2013/10/06 Xy-pic version 3.8.9
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xypdf.tex
+ Xy-pic option: PDF driver v.1.7 loaded)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xyall.tex
+ Xy-pic option: All features v.3.8
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xycurve.tex
+ Xy-pic option: Curve and Spline extension v.3.12 curve,
+\crv@cnt@=\count167
+\crvpts@=\toks48
+\splinebox@=\box74
+\splineval@=\dimen287
+\splinedepth@=\dimen288
+\splinetol@=\dimen289
+\splinelength@=\dimen290
+ circles,
+\L@=\dimen291
+ loaded)
+Xy-pic pdf driver: `curve' extension support
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xypdf-cu.tex loaded)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xyframe.tex
+ Xy-pic option: Frame and Bracket extension v.3.14 loaded)
+Xy-pic pdf driver: `frame' extension support
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xypdf-fr.tex loaded)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xycmtip.tex
+ Xy-pic option: Computer Modern tip extension v.3.7
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xytips.tex
+ Xy-pic option: More Tips extension v.3.11 loaded) loaded)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xyline.tex
+ Xy-pic option: Line styles extension v.3.10
+\xylinethick@=\dimen292
+ loaded)
+Xy-pic pdf driver: `line' extension support
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xypdf-li.tex loaded)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xyrotate.tex
+ Xy-pic option: Rotate and Scale extension v.3.8 loaded)
+Xy-pic pdf driver: `rotate' extension support
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xypdf-ro.tex loaded)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xycolor.tex
+ Xy-pic option: Colour extension v.3.11 loaded)
+Xy-pic pdf driver: `color' extension support
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xypdf-co.tex loaded)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xymatrix.tex
+ Xy-pic option: Matrix feature v.3.14
+\Row=\count168
+\Col=\count169
+\queue@=\toks49
+\queue@@=\toks50
+\qcount@=\count170
+\qcount@@=\count171
+\matrixsize@=\count172
+ loaded)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xyarrow.tex
+ Xy-pic option: Arrow and Path feature v.3.9 path, \ar, loaded)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/xypic/xygraph.tex
+ Xy-pic option: Graph feature v.3.11 loaded) loaded))
 (/usr/local/texlive/2019/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
 (/usr/local/texlive/2019/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
 Package: pgf 2019/04/04 v3.1.2 (3.1.2)
@@ -670,7 +785,7 @@ Package: pgf 2019/04/04 v3.1.2 (3.1.2)
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
 e.tex
 File: pgfmoduleshapes.code.tex 2019/04/04 v3.1.2 (3.1.2)
-\pgfnodeparttextbox=\box71
+\pgfnodeparttextbox=\box75
 )
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
 tex
@@ -679,8 +794,8 @@ File: pgfmoduleplot.code.tex 2019/04/04 v3.1.2 (3.1.2)
 (/usr/local/texlive/2019/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
 -0-65.sty
 Package: pgfcomp-version-0-65 2019/04/04 v3.1.2 (3.1.2)
-\pgf@nodesepstart=\dimen259
-\pgf@nodesepend=\dimen260
+\pgf@nodesepstart=\dimen293
+\pgf@nodesepend=\dimen294
 )
 (/usr/local/texlive/2019/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
 -1-18.sty
@@ -695,10 +810,10 @@ Package: pgfcomp-version-1-18 2019/04/04 v3.1.2 (3.1.2)
 Package: pgffor 2019/04/04 v3.1.2 (3.1.2)
 
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
-\pgffor@iter=\dimen261
-\pgffor@skip=\dimen262
-\pgffor@stack=\toks44
-\pgffor@toks=\toks45
+\pgffor@iter=\dimen295
+\pgffor@skip=\dimen296
+\pgffor@stack=\toks51
+\pgffor@toks=\toks52
 ))
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
 e.tex
@@ -707,32 +822,32 @@ Package: tikz 2019/04/04 v3.1.2 (3.1.2)
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
 dlers.code.tex
 File: pgflibraryplothandlers.code.tex 2019/04/04 v3.1.2 (3.1.2)
-\pgf@plot@mark@count=\count163
-\pgfplotmarksize=\dimen263
+\pgf@plot@mark@count=\count173
+\pgfplotmarksize=\dimen297
 )
-\tikz@lastx=\dimen264
-\tikz@lasty=\dimen265
-\tikz@lastxsaved=\dimen266
-\tikz@lastysaved=\dimen267
-\tikzleveldistance=\dimen268
-\tikzsiblingdistance=\dimen269
-\tikz@figbox=\box72
-\tikz@figbox@bg=\box73
-\tikz@tempbox=\box74
-\tikz@tempbox@bg=\box75
-\tikztreelevel=\count164
-\tikznumberofchildren=\count165
-\tikznumberofcurrentchild=\count166
-\tikz@fig@count=\count167
+\tikz@lastx=\dimen298
+\tikz@lasty=\dimen299
+\tikz@lastxsaved=\dimen300
+\tikz@lastysaved=\dimen301
+\tikzleveldistance=\dimen302
+\tikzsiblingdistance=\dimen303
+\tikz@figbox=\box76
+\tikz@figbox@bg=\box77
+\tikz@tempbox=\box78
+\tikz@tempbox@bg=\box79
+\tikztreelevel=\count174
+\tikznumberofchildren=\count175
+\tikznumberofcurrentchild=\count176
+\tikz@fig@count=\count177
 
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
 e.tex
 File: pgfmodulematrix.code.tex 2019/04/04 v3.1.2 (3.1.2)
-\pgfmatrixcurrentrow=\count168
-\pgfmatrixcurrentcolumn=\count169
-\pgf@matrix@numberofcolumns=\count170
+\pgfmatrixcurrentrow=\count178
+\pgfmatrixcurrentcolumn=\count179
+\pgf@matrix@numberofcolumns=\count180
 )
-\tikz@expandcount=\count171
+\tikz@expandcount=\count181
 
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarytopaths.code.tex
@@ -741,11 +856,20 @@ File: tikzlibrarytopaths.code.tex 2019/04/04 v3.1.2 (3.1.2)
 (/usr/local/texlive/2019/texmf-dist/tex/latex/here/here.sty)
 (/usr/local/texlive/2019/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count172
-\float@exts=\toks46
-\float@box=\box76
-\@float@everytoks=\toks47
-\@floatcapt=\box77
+\c@float@type=\count182
+\float@exts=\toks53
+\float@box=\box80
+\@float@everytoks=\toks54
+\@floatcapt=\box81
+)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/mathdots/mathdots.sty
+Package: mathdots 2014/06/11 v0.9 Improve and add various macros for dots in ma
+th.
+\MDo@unit=\dimen304
+\MDo@dotsbox=\box82
+\MDoprekern=\muskip12
+\MDopostkern=\muskip13
+\MDodotkern=\muskip14
 )
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibraryintersections.code.tex
@@ -753,7 +877,7 @@ s/tikzlibraryintersections.code.tex
 ctions.code.tex
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/libraries/pgflibraryfpu.cod
 e.tex)
-\pgf@intersect@solutions=\count173
+\pgf@intersect@solutions=\count183
 ))
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarycalc.code.tex
@@ -762,10 +886,10 @@ File: tikzlibrarycalc.code.tex 2019/04/04 v3.1.2 (3.1.2)
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.
 meta.code.tex
 File: pgflibraryarrows.meta.code.tex 2019/04/04 v3.1.2 (3.1.2)
-\pgfarrowinset=\dimen270
-\pgfarrowlength=\dimen271
-\pgfarrowwidth=\dimen272
-\pgfarrowlinewidth=\dimen273
+\pgfarrowinset=\dimen305
+\pgfarrowlength=\dimen306
+\pgfarrowwidth=\dimen307
+\pgfarrowlinewidth=\dimen308
 )
 (/usr/local/texlive/2019/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarypositioning.code.tex
@@ -782,28 +906,28 @@ y)
 sty))
 (/usr/local/texlive/2019/texmf-dist/tex/latex/beamer/beamerfontthemeprofessiona
 lfonts.sty)
-\c@dfn=\count174
+\c@dfn=\count184
  (./slide.aux)
 \openout1 = `slide.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for JY2/mc/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for JT2/mc/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for JY2/mc/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for JT2/mc/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
 
 *geometry* detected driver: dvipdfm
 *geometry* verbose mode - [ preamble ] result:
@@ -839,8 +963,8 @@ LaTeX Font Info:    ... okay on input line 69.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 ABD: EveryShipout initializing macros
-\AtBeginShipoutBox=\box78
-Package hyperref Info: Link coloring OFF on input line 69.
+\AtBeginShipoutBox=\box83
+Package hyperref Info: Link coloring OFF on input line 72.
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -848,15 +972,15 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count175
+\c@section@level=\count185
 )
-LaTeX Info: Redefining \ref on input line 69.
-LaTeX Info: Redefining \pageref on input line 69.
-LaTeX Info: Redefining \nameref on input line 69.
+LaTeX Info: Redefining \ref on input line 72.
+LaTeX Info: Redefining \pageref on input line 72.
+LaTeX Info: Redefining \nameref on input line 72.
 
 (./slide.out) (./slide.out)
-\@outlinefile=\write5
-\openout5 = `slide.out'.
+\@outlinefile=\write6
+\openout6 = `slide.out'.
 
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/translator/translator-basic-dicti
@@ -882,141 +1006,195 @@ Dictionary: translator-numbers-dictionary, Language: English
 (/usr/local/texlive/2019/texmf-dist/tex/latex/translator/translator-theorem-dic
 tionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
-) (./slide.nav)
-LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 5.77332pt on input line 69.
-LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 5.77332pt on input line 69.
+)
+LaTeX Font Info:    Try loading font information for U+msa on input line 72.
 
-
-Package hyperref Warning: Option `pdfauthor' has already been used,
-(hyperref)                setting the option has no effect on input line 71.
-
-LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 13.85594pt on input line 81.
-LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 13.85594pt on input line 81.
-LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 7.69775pt on input line 81.
-LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 7.69775pt on input line 81.
-LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 8.65997pt on input line 81.
-LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 8.65997pt on input line 81.
-LaTeX Font Info:    Try loading font information for U+msa on input line 81.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 81.
+LaTeX Font Info:    Try loading font information for U+msb on input line 72.
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Package xypdf Info: Line width: 0.43799pt on input line 72.
+ (./slide.nav)
+LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
+(Font)              scaled to size 5.77332pt on input line 72.
+LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
+(Font)              scaled to size 5.77332pt on input line 72.
+
+
+Package hyperref Warning: Option `pdfauthor' has already been used,
+(hyperref)                setting the option has no effect on input line 74.
+
+
+Package hyperref Warning: Option `pdfsubject' has already been used,
+(hyperref)                setting the option has no effect on input line 75.
 
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 3.84888pt on input line 81.
+(Font)              scaled to size 13.85594pt on input line 85.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 3.84888pt on input line 81.
-
-Overfull \hbox (85.30815pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/6 ([])  
- []
-
+(Font)              scaled to size 13.85594pt on input line 85.
+LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
+(Font)              scaled to size 7.69775pt on input line 85.
+LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
+(Font)              scaled to size 7.69775pt on input line 85.
+LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
+(Font)              scaled to size 9.6222pt on input line 85.
+LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
+(Font)              scaled to size 9.6222pt on input line 85.
+LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
+(Font)              scaled to size 3.84888pt on input line 85.
+LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
+(Font)              scaled to size 3.84888pt on input line 85.
 [1
 
-]
-Overfull \hbox (85.30815pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/6 ([])  
- []
-
-[2] (./slide.toc)
-Overfull \hbox (85.30815pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/6 ([])  
- []
-
-[3
+] (./slide.toc) [2
 
 ]
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 11.54663pt on input line 102.
+(Font)              scaled to size 11.54663pt on input line 95.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 11.54663pt on input line 102.
- (./nine_steps.tex)
-Overfull \hbox (85.30815pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/6 ([])  
- []
-
-[4
-
-] (./rule1.tex) (./rule2.tex)
-Overfull \hbox (85.30815pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/6 ([])  
- []
-
-[5
+(Font)              scaled to size 11.54663pt on input line 95.
+ (./wellcolored.tex) (./nine_steps.tex) [3
 
 ]
-Overfull \hbox (85.30815pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/6 ([])  
- []
+(./wellcolored.tex) (./notwellcolored.tex) [4
+
+]
+LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <10.95> not available
+(Font)              Font shape `JT2/gt/m/n' tried instead on input line 181.
+LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
+(Font)              scaled to size 10.53629pt on input line 181.
+LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <10.95> not available
+(Font)              Font shape `JY2/gt/m/n' tried instead on input line 181.
+LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
+(Font)              scaled to size 10.53629pt on input line 181.
+ (./nine_steps.tex)
+(./four_steps.tex) [5
+
+]
+
+LaTeX Font Warning: Font shape `JT2/mc/m/it' undefined
+(Font)              using `JT2/mc/m/n' instead on input line 208.
+
+
+LaTeX Font Warning: Font shape `JY2/mc/m/it' undefined
+(Font)              using `JY2/mc/m/n' instead on input line 208.
 
 [6
 
 ]
-Overfull \hbox (85.30815pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/6 ([])  
- []
-
-[7
+LaTeX Font Info:    Font shape `JT2/mc/m/it' will be
+(Font)              scaled to size 11.54663pt on input line 241.
+LaTeX Font Info:    Font shape `JY2/mc/m/it' will be
+(Font)              scaled to size 11.54663pt on input line 241.
+ (./nine_steps.tex) [7
 
 ]
-Overfull \hbox (85.30815pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/6 ([])  
+LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
+(Font)              scaled to size 8.65997pt on input line 292.
+LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
+(Font)              scaled to size 8.65997pt on input line 292.
+LaTeX Font Info:    Font shape `JT2/mc/m/it' will be
+(Font)              scaled to size 8.65997pt on input line 292.
+LaTeX Font Info:    Font shape `JY2/mc/m/it' will be
+(Font)              scaled to size 8.65997pt on input line 292.
+LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
+(Font)              scaled to size 4.8111pt on input line 292.
+LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
+(Font)              scaled to size 4.8111pt on input line 292.
+ <xymatrix 4x4
+
+Package xypdf Warning: The produced DVI file is NOT PORTABLE. Convert it with
+dvipdfm(x) to the PDF format but do not expect the DVI file itself to be
+displayed correctly.
+
+542>
+Overfull \vbox (0.70659pt too high) detected at line 292
  []
 
 [8
 
 ]
-Overfull \hbox (85.30815pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/6 ([])  
- []
+LaTeX Font Info:    Font shape `JT2/mc/m/it' will be
+(Font)              scaled to size 9.6222pt on input line 307.
+LaTeX Font Info:    Font shape `JY2/mc/m/it' will be
+(Font)              scaled to size 9.6222pt on input line 307.
+LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
+(Font)              scaled to size 6.73553pt on input line 307.
+LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
+(Font)              scaled to size 6.73553pt on input line 307.
+ (./nine_steps2.tex) [9
 
-[9
+] (./wellcolored2.tex) [10
+
+] (./four_steps2.tex
+Missing character: There is no x in font nullfont!
+)
+[11
+
+] [12
+
+] (./ind_steps.tex) [13
+
+] (./even_steps2.tex) [14
 
 ]
-Overfull \hbox (85.30815pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/6 ([])  
- []
+(./shortodd_steps2.tex) (./shortodd_steps3.tex) [15
 
-[10
+] (./longodd_steps2.tex)
+[16
+
+] [17
 
 ]
-\tf@nav=\write6
-\openout6 = `slide.nav'.
+File: beamericonarticle.pdf Graphic file (type pdf)
+<beamericonarticle.pdf>
+File: beamericonarticle.pdf Graphic file (type pdf)
+<beamericonarticle.pdf>
+File: beamericonarticle.pdf Graphic file (type pdf)
+<beamericonarticle.pdf>
+File: beamericonarticle.pdf Graphic file (type pdf)
+<beamericonarticle.pdf>
+File: beamericonarticle.pdf Graphic file (type pdf)
+<beamericonarticle.pdf>
+File: beamericonarticle.pdf Graphic file (type pdf)
+<beamericonarticle.pdf>
+File: beamericonarticle.pdf Graphic file (type pdf)
+<beamericonarticle.pdf>
+ [18
 
-\tf@toc=\write7
-\openout7 = `slide.toc'.
+]
+\tf@nav=\write7
+\openout7 = `slide.nav'.
 
-\tf@snm=\write8
-\openout8 = `slide.snm'.
+\tf@toc=\write8
+\openout8 = `slide.toc'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 158.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 158.
+\tf@snm=\write9
+\openout9 = `slide.snm'.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 573.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 573.
  (./slide.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 158.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 158.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 573.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 573.
 Package rerunfilecheck Info: File `slide.out' has not changed.
-(rerunfilecheck)             Checksum: A7A5E3742D52EEE1731F297FC6EA9E9D;259.
+(rerunfilecheck)             Checksum: E2CAB6C10166F55AB78DBD4F374BDC9D;315.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
  ) 
 Here is how much of TeX's memory you used:
- 21032 strings out of 493212
- 423071 string characters out of 6144393
- 517474 words of memory out of 5000000
- 24556 multiletter control sequences out of 15000+600000
- 16966 words of font info for 78 fonts, out of 8000000 for 9000
+ 24123 strings out of 493212
+ 463717 string characters out of 6144393
+ 652164 words of memory out of 5000000
+ 27525 multiletter control sequences out of 15000+600000
+ 28115 words of font info for 120 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 56i,15n,69p,792b,759s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 56i,17n,69p,3263b,815s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on slide.dvi (10 pages, 81932 bytes).
+Output written on slide.dvi (18 pages, 387708 bytes).
