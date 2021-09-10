@@ -871,13 +871,66 @@ Section Three_Color_Triangle_Problem_nec.
     move: (rangeI). move/andP. case=>[C1 C2].
     move: cond1. move/andP. case=>[rangeN oddN]. move:(oddN). move/eqP =>oddN'.
     move:(rangeN). move/andP. case=>[rangeN1 rangeN2].
-    have C3: n>0. have D: 0<=3.^k. apply leq0n. apply (trans_leltlt D). done. 
+    have C3: n>0. have D: 0<=3.^k. apply leq0n. apply (trans_leltlt D). done.
+    have C4 : 0 < n - 3 .^ k.
+    rewrite ltn_subCr. rewrite subn0. done.
     have fromOddA: forall i:nat, (0<=i<=n-3.^k -> Cpos (x+i) (3.^k) (colorYB x (n-3.^k) (x+i))).
     apply ShortOddA. rewrite oddN'. by rewrite rangeN. done. done.
-    have fromEvenA: forall i:nat, (0<=i<=(n-3.^k).-1) -> Cpos (x+i) (3.^k+1) red.
-    (* apply EvenA. rewrite- eq_adjoint_plus_minus_lt. by rewrite add0n. done.  *)
-    (* rewrite- addn1. apply fromEvenA. done.  *)
-  Admitted.
+    have rangeI1 : 0 <= i <= n - 3 .^ k.
+    apply /andP. apply conj. done.
+    apply (leq_trans C2). apply leq_pred.
+    have rangeI2 : 0 <= i.+1 <= n - 3 .^ k.
+    apply /andP. apply conj. done.
+    apply (leq_ltn_trans C2).
+    rewrite ltn_predL. done.
+    
+    (* 3^k 段下のマスの色は colorYB で塗られていることを示す *)
+    have Cpos1 : Cpos (x + i) (3 .^ k) (colorYB x (n - 3.^k) (x + i)).
+    generalize (fromOddA i) => Cpos1.
+    specialize (Cpos1 rangeI1). done.
+    have Cpos2 : Cpos (x + i).+1 (3 .^ k) (colorYB x (n - 3.^k) (x + i).+1).
+    generalize (fromOddA i.+1) => Cpos2.
+    specialize (Cpos2 rangeI2).
+    rewrite- addnS. done.
+    rewrite- addn1 in Cpos2.
+    
+    (* 3^k + 1 段下のマスの色は mix と colorYB で得られることを示す *)
+    have Cpos3 : exists c : Color, Cpos (x+i) (3.^k+1) c.
+    apply C_exists. move: Cpos3. case. move=> c Cpos3.
+    have Color : c = mix (colorYB x (n - 3 .^ k) (x + i)) (colorYB x (n - 3 .^ k) (x + i + 1)).
+    apply (C_mix (x+i) (3.^k)).
+    apply conj. done. apply conj. done. done.
+    rewrite Color in Cpos3.
+
+    (* colorYB で塗られている色を示す *)
+    - case (odd_or_even i) => [OddI1|EvenI1].
+      
+    (* i が奇数のとき *)
+      + have Color1 : colorYB x (n - 3 .^ k) (x + i) = blu.
+        rewrite /colorYB. rewrite x_plus_y_minus_x_is_y.
+        rewrite rangeI1 OddI1. done.
+      + have Color2 : colorYB x (n - 3 .^ k) (x + i + 1) = yel.
+        have OddI2 : odd i.+1 = false.
+        rewrite oddS. by rewrite OddI1.
+        rewrite /colorYB.  rewrite- addnA.
+        rewrite x_plus_y_minus_x_is_y addn1.
+        rewrite rangeI2 OddI2. done.
+      + rewrite Color1 Color2 in Cpos3.
+        rewrite /= in Cpos3. by rewrite- addn1.
+        
+    (* i が偶数のとき *)
+      + have Color1 : colorYB x (n - 3 .^ k) (x + i) = yel.
+        rewrite /colorYB. rewrite x_plus_y_minus_x_is_y.
+        rewrite rangeI1 EvenI1. done.
+      + have Color2 :colorYB x (n - 3 .^ k) (x + i + 1) = blu.
+        have OddI2 : odd i.+1 = true.
+        rewrite oddS. by rewrite EvenI1.
+        rewrite /colorYB. rewrite- addnA.
+        rewrite x_plus_y_minus_x_is_y addn1.
+        rewrite rangeI2 OddI2. done.
+      + rewrite Color1 Color2 in Cpos3.
+        rewrite /= in Cpos3. by rewrite- addn1.
+  Qed.
   
   Lemma ShortOddC :
     forall x n k : nat,
@@ -1217,5 +1270,5 @@ Section Three_Color_Triangle_Problem.
     move=> n.
     by apply (Three_Color_Triangle_Problem_sufnec n 0).
   Qed.
-
+  
 End Three_Color_Triangle_Problem.
