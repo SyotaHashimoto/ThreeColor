@@ -1301,38 +1301,6 @@ Section Three_Color_Triangle_Problem_modify.
     rewrite /F. rewrite- /F. done.
   Qed.
 
-  (* Lemma C_exists_uniq_mix_F : *)
-  (*   (forall(f : nat -> Color), *)
-  (*       (forall(x : nat) , Cposf f x 0 (f x)) -> *)
-  (*       (C_exists /\ C_uniq /\ C_mix)). *)
-  (* Proof. *)
-  (*   move=> f paint. *)
-  (*   have transform : forall(x1 y1 : nat) (c : Color), Cpos x1 y1 c <-> F f x1 y1 = c. *)
-  (*   apply Cops_iff_F. done. apply conj. *)
-  (*   - rewrite /C_exists. move=> x y. *)
-  (*     have exists_iff : *)
-  (*       (exists c : Color, Cpos x y c) <-> (exists c : Color, F f x y = c). *)
-  (*     + apply conj => C. apply C_exists_F. *)
-  (*     + move: C. move=> [] c C. exists c. apply transform. done. *)
-  (*       rewrite exists_iff. by apply C_exists_F. *)
-  (*     apply conj. *)
-  (*   - rewrite /C_exists. move=> x y c0 c1. *)
-  (*     rewrite ! transform. by apply C_uniq_F. *)
-  (*   - rewrite /C_mix. move=> x y c0 c1 c2. *)
-  (*     rewrite ! transform addn1 addn1. by apply C_mix_F. *)
-  (* Qed. *)
-
-  (* Lemma C_Axiom_list : *)
-  (*   (forall(f : nat -> Color), *)
-  (*       (forall(x : nat) , Cpos x 0 (f x)) -> *)
-  (*       (C_exists /\ C_uniq /\ C_mix)). *)
-  (* Proof. *)
-  (*   move=> f. *)
-  (*   apply (C_exists_uniq_mix_F f). *)
-  (* Qed. *)
-
-  Check Three_Color_Triangle_Problem.
-
   Theorem Three_Color_Triangle_Problem_modify :
     forall (f : nat -> Color),
     forall (n : nat) , n > 0 ->
@@ -1340,10 +1308,8 @@ Section Three_Color_Triangle_Problem_modify.
     (forall c0 c1 c2 : Color, TriangleF f 0 0 n  c0 c1 c2).
   Proof.
     Check Three_Color_Triangle_Problem.
-    apply (CposF).
-    have paint : exists(f : nat -> Color), forall(x : nat), Cpos x 0 (f x).
-    exists paintf. move=> x. rewrite- [x]addn0. apply C_paint.
-    move: paint => [] f paint. by apply (C_Axiom_list f).
+    apply (hree_Color_Triangle_Problem CposF).
+
   Qed.
   
 End Three_Color_Triangle_Problem_modify.
