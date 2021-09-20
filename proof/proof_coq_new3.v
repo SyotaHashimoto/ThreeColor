@@ -301,7 +301,7 @@ Section Three_Color_Triangle_Problem.
     end.
   (* 2色を用いて次の段に塗る色を決める演算 mix を定義 *)
 
-  Variable Cpos : nat -> nat -> Color -> Prop.
+  Variable Cpos :  nat -> nat -> Color -> Prop.
   (* 逆三角形の左から x:nat 番目，上から y:nat 番目の色が c:Color である *)
 
   Definition Triangle x y n c0 c1 c2 :=
@@ -1275,27 +1275,27 @@ Section Three_Color_Triangle_Problem_modify.
     -> c2 = mix c0 c1.
 
   Lemma C_exists_F :
-    forall(x y:nat) (f:nat->Color), exists(c:Color), CposF f x y c.
+    forall(f:nat->Color) (x y:nat), exists(c:Color), CposF f x y c.
   Proof.
-    move=> x. case.
-    - move=> f. by exists (f x).
-    - move=> y' f. by exists (mix (F f x y') (F f(x.+1) y')).
+    move=> f x. case.
+    - exists (f x). done.
+    - move=> y'. exists (mix (F f x y') (F f(x.+1) y')). done.
   Qed.
 
   Lemma C_uniq_F :
-    forall(x y:nat) (f:nat->Color) (c0 c1:Color),
+    forall(f:nat->Color) (x y:nat) (c0 c1:Color),
       (CposF f x y c0 /\ CposF f x y c1) -> c0 = c1.
   Proof.
-    move=> x y f c0 c1 [] CposF0 CposF1.
+    move=> f x y c0 c1 [] CposF0 CposF1.
     rewrite /CposF in CposF0 CposF1.
     rewrite CposF0 CposF1. done.
   Qed.
 
   Lemma C_mix_F :
-    forall(x y:nat) (f:nat->Color) (c0 c1 c2:Color),
+    forall(f:nat->Color) (x y:nat) (c0 c1 c2:Color),
       (CposF f x y c0 /\ CposF f (x.+1) y c1 /\ CposF f x (y.+1) c2) -> c2 = mix c0 c1.
   Proof.
-    move=> x y f c0 c1 c2 [] CposF0; move=> [] CposF1 CposF2.
+    move=> f x y c0 c1 c2 [] CposF0; move=> [] CposF1 CposF2.
     rewrite /CposF in CposF0 CposF1 CposF2.
     rewrite CposF0 CposF1 CposF2.
     rewrite /F. rewrite- /F. done.
@@ -1307,9 +1307,10 @@ Section Three_Color_Triangle_Problem_modify.
     (exists k :nat, n = 3 .^ k) <->
     (forall c0 c1 c2 : Color, TriangleF f 0 0 n  c0 c1 c2).
   Proof.
-    Check Three_Color_Triangle_Problem.
-    apply (hree_Color_Triangle_Problem CposF).
-
+    move=> f.
+    apply (Three_Color_Triangle_Problem (CposF f)).
+    apply C_exists_F. apply C_uniq_F.
+    move=> x y c0 c1 c2; rewrite ! addn1. by apply C_mix_F.
   Qed.
   
 End Three_Color_Triangle_Problem_modify.
