@@ -277,7 +277,7 @@ Section Classical.
   
 End Classical.
 
-Section Three_Color_Triangle_Problem_suf.
+Section Three_Color_Triangle_Problem.
 
   (* --- 定義一覧 --- *)
   Inductive Color : Set :=
@@ -301,7 +301,7 @@ Section Three_Color_Triangle_Problem_suf.
     end.
   (* 2色を用いて次の段に塗る色を決める演算 mix を定義 *)
 
-  Parameter Cpos : nat -> nat -> Color -> Prop.
+  Variable Cpos : nat -> nat -> Color -> Prop.
   (* 逆三角形の左から x:nat 番目，上から y:nat 番目の色が c:Color である *)
 
   Definition Triangle x y n c0 c1 c2 :=
@@ -1323,24 +1323,9 @@ Section Three_Color_Triangle_Problem_modify.
     end.
 
   Variable paintf : nat -> Color.
-
-  Lemma Cops_iff_Fy :
-    (forall(f : nat -> Color),
-        (forall(x : nat) , Cpos x 0 (f x)) ->
-        (forall(y1 x1 : nat) (c : Color), Cpos x1 y1 c <-> F f x1 y1 = c)).
-  Proof.
-    move=> f paint. elim=> [ | y IHy].
-    - move=> x c; apply conj => [pred|conj].
-      + generalize (paint x) => pred'.
-        rewrite /F.
-  Admitted.
-
-  Lemma Cops_iff_F :
-    (forall(f : nat -> Color),
-        (forall(x : nat) , Cpos x 0 (f x)) ->
-        (forall(x1 y1 : nat) (c : Color), Cpos x1 y1 c <-> F f x1 y1 = c)).
-  Proof.
-  Admitted.
+  
+  Definition Cposf (f : nat -> Color) (x y : nat) (c : Color) : Prop :=
+    c = F f x y.
 
   Lemma C_exists_F :
     forall(x y:nat) (f:nat->Color), exists(c:Color), F f x y = c.
@@ -1367,7 +1352,7 @@ Section Three_Color_Triangle_Problem_modify.
 
   Lemma C_exists_uniq_mix_F :
     (forall(f : nat -> Color),
-        (forall(x : nat) , Cpos x 0 (f x)) ->
+        (forall(x : nat) , Cposf f x 0 (f x)) ->
         (C_exists /\ C_uniq /\ C_mix)).
   Proof.
     move=> f paint.
