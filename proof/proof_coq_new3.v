@@ -1267,6 +1267,8 @@ Section Three_Color_Triangle_Problem_modify.
     | 0 => f x
     | y'.+1 => mix (F f x y') (F f(x.+1) y')
     end.
+
+  Parameter funC : nat -> Color.
   
   Definition CposF f x y c : Prop := (c = F f x y).
 
@@ -1302,15 +1304,21 @@ Section Three_Color_Triangle_Problem_modify.
   Qed.
 
   Theorem Three_Color_Triangle_Problem_modify :
-    forall (f : nat -> Color),
     forall (n : nat) , n > 0 ->
     (exists k :nat, n = 3 .^ k) <->
-    (forall c0 c1 c2 : Color, TriangleF f 0 0 n  c0 c1 c2).
+    (forall(f : nat -> Color) (c0 c1 c2 : Color), TriangleF f 0 0 n c0 c1 c2).
   Proof.
-    move=> f.
-    apply (Three_Color_Triangle_Problem (CposF f)).
-    apply C_exists_F. apply C_uniq_F.
-    move=> x y c0 c1 c2; rewrite ! addn1. by apply C_mix_F.
+    move=> n Nrange. apply conj.
+    - move=> H1 f.
+      apply (Three_Color_Triangle_Problem (CposF f)).
+      apply C_exists_F. apply C_uniq_F.
+      move=> x y c0 c1 c2; rewrite ! addn1.
+      apply C_mix_F. done. done.
+    - move=> H. specialize (H funC).
+      apply (Three_Color_Triangle_Problem (CposF funC)).
+      apply C_exists_F. apply C_uniq_F.
+      move=> x y c0 c1 c2; rewrite ! addn1.
+      apply C_mix_F. done. done.
   Qed.
   
 End Three_Color_Triangle_Problem_modify.
