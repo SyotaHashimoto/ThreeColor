@@ -495,18 +495,11 @@ Section Three_Color_Triangle_Problem.
   Theorem Three_Color_Triangle_Problem_suf :
     forall (x n : nat),
       (exists k : nat, n = 3 .^ k) -> (WellColoredTriangle x n). 
-      (*
-      forall Cpos:nat->nat->Color->Prop, forall (c0 c1 c2 : Color),
-        C_mix Cpos
-        -> C_exists Cpos
-        -> Triangle Cpos x 0 n c0 c1 c2.
-       *)
-  Admitted.
-  (*
   Proof.
-    move=> x. by apply Three_Color_Triangle_Problem_suf''.    
+    rewrite /WellColoredTriangle.
+    move=> x n Step Cpos H_uniq H_exists H_mix c c0 c1 Cpos0 Cposxn.
+    by apply Three_Color_Triangle_Problem_suf''.    
   Qed.
-   *)
   
   Fixpoint F (f : nat -> Color) (x y : nat) : Color :=
     match y with
@@ -557,7 +550,7 @@ Section Three_Color_Triangle_Problem.
     split. rewrite /C_uniq. apply (C_uniq_F f).
     split. rewrite /C_exists. apply (C_exists_F f).
     split. rewrite /C_mix. move=> x y c0 c1 c2.
-    do!rewrite addn1. apply (C_mix_F f). by rewrite /CposF /F.
+    do ! rewrite addn1. apply (C_mix_F f). by rewrite /CposF /F.
   Qed.
 
   Lemma rangeN3 : forall n : nat, exists k : nat, (n = 0) \/ (3.^k <= n <= (3.^k).*2) \/ ((3.^k).*2 + 1 <= n < (3.^(k.+1))).
@@ -648,9 +641,9 @@ Section Three_Color_Triangle_Problem.
   Proof.
     move=> Cpos x y n H_exists H_mix topcolor.
     have fromAllRedN: forall q p : nat, (0 <= p+q <= n ->  Cpos (x+p) (y+q) red).
-      by apply AllRedN. 
-    generalize (fromAllRedN n 0). rewrite addn0. rewrite add0n. move=> A. apply A.
-    apply/andP. done. 
+    apply AllRedN. done. done. done.
+    generalize (fromAllRedN n 0). rewrite addn0. rewrite add0n.
+    move=> A. apply A. apply/andP. done. 
   Qed.
 
   (* Three_Color_Triangle_Problem_nec_even のための定義と補題群 *)
@@ -778,6 +771,7 @@ Section Three_Color_Triangle_Problem.
       ~(forall Cpos: nat->nat->Color->Prop, 
                C_uniq Cpos ->
                C_exists Cpos ->
+               C_mix Cpos ->
                forall (c c0 c1: Color),
                  Cpos x 0 c0 ->
                  Cpos (x+n) 0 c1 ->
@@ -788,7 +782,7 @@ Section Three_Color_Triangle_Problem.
     have H_CposYB: exists Cpos' : nat -> nat -> Color -> Prop,C_uniq Cpos' /\ C_exists Cpos' /\ C_mix Cpos' /\ (forall x0 i : nat, Cpos' (x0 + i) 0 (colorYB x n (x0 + i))). 
     apply (C_paint' (colorYB x n)).
     move:H_CposYB.  case=> CposYB [H_uniq [H_exists [H_mix H]]].
-    specialize (Triangle_hyp CposYB H_uniq H_exists).
+    specialize (Triangle_hyp CposYB H_uniq H_exists H_mix).
     have topcolor : forall i : nat, ((0 <= i <= n) -> CposYB (x+i) 0 (colorYB x n (x+i))).
     move=>i range. apply H. 
     
@@ -1082,6 +1076,7 @@ Section Three_Color_Triangle_Problem.
       ~(forall Cpos: nat->nat->Color->Prop, 
            C_uniq Cpos ->
            C_exists Cpos ->
+           C_mix Cpos ->
            forall (c c0 c1: Color),
              Cpos x 0 c0 ->
              Cpos (x+n) 0 c1 ->
@@ -1089,7 +1084,9 @@ Section Three_Color_Triangle_Problem.
   Proof.
     - move=> x n k cond triangle.
       have H_CposYBBY: exists Cpos' : nat -> nat -> Color -> Prop,C_uniq Cpos' /\ C_exists Cpos' /\ C_mix Cpos' /\ (forall x0 i : nat, Cpos' (x0 + i) 0 (colorYBBY x n (x0 + i))). apply (C_paint' (colorYBBY x n)).
-      move:H_CposYBBY.  case=> CposYBBY [H_uniq [H_exists [H_mix H]]].
+      move:H_CposYBBY.  move=> [] CposYBBY. move=> [] H_uniq.
+      move=> [] H_exists. move=> [] H_mix.  move=> H.
+      (*case=> CposYBBY [H_uniq [H_exists [H_mix [A H]]]].*)
       specialize (triangle CposYBBY H_uniq H_exists).
       have topcolor : forall i : nat, ((0 <= i <= n) -> CposYBBY (x+i) 0 (colorYBBY x n (x+i))).
       move=>i range. apply H.       
@@ -1099,15 +1096,14 @@ Section Three_Color_Triangle_Problem.
         exists k. done. done. done. 
       + have fromCpaint: forall i:nat,0<=i<=n -> CposYBBY (x+i) 0 (colorYBBY x n (x+i)).
         move=> i rangeI. done.
-
         
       + have fromOddC: CposYBBY x (0+n) red.
         apply (ShortOddC CposYBBY x n k). done. done. done. done. done. done. 
       + have A1: CposYBBY (x+0) 0 (colorYBBY x n (x+0)). apply fromCpaint. done. 
       + have A2: CposYBBY (x+n) 0 (colorYBBY x n (x+n)). apply fromCpaint.
-        have B1: 0<=n. apply leq0n. have B2: n<=n. apply leqnn. rewrite B1. rewrite B2. done. 
+        have B1: 0<=n. apply leq0n. have B2: n<=n. apply leqnn. rewrite B1. rewrite B2. done.
       + have [c' A3]: exists c':Color, CposYBBY x (0+n) c'. apply H_exists. 
-      + have A4: Triangle CposYBBY x 0 n (colorYBBY x n x) (colorYBBY x n (x+n)) c'. apply triangle. rewrite addn0 in A1. done. done. 
+      + have A4: Triangle CposYBBY x 0 n (colorYBBY x n x) (colorYBBY x n (x+n)) c'. apply triangle. done. rewrite addn0 in A1. done. done.
       + have mix1: c' = mix (colorYBBY x n x) (colorYBBY x n (x+n)). apply A4.
         split. rewrite- {1 3} (addn0 x). done. split. done. done. 
       + have A5: colorYBBY x n x = colorYBBY x n (x+n). apply lemYBBY5. done. 
@@ -1319,17 +1315,6 @@ Qed.
   (* 奇数の場合-2 終わり *)
   Lemma Three_Color_Triangle_Problem_nec_LongOdd :
     forall (x n k : nat), ((3.^k).*2 + 1 <= n < (3.^(k.+1))) -> ~(WellColoredTriangle x n). 
-(*         
-      -> ~(forall Cpos: nat->nat->Color->Prop, 
-           C_uniq Cpos ->
-           C_exists Cpos ->
-           forall (c c0 c1: Color),
-             Cpos x 0 c0 ->
-             Cpos (x+n) 0 c1 ->
-             Triangle Cpos x 0 n c0 c1 c).
- *)
-  Admitted.
-  (*
   Proof.
     - move=> x n k rangeN triangle.
       have H_CposBYB: exists Cpos' : nat -> nat -> Color -> Prop,C_uniq Cpos' /\ C_exists Cpos' /\ C_mix Cpos' /\ (forall x0 i : nat, Cpos' (x0 + i) 0 (colorBYB x n k (x0 + i))). apply (C_paint' (colorBYB x n k)).
@@ -1348,8 +1333,8 @@ Qed.
       + have H_CposBYB: forall i:nat, 0<=i<=n -> CposBYB (x+i) 0 (colorBYB x n k (x+i)).
         move=> i rangeI. by apply fromCpaint. 
       + have CposR: CposBYB x n red. by apply (LongOddC CposBYB x n k).
-      + have triBYB: Triangle CposBYB x 0 n (colorBYB x n k x) (colorBYB x n k (x+n)) red. apply triangle.
-        rewrite- {1 3} (addn0 x).  by apply fromCpaint. done. 
+      + have triBYB: Triangle CposBYB x 0 n (colorBYB x n k x) (colorBYB x n k (x+n)) red. apply triangle. done.
+        rewrite- {1 3} (addn0 x).  by apply fromCpaint. done.
       + have colB1: colorBYB x n k x = blu.
         rewrite- {2} (addn0 x). 
         apply (lemBYB1 x 0). done. 
@@ -1366,38 +1351,32 @@ Qed.
       + have mixRBB: red = mix blu blu.
         apply triBBR. apply conj. done. done. done.         
   Qed.
-   *)
     
   Lemma Three_Color_Triangle_Problem_nec' :
     forall (n x : nat), n > 0 -> ~(exists k :nat, n = 3 .^ k) -> ~(WellColoredTriangle x n). 
-(*
-            forall Cpos: nat->nat->Color->Prop, 
-           C_uniq Cpos ->
-           C_exists Cpos ->
-           C_mix Cpos ->           
-           forall (c c0 c1: Color),
-             Cpos x 0 c0 ->
-             Cpos (x+n) 0 c1 ->
-             Triangle Cpos x 0 n c0 c1 c).
-*)
-  Admitted.
-(*  
   Proof.
-    move=> n x NotZeroN_hyp Notexp3k.
+    rewrite /WellColoredTriangle.
+    move=> n x NotZeroN_hyp Notexp3k WCT.
     case (rangeN4 n) => k rangeN. case rangeN => [ZeroN|NotZeroN].
     - rewrite ZeroN in NotZeroN_hyp. done.
     - case (odd_or_even n) => [OddN|EvenN].
       + case NotZeroN => [Is3k|Not3k].
-        have Isexp3k: exists k:nat,n=3.^k. by exists k. done. 
+        have Isexp3k: exists k:nat,n=3.^k. by exists k. done.
       + case Not3k => [Short|Long].
-        * move:(Short). move/andP. case=>[Short1 Short2]. 
+        * move:(Short). move/andP. case=>[Short1 Short2].
         * apply (Three_Color_Triangle_Problem_nec_ShortOdd x n k).
           rewrite Short2. rewrite OddN. 
-          apply /andP. rewrite Short1. done. 
-        * apply (Three_Color_Triangle_Problem_nec_LongOdd x n k). done.
-      + apply (Three_Color_Triangle_Problem_nec_even). rewrite NotZeroN_hyp. rewrite EvenN. done.
- Qed.
- *)
+          apply /andP. rewrite Short1. done.
+          move=> Cpos  H_uniq H_exists c c0 c1 Cpos0 Cpos1.
+          specialize (WCT Cpos). apply WCT. done. done. done. done.
+        * (* move=> Cpos H_uniq H_exists. *)
+          (* Check Three_Color_Triangle_Problem_nec_LongOdd. *)
+          (* Print WellColoredTriangle. *)
+          (* move=> c c0 c1 Cpos0 Cpos1. *)
+          apply (Three_Color_Triangle_Problem_nec_LongOdd x n k). done. done.
+      + apply (Three_Color_Triangle_Problem_nec_even x n).
+        rewrite NotZeroN_hyp. by rewrite EvenN. by apply WCT.
+  Qed.
   
   Theorem Three_Color_Triangle_Problem_nec :
     forall (n x : nat), n > 0 -> (WellColoredTriangle x n) -> (exists k :nat, n = 3 .^ k).
@@ -1424,24 +1403,6 @@ Qed.
     by apply (Three_Color_Triangle_Problem_sufnec n 0).
   Qed.
 
-  (*
-  Lemma Three_Color_Triangle_Problem_suf_sub  :
-    forall (n : nat) , n > 0 ->
-      (exists k :nat, n = 3 .^ k) ->
-      (forall c0 c1 c2 : Color, Triangle 0 0 n c0 c1 c2).
-  Proof.
-    move=> n.
-    by apply (Three_Color_Triangle_Problem_sufnec n 0 0).
-  Qed.
-
-  Lemma Three_Color_Triangle_Problem_nec_sub  :
-    forall (n : nat) , n > 0 ->
-      (forall c0 c1 c2 : Color, Triangle 0 0 n c0 c1 c2) ->
-      (exists k :nat, n = 3 .^ k).
-  Proof.
-    move=> n. by apply (Three_Color_Triangle_Problem_sufnec n 0 0).
-  Qed.
-   *)
 End Three_Color_Triangle_Problem.
 
 
