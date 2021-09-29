@@ -509,8 +509,8 @@ Section Three_Color_Triangle_Problem.
   
   Definition CposF f x y c : Prop := (c = F f x y).
 
-  Definition TriangleF f x y n c0 c1 c2 :=
-    (CposF f x y c0 /\ CposF f (x+n) y c1 /\ CposF f x (y+n) c2) -> c2 = mix c0 c1.
+  (* Definition TriangleF f x y n c0 c1 c2 := *)
+  (*   (CposF f x y c0 /\ CposF f (x+n) y c1 /\ CposF f x (y+n) c2) -> c2 = mix c0 c1. *)
 
   Lemma C_exists_F :
     forall(f:nat->Color) (x y:nat), exists(c:Color), CposF f x y c.
@@ -1411,7 +1411,7 @@ Section Three_Color_Triangle_Problem_modify.
     (forall x y : nat, forall c0 c1 : Color, (Cpos x y c0 /\ Cpos x y c1) -> c0 = c1) ->
     (forall x y : nat, forall c0 c1 c2 : Color, (Cpos x y c0 /\ Cpos (x + 1) y c1 /\ Cpos x (y + 1) c2) -> c2 = mix c0 c1) ->
     (Triangle Cpos x 0 n c0 c1 c2).
-
+  
   (* f は 最上段の色塗り方法を与えている *)
   Definition TriangleF cposF n := (cposF 0 n = mix (cposF 0 0) (cposF n 0)). 
 
@@ -1420,12 +1420,17 @@ Section Three_Color_Triangle_Problem_modify.
   Definition WellColoredTriangleF n := forall cposF: nat->nat->Color, WellColorF cposF -> TriangleF cposF n.
 
   (* 片道で使う補題 (cposF から Cpos を作る) *)
-  forall cposF:nat->nat->Color, WellColorF cposF -> forall x y:nat, forall c:Color, CposF (fun x=>cposF x 0) x y (cposF x y).
+  Lemma create_Cpos :
+    forall cposF:nat->nat->Color, WellColorF cposF ->
+    forall x y:nat, forall c:Color, CposF (fun x=>cposF x 0) x y (cposF x y).
   (* 逆向きは choice を使う Cpos から cposF を作る *)
+  Proof.
+    
+  Admitted.
   
-Theorem: (exists k:nat, n = 3.^k) <-> WellColoredTriangleF n. 
-
-
+  (* 最終的に示す定理 *)
+  (* Theorem: (exists k:nat, n = 3.^k) <-> WellColoredTriangleF n. *)
+  
   Theorem Three_Color_Triangle_Problem_suf_out1 :
   forall(Cpos : nat -> nat -> Color -> Prop),
     (forall x y : nat, exists c : Color, Cpos x y c) ->
