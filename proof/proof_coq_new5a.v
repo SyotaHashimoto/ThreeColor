@@ -1084,9 +1084,7 @@ Section Three_Color_Triangle_Problem.
   Proof.
     - move=> x n k cond triangle.
       have H_CposYBBY: exists Cpos' : nat -> nat -> Color -> Prop,C_uniq Cpos' /\ C_exists Cpos' /\ C_mix Cpos' /\ (forall x0 i : nat, Cpos' (x0 + i) 0 (colorYBBY x n (x0 + i))). apply (C_paint' (colorYBBY x n)).
-      move:H_CposYBBY.  move=> [] CposYBBY. move=> [] H_uniq.
-      move=> [] H_exists. move=> [] H_mix.  move=> H.
-      (*case=> CposYBBY [H_uniq [H_exists [H_mix [A H]]]].*)
+      move:H_CposYBBY; case=> [CposYBBY [H_uniq [H_exists [H_mix H]]]].
       specialize (triangle CposYBBY H_uniq H_exists).
       have topcolor : forall i : nat, ((0 <= i <= n) -> CposYBBY (x+i) 0 (colorYBBY x n (x+i))).
       move=>i range. apply H.       
@@ -1368,12 +1366,8 @@ Qed.
           rewrite Short2. rewrite OddN. 
           apply /andP. rewrite Short1. done.
           move=> Cpos  H_uniq H_exists c c0 c1 Cpos0 Cpos1.
-          specialize (WCT Cpos). apply WCT. done. done. done. done.
-        * (* move=> Cpos H_uniq H_exists. *)
-          (* Check Three_Color_Triangle_Problem_nec_LongOdd. *)
-          (* Print WellColoredTriangle. *)
-          (* move=> c c0 c1 Cpos0 Cpos1. *)
-          apply (Three_Color_Triangle_Problem_nec_LongOdd x n k). done. done.
+          specialize (WCT Cpos). by apply WCT.
+        * by apply (Three_Color_Triangle_Problem_nec_LongOdd x n k). 
       + apply (Three_Color_Triangle_Problem_nec_even x n).
         rewrite NotZeroN_hyp. by rewrite EvenN. by apply WCT.
   Qed.
@@ -1381,18 +1375,15 @@ Qed.
   Theorem Three_Color_Triangle_Problem_nec :
     forall (n x : nat), n > 0 -> (WellColoredTriangle x n) -> (exists k :nat, n = 3 .^ k).
   Proof.
-    move=> n x NotZeroN_hyp.
-    (* 対偶を用いて示す *)
-    apply Contraposition. move=> Notexp3k.
-    apply Three_Color_Triangle_Problem_nec'. done. done. 
+    move=> n x NotZeroN_hyp; apply Contraposition; move=> Notexp3k.
+    by apply Three_Color_Triangle_Problem_nec'.
   Qed.
 
   Theorem Three_Color_Triangle_Problem_sufnec :
     forall (n x : nat) , n > 0 -> (exists k : nat, n = 3 .^ k) <-> (WellColoredTriangle x n). 
   Proof.
     move=> n x NotZeroN. split.
-    - move=> H Cpos H_uniq H_exists H_mix c c0 c1 H_x0 H_xn. 
-      apply Three_Color_Triangle_Problem_suf. done. done. done. done. done. done. 
+    - by apply Three_Color_Triangle_Problem_suf.
     - by apply Three_Color_Triangle_Problem_nec.
   Qed.
 
