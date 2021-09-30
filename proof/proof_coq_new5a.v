@@ -189,7 +189,7 @@ Section nat1.
   Lemma  Short1 :
     forall n k : nat, 3 .^ k <= n <= (3 .^ k).*2 <-> (3 .^ k <= n /\ n <= 2 * (3 .^ k)).
   Proof.
-    move=> n k. apply conj.
+    move=> n k. split.
     move=> H. apply /andP. by rewrite mul2n.
     move=> H. apply /andP. by rewrite mul2n in H.
   Qed.
@@ -197,7 +197,7 @@ Section nat1.
   Lemma Long1 :
     forall n k : nat, (3 .^ k).*2 + 1 <= n < 3 .^ k.+1 <-> 2 * (3 .^ k) + 1 <= n /\ n < 3 .^ k.+1.
   Proof.
-    move=> n k. apply conj.
+    move=> n k. split.
     move=> H. apply /andP. by rewrite mul2n.
     move=> H. apply /andP. by rewrite mul2n in H.
   Qed.
@@ -205,7 +205,7 @@ Section nat1.
   Lemma Short2 :
     forall n k : nat, 3 .^ k <= n.+1 <= (3 .^ k).*2 <-> (3 .^ k <= n.+1 /\ n.+1 <= 2 * (3 .^ k)).
   Proof.
-    move=> n k. apply conj.
+    move=> n k. split.
     move=> H. apply /andP. by rewrite mul2n.
     move=> H. apply /andP. by rewrite mul2n in H.
   Qed.
@@ -213,32 +213,32 @@ Section nat1.
   Lemma Long2 :
     forall n k : nat, (3 .^ k).*2 + 1 <= n.+1 < 3 .^ k.+1 <-> 2 * (3 .^ k) + 1 <= n.+1 /\ n.+1 < 3 .^ k.+1.
   Proof.
-    move=> n k. apply conj.
+    move=> n k. split.
     move=> H. apply /andP. by rewrite mul2n.
     move=> H. apply /andP. by rewrite mul2n in H.
   Qed.
 
   Lemma  Boundary :
     forall n k : nat, (n.+1 = 3 .^ k.+1) <-> (n.+1 == 3 .^ k.+1).
-  Proof. move=> n k. apply conj => H. by apply /eqP. by apply /eqP. Qed.
+  Proof. move=> n k. split => H. by apply /eqP. by apply /eqP. Qed.
 
   Lemma connect3m :
     forall n m : nat,
       (3 .^ m <= n /\ n <= 2 * 3 .^ m) \/ (2 * 3 .^ m + 1 <= n /\ n < 3 .^ m.+1) <->
       (3 .^ m <= n /\ n < 3 .^ m.+1).
   Proof.
-    move=> n m. apply conj.
+    move=> n m. split.
     - move=> Long; case Long.
-      + move=> []Left1 Left2; apply conj.
+      + move=> []Left1 Left2; split.
         done. by apply leq23m_3m1.
-      + move=> [] Right1 Right2; apply conj.
+      + move=> [] Right1 Right2; split.
         apply leq3m_23m1. done. by [].
     - move=> [] Short1 Short2.
       have leq23mOr : forall m1 m2 : nat, (n <= 2 * 3 .^ m) \/ (2 * 3 .^ m + 1 <= n).
       move=> m1 m2; by apply leqNatOr.
       case (leq23mOr n m) => [Less|More].
-      + left.  apply conj. by []. by [].
-      + right. apply conj. by []. by [].
+      + left.  split. by []. by [].
+      + right. split. by []. by [].
   Qed.
  
 End nat1.
@@ -253,7 +253,7 @@ Section Classical.
   
   Lemma Lem_iff_Dne : Lem <-> Dne.
   Proof.
-    rewrite /Lem /Dne. apply conj.
+    rewrite /Lem /Dne. split.
     - move=> Lem P.
       have : P \/ ~P. by apply Lem.
       rewrite /not. by case.
@@ -266,7 +266,7 @@ Section Classical.
   (* 古典論理において任意の命題とその命題の対偶が同値であることを示す *)
   Lemma Contraposition : forall P Q : Prop, (P -> Q) <-> (~Q -> ~P).
   Proof.
-    move=> P Q; apply conj.
+    move=> P Q; split.
     - move=> PtoQ nQ QisTrue.
       apply nQ; by apply PtoQ.
     - move=> nQtonP PisTrue.
@@ -336,6 +336,7 @@ Section Three_Color_Triangle_Problem.
         forall (c c0 c1: Color),
           Cpos x 0 c0 ->
           Cpos (x+n) 0 c1 ->
+          Cpos x n c -> 
           Triangle Cpos x 0 n c0 c1 c).
   
   (* ----- mix, Cconf の性質 ----- *) 
@@ -367,7 +368,7 @@ Section Three_Color_Triangle_Problem.
   Lemma mix_iff_Cconf (c0 c1 c2 : Color) :
     c2 = mix c0 c1 <-> Cconf c0 c1 c2.
   Proof.
-    rewrite /Cconf. apply conj => [Mix|Cconf].
+    rewrite /Cconf. split => [Mix|Cconf].
     - case c0, c1, c2; do ! [left; done|right; done|done].
     - case Cconf.
       + move=> [] C01; move=> [] C12 C20. rewrite C01 C12.
@@ -447,29 +448,29 @@ Section Three_Color_Triangle_Problem.
         apply Triangle035. done.
       + have mix346 : c6 = mix c3 c4.
         apply Triangle346.
-        * apply conj. done.
-        * apply conj. rewrite- addnA; rewrite add3n3n mul2n. done.
+        * split. done.
+        * split. rewrite- addnA; rewrite add3n3n mul2n. done.
         * done.
       + have mix417 : c7 = mix c4 c1.
         apply Triangle417.
-        * apply conj. done.
-        * apply conj. rewrite- mul2n.
+        * split. done.
+        * split. rewrite- mul2n.
            rewrite- addnA. rewrite add23n3n. rewrite- Step. done.
         * done.
       + have mix568 : c8 = mix c5 c6.
         apply Triangle568.
-        * apply conj. done.
-        * apply conj. done.
+        * split. done.
+        * split. done.
         * rewrite- addnA; rewrite add3n3n mul2n. done.
       + have mix679 : c9 = mix c6 c7.
         apply Triangle679.
-        * apply conj. done.
-        * apply conj. rewrite- addnA; rewrite add3n3n mul2n. done.
+        * split. done.
+        * split. rewrite- addnA; rewrite add3n3n mul2n. done.
         * rewrite- addnA; rewrite add3n3n mul2n. done.
       + have mix892 : c2 = mix c8 c9.
         apply Triangle892.
-        * apply conj. done.
-        * apply conj. done.
+        * split. done.
+        * split. done.
         * rewrite- addnA. rewrite- mul2n. rewrite add23n3n. rewrite- Step.
           done.
 
@@ -497,7 +498,7 @@ Section Three_Color_Triangle_Problem.
       (exists k : nat, n = 3 .^ k) -> (WellColoredTriangle x n). 
   Proof.
     rewrite /WellColoredTriangle.
-    move=> x n Step Cpos H_uniq H_exists H_mix c c0 c1 Cpos0 Cposxn.
+    move=> x n Step Cpos H_uniq H_exists H_mix c c0 c1 Cpos0 Cposxn Cposyn.
     by apply Three_Color_Triangle_Problem_suf''.    
   Qed.
   
@@ -506,7 +507,7 @@ Section Three_Color_Triangle_Problem.
     | 0 => f x
     | y'.+1 => mix (F f x y') (F f(x.+1) y')
     end.
-  
+
   Definition CposF f x y c : Prop := (c = F f x y).
 
   (* Definition TriangleF f x y n c0 c1 c2 := *)
@@ -539,7 +540,6 @@ Section Three_Color_Triangle_Problem.
     rewrite /F. rewrite- /F. done.
   Qed.
 
-  
   Lemma C_paint' :
     forall (f : nat -> Color), exists(Cpos' : nat -> nat -> Color -> Prop),
         C_uniq Cpos' /\ C_exists Cpos' /\ C_mix Cpos'
@@ -552,7 +552,7 @@ Section Three_Color_Triangle_Problem.
     split. rewrite /C_mix. move=> x y c0 c1 c2.
     do ! rewrite addn1. apply (C_mix_F f). by rewrite /CposF /F.
   Qed.
-
+  
   Lemma rangeN3 : forall n : nat, exists k : nat, (n = 0) \/ (3.^k <= n <= (3.^k).*2) \/ ((3.^k).*2 + 1 <= n < (3.^(k.+1))).
   Proof.
     elim=> [ | n IHn].
@@ -574,9 +574,9 @@ Section Three_Color_Triangle_Problem.
           case rangeBoundary => [rangeN1|rangeN2].
           (* n.+1 = 3 .^ k のとき *)
           ** exists (k.+1). rewrite rangeN1. right; left.
-             apply /andP. apply conj. done.
+             apply /andP. split. done.
              rewrite- addnn. rewrite- {1} (add0n (3.^k.+1)). rewrite- eq_mono_plus_le_plus. done. 
-          ** exists k. rewrite Short2 Long2 connect3m. right. apply conj.
+          ** exists k. rewrite Short2 Long2 connect3m. right. split.
              move: rangeN. move /andP. move=> [] range1 range2.
              apply leqW. done. done.
   Qed.        
@@ -617,11 +617,11 @@ Section Three_Color_Triangle_Problem.
       move=> p. move/andP. move =>[rangePQ1 rangePQ2].
       + have prevL: Cpos (x+p) (y+q) red.
         apply IHq.
-        apply /andP. apply conj. done.
+        apply /andP. split. done.
         rewrite addnS in rangePQ2. by apply ltnW. 
       + have prevR: Cpos ((x+p).+1) (y+q) red.
         rewrite- (addnS x p). 
-        apply IHq. apply /andP. apply conj. done. 
+        apply IHq. apply /andP. split. done. 
         rewrite addSn. rewrite addnS in rangePQ2. done.
     - have [c Red'] : exists c : Color, Cpos (x+p) (y+q+1) c.
         by apply H_exists.
@@ -699,12 +699,12 @@ Section Three_Color_Triangle_Problem.
     
     (* 最上段のマスが colorYB で塗られていることを示す *)
     - have rangetop1 : 0 <= i <= n.
-      apply /andP. apply conj. done.
+      apply /andP. split. done.
       move: range. move /andP. move=> [] rangetop1a rangetop1b.
       apply (trans_lelele rangetop1b). apply leq_pred.
       generalize (topcolor i) => Cpos1. specialize (Cpos1 rangetop1).
     - have rangetop2 : 0 <= i.+1 <= n.
-      apply /andP. apply conj. done.
+      apply /andP. split. done.
       move: range. move /andP. move=> [] rangetop2a rangetop2b.
       have S_pred : (i.+1 <= n) = (i <= n.-1).
       apply eq_adjoint_S_P_le. done.
@@ -716,7 +716,7 @@ Section Three_Color_Triangle_Problem.
       apply H_exists. move: Cpos3. case. move=> c Cpos3.
       have Color : c = mix (colorYB x n (x + i)) (colorYB x n (x + (i + 1))).
       apply (H_mix (x+i) 0).
-      apply conj. done. apply conj. rewrite- addnA. done. done.
+      split. done. split. rewrite- addnA. done. done.
       rewrite Color in Cpos3.
 
     (* colorYB で塗られている色を示す *)
@@ -775,6 +775,7 @@ Section Three_Color_Triangle_Problem.
                forall (c c0 c1: Color),
                  Cpos x 0 c0 ->
                  Cpos (x+n) 0 c1 ->
+                 Cpos x n c ->                 
                  Triangle Cpos x 0 n c0 c1 c).
   Proof.
     move=> x n.
@@ -807,7 +808,7 @@ Section Three_Color_Triangle_Problem.
       case. move=> c CposY.
       generalize (Triangle_hyp c (colorYB x n x)) => TriangleN.
       have ColorBelow : c = mix (colorYB x n x) (colorYB x n (x + n)).
-      apply TriangleN. rewrite addn0 in Cpos0. done. done. split.
+      apply TriangleN. rewrite addn0 in Cpos0. done. done. done. split.
       rewrite eq_unit_plus_l in Cpos0. done. done. 
       
     (* CposY の色が yel であることを示す *)
@@ -820,7 +821,7 @@ Section Three_Color_Triangle_Problem.
 
     (* falseColor より矛盾を示す *)
     - apply (falseColor CposYB x n red yel). apply H_uniq. 
-      apply conj. done. apply conj. done. done.  
+      split. done. split. done. done.  
   Qed.
 
   (* Three_Color_Triangle_Problem_nec_oddA のための定義と補題群 *)
@@ -898,7 +899,7 @@ Section Three_Color_Triangle_Problem.
       have rangeN1 : ((0 <= n <= n./2) && (true == false)) = false.
       rewrite andbF. done. rewrite rangeN1.
     - have rangeN2 : n./2.+1 <= n <= n.
-      apply /andP. apply conj. rewrite eq_adjoint_half_double_lt. rewrite- addnn. 
+      apply /andP. split. rewrite eq_adjoint_half_double_lt. rewrite- addnn. 
       rewrite- eq_S_le_add_r. by apply odd_gt0. done. 
       rewrite rangeN2. by rewrite /=.
   Qed.
@@ -987,10 +988,10 @@ Section Three_Color_Triangle_Problem.
     have fromOddA: forall i:nat, (0<=i<=n-3.^k -> Cpos (x+i) (3.^k) (colorYB x (n-3.^k) (x+i))).
     apply ShortOddA. apply /andP. rewrite oddN'. by rewrite rangeN. done. done. done. done. done. 
     have rangeI1 : 0 <= i <= n - 3 .^ k.
-    apply /andP. apply conj. done.
+    apply /andP. split. done.
     apply (leq_trans C2). apply leq_pred.
     have rangeI2 : 0 <= i.+1 <= n - 3 .^ k.
-    apply /andP. apply conj. done.
+    apply /andP. split. done.
     apply (leq_ltn_trans C2).
     rewrite ltn_predL. done.
 
@@ -1009,7 +1010,7 @@ Section Three_Color_Triangle_Problem.
     apply H_exists. move: Cpos3. case. move=> c Cpos3.
     have Color : c = mix (colorYB x (n - 3 .^ k) (x + i)) (colorYB x (n - 3 .^ k) (x + i + 1)).
     apply (H_mix (x+i) (3.^k)).
-    apply conj. done. apply conj. done. done.
+    split. done. split. done. done.
     rewrite Color in Cpos3.
 
     (* colorYB で塗られている色を示す *)
@@ -1159,7 +1160,7 @@ Qed.
     forall k n : nat,
       ((3.^k).*2 + 1 <= n < (3.^(k.+1))) -> ((3.^k) <= n) /\ ((3.^k).*2 <= n) /\ (n - (3.^k).*2 <= (3.^k).-1).
   Proof.
-    move => k n. move/andP. move=> [rangeN1 rangeN2]. apply conj. 
+    move => k n. move/andP. move=> [rangeN1 rangeN2]. split. 
     - (* first goal *)
       have X1: ((3.^k) <= (3.^k).*2 + 1).
       rewrite- addnn. rewrite eq_assoc_plus. rewrite- eq_le_plus_l. by apply leq0n.
@@ -1167,7 +1168,7 @@ Qed.
     - (* second goal *)
       have X2: ((3.^k).*2 <= n). 
       apply ltnW. rewrite  addn1 in rangeN1. done.
-      apply conj. done. 
+      split. done. 
     - (* third goal *)
       have X3: (0 < 3.^k) = true. by apply expn3Pos.
       rewrite- (eq_adjoint_S_P_le (n - (3 .^ k).*2)).
@@ -1197,20 +1198,20 @@ Qed.
       + have A2: (3 .^ k).*2 <= n. by apply fromRangeN.
       + have A3: n - (3.^k).*2 <= (3.^k).-1. by apply fromRangeN.
       + have exp3Pos: (0 < 3.^k) = true. by apply expn3Pos.    
-        apply conj.
+        split.
       + (* first part *)
         move=> i. move /andP. move => [C D].
       + have E: 0 <= i <= n.
-        apply /andP. apply conj. done.
+        apply /andP. split. done.
         apply (trans_lelele D), leq_subr.
       + have A4: 0 <= i <= (3.^k).-1.
-        apply/andP. apply conj. done. apply (trans_lelele D A3).
+        apply/andP. split. done. apply (trans_lelele D A3).
       + have CposB: Cpos (x+i) 0 blu. 
         ++ have colB: colorBYB x n k (x+i) = blu. apply (lemBYB1 x 0 n k i A4).
         ++ rewrite- colB. by apply topcolor.            
       + have CposY: Cpos (x+(3.^k)+i) 0 yel.
         ++ have A5: 3.^k <= (3.^k)+i <= n-(3.^k).
-           apply /andP. apply conj. by rewrite- eq_le_plus_l.
+           apply /andP. split. by rewrite- eq_le_plus_l.
            rewrite- (eq_adjoint_plus_minus_le ((3.^k)+i) A1).
            rewrite eq_comm_plus. rewrite- eq_assoc_plus. rewrite addnn.
            rewrite eq_comm_plus. rewrite eq_adjoint_plus_minus_le. done. done.
@@ -1226,10 +1227,10 @@ Qed.
       + (* second part *)
         move=> i. move /andP. move => [C D].      
       + have E: 0 <= i <= n.
-        apply /andP. apply conj. done.
+        apply /andP. split. done.
         apply (trans_lelele D), leq_subr.
       + have A4: 3.^k <= i <= n-(3.^k).
-        apply/andP. apply conj. done. done.
+        apply/andP. split. done. done.
       + have CposY: Cpos (x+i) 0 yel.
         ++ have colY: colorBYB x n k (x+i) = yel. apply (lemBYB2 x 0 n k i A4). 
         ++ rewrite- colY. by apply topcolor. 
@@ -1238,7 +1239,7 @@ Qed.
         ++ have Y: i <= n - 3 .^ k. done.
         ++ have Z: (3.^k) + i <= n. rewrite eq_comm_plus. rewrite eq_adjoint_plus_minus_le. done. done. 
         ++ have A5: n - 3 .^ k < 3 .^ k + i <= n. 
-           apply /andP. apply conj.
+           apply /andP. split.
            rewrite eq_adjoint_minus_plus_lt. 
            rewrite (eq_comm_plus (3.^k) i). rewrite eq_assoc_plus. rewrite addnn. 
            apply (trans_lelele X). rewrite expnS.
@@ -1281,7 +1282,7 @@ Qed.
         rewrite [_+0]addnC. rewrite- (eq_assoc_plus 0 (3.^k) (3.^k)).
         apply Bottom_color_of_triangle. done. done. done. 
         rewrite (eq_assoc_plus x i (3.^k)). apply fromA2.
-        apply /andP. rewrite- (eq_le_plus_r (3.^k) i). apply conj. done.
+        apply /andP. rewrite- (eq_le_plus_r (3.^k) i). split. done.
         rewrite- (eq_adjoint_plus_minus_le (i+3.^k) A1).
         rewrite eq_assoc_plus. rewrite addnn.
         move:rangeI. move/andP. move =>[P Q].
@@ -1332,12 +1333,12 @@ Qed.
         move=> i rangeI. by apply fromCpaint. 
       + have CposR: CposBYB x n red. by apply (LongOddC CposBYB x n k).
       + have triBYB: Triangle CposBYB x 0 n (colorBYB x n k x) (colorBYB x n k (x+n)) red. apply triangle. done.
-        rewrite- {1 3} (addn0 x).  by apply fromCpaint. done.
+        rewrite- {1 3} (addn0 x).  by apply fromCpaint. done. done. 
       + have colB1: colorBYB x n k x = blu.
         rewrite- {2} (addn0 x). 
         apply (lemBYB1 x 0). done. 
       + have colB2: colorBYB x n k (x+n) = blu.
-        apply (lemBYB3 x 0). apply/andP. apply conj. 
+        apply (lemBYB3 x 0). apply/andP. split. 
         rewrite (eq_adjoint_minus_plus_lt n A1).
         rewrite- eq_lt_plus_l. apply expn3Pos. done. 
       + have triBBR: Triangle CposBYB x 0 n blu blu red.
@@ -1347,7 +1348,7 @@ Qed.
       + have CposB2: CposBYB (x+n) 0 blu.
         rewrite- colB2. apply H_CposBYB. apply/andP. done. 
       + have mixRBB: red = mix blu blu.
-        apply triBBR. apply conj. done. done. done.         
+        apply triBBR. split. done. done. done.         
   Qed.
     
   Lemma Three_Color_Triangle_Problem_nec' :
@@ -1365,11 +1366,11 @@ Qed.
         * apply (Three_Color_Triangle_Problem_nec_ShortOdd x n k).
           rewrite Short2. rewrite OddN. 
           apply /andP. rewrite Short1. done.
-          move=> Cpos  H_uniq H_exists c c0 c1 Cpos0 Cpos1.
-          specialize (WCT Cpos). by apply WCT.
+          move=> Cpos  H_uniq H_exists H_mix c c0 c1 Cpos0 Cpos1 [Cpos2a [Cpos2b Cpos2c]]. rewrite add0n in Cpos2c. 
+          specialize (WCT Cpos). by apply WCT. 
         * by apply (Three_Color_Triangle_Problem_nec_LongOdd x n k). 
       + apply (Three_Color_Triangle_Problem_nec_even x n).
-        rewrite NotZeroN_hyp. by rewrite EvenN. by apply WCT.
+        rewrite NotZeroN_hyp. by rewrite EvenN. apply WCT.
   Qed.
   
   Theorem Three_Color_Triangle_Problem_nec :
@@ -1403,175 +1404,114 @@ End Three_Color_Triangle_Problem.
 
 
 Section Three_Color_Triangle_Problem_modify.
+  (* 前節までの述語 Cpos: nat->nat->Color->Prop を関数 cpos nat->nat->Color に置き換えて定理を示す *)
+  (* Cpos に関する条件 C_uniq と C_exists は「Cpos が関数的」であることを意味しているので，実際の関数にする *)
+  (* この変更により C_uniq と C_exists を落とした形の主張に変更できる *)
+  (* C_mix は色塗りに関する要件なので，関数 cpos でもそれに相当する条件 F_mix は必要 *)
+  (* 方針 *)
+  (* - Cpos+C_uniq+C_exists から cpos+F_mix を作るには choice を用いる *)
+  (* - cpos から Cpos+C_uniq+C_exists から を作るには choice を用いる *)  
 
-  
+  Definition F_mix (cpos:nat->nat->Color) := forall x y:nat, (cpos x (y.+1)) = mix (cpos x y) (cpos (x.+1) y). 
 
-  Definition TriangleA Cpos x n c0 c1 c2 :=
-    (forall x y : nat, exists c : Color, Cpos x y c) ->
-    (forall x y : nat, forall c0 c1 : Color, (Cpos x y c0 /\ Cpos x y c1) -> c0 = c1) ->
-    (forall x y : nat, forall c0 c1 c2 : Color, (Cpos x y c0 /\ Cpos (x + 1) y c1 /\ Cpos x (y + 1) c2) -> c2 = mix c0 c1) ->
-    (Triangle Cpos x 0 n c0 c1 c2).
-  
-  (* f は 最上段の色塗り方法を与えている *)
-  Definition TriangleF cposF n := (cposF 0 n = mix (cposF 0 0) (cposF n 0)). 
+  (* (x,y) (x+n,y) (x,y+n) の3頂点の色が mix になっている *)
+  Definition TriangleF cpos x y n := (cpos x (y+n)) = mix (cpos x y) (cpos (x+n) y). 
 
-  Definition WellColorF f := forall x y:nat, (f x (y+1) = mix (f x y) (f (x+1) y)). 
-  
-  Definition WellColoredTriangleF n := forall cposF: nat->nat->Color, WellColorF cposF -> TriangleF cposF n.
+  (* (x,0) から始まる n 段の三角形に要請通りの任意の色塗りをしても 3頂点(x,0),(x+n,0),(x,n)の色は調和している *)
+  Definition WellColoredTriangleF x n := forall cpos: nat->nat->Color, F_mix cpos -> TriangleF cpos x 0 n.
 
-  (* 片道で使う補題 (cposF から Cpos を作る) *)
-  Lemma create_Cpos :
-    forall cposF:nat->nat->Color, WellColorF cposF ->
-    forall x y:nat, forall c:Color, CposF (fun x=>cposF x 0) x y (cposF x y).
-  (* 逆向きは choice を使う Cpos から cposF を作る *)
+  (* cpos から Cpos を作る補題 *)
+  Lemma make_Cpos_from_cpos :
+    forall cpos:nat->nat->Color,
+      F_mix cpos
+      -> exists Cpos:nat->nat->Color->Prop,
+        C_uniq Cpos /\ C_exists Cpos /\ C_mix Cpos /\ 
+        forall y x:nat, Cpos x y (cpos x y). 
   Proof.
-    
-  Admitted.
-  
-  (* 最終的に示す定理 *)
-  (* Theorem: (exists k:nat, n = 3.^k) <-> WellColoredTriangleF n. *)
-  
-  Theorem Three_Color_Triangle_Problem_suf_out1 :
-  forall(Cpos : nat -> nat -> Color -> Prop),
-    (forall x y : nat, exists c : Color, Cpos x y c) ->
-    (forall x y : nat, forall c0 c1 : Color, (Cpos x y c0 /\ Cpos x y c1) -> c0 = c1) ->
-    (forall x y : nat, forall c0 c1 c2 : Color, (Cpos x y c0 /\ Cpos (x + 1) y c1 /\ Cpos x (y + 1) c2) -> c2 = mix c0 c1) ->
-    (forall x n : nat,
-        (exists k : nat, n = 3 .^ k) ->
-        (forall c0 c1 c2 : Color, Triangle Cpos x 0 n c0 c1 c2)
-    ).
-  Proof.
-    move=> Cpos C_exists C_uniq C_mix.
-    move=> x n Step. by apply Three_Color_Triangle_Problem_suf.
+    move=>cpos H_mix.
+    exists (CposF (fun x=> cpos x 0)).
+    - split. (* C_uniq *)   rewrite/C_uniq. apply C_uniq_F. 
+    - split. (* C_exists *) rewrite/C_exists. apply C_exists_F. 
+    - split. (* C_mix *)    rewrite/C_mix. move=> x y. rewrite !addn1. apply (C_mix_F (fun x=> cpos x 0) x y).
+    - move=> y. 
+      induction y. done. move=>x. rewrite/CposF in IHy. rewrite/CposF. rewrite H_mix. rewrite IHy. rewrite IHy. done.
   Qed.
 
-  Theorem Three_Color_Triangle_Problem_suf_out2 :
-    forall x n : nat,
-      (exists k : nat, n = 3 .^ k) ->
-      (forall(Cpos : nat -> nat -> Color -> Prop),
-          (forall x y : nat, exists c : Color, Cpos x y c) ->
-          (forall x y : nat, forall c0 c1 : Color, (Cpos x y c0 /\ Cpos x y c1) -> c0 = c1) ->
-          (forall x y : nat, forall c0 c1 c2 : Color, (Cpos x y c0 /\ Cpos (x + 1) y c1 /\ Cpos x (y + 1) c2) -> c2 = mix c0 c1) ->
-          (forall c0 c1 c2 : Color, Triangle Cpos x 0 n  c0 c1 c2)
-      ).
+  Theorem unique_choice2 :
+    forall (A B C:Type) (R:A -> B -> C -> Prop),
+      (forall x:A, forall y:B, exists! z : C, R x y z) ->
+      (exists f:A->B->C, forall x:A, forall y:B, R x y (f x y)).
   Proof.
-    move=> x n Step.
-    move=> Cpos C_exists C_uniq C_mix. by apply Three_Color_Triangle_Problem_suf.
+    move=>A B C R H.
+    have H1: exists R1:A*B -> C -> Prop, forall a:A, forall b:B, forall c:C, R1 (a,b) c <-> R a b c.
+    exists (fun w => R w.1 w.2). done. move:H1=>[R'] H2.
+    - have [g H3]: exists g:A*B -> C, forall ab:A*B, R' ab (g ab). apply unique_choice.
+      move=>ab. specialize (H ab.1 ab.2). apply unique_existence in H.
+      move:H=>[[c J1] J2]. exists c. specialize (H2 ab.1 ab.2). rewrite/unique. split.
+      rewrite- surjective_pairing in H2. by apply/H2. rewrite /uniqueness in J2. 
+      move=>c1 K2. apply J2. done. apply H2. rewrite- surjective_pairing. done.
+    - exists (fun a b=>g (a,b)). move=>a b. apply H2. done. 
+  Qed.
+  
+  
+  (* Cpos から cpos を抽出する補題 (choice が必要) *)
+  Lemma extract_cpos_from_Cpos :
+    forall Cpos:nat->nat->Color->Prop,
+      C_uniq Cpos
+      -> C_exists Cpos
+      -> C_mix Cpos                 
+      -> exists cpos:nat->nat->Color, (forall x y:nat, Cpos x y (cpos x y)) /\ F_mix cpos.
+  Proof.
+    move=>Cpos H_uniq H_exists H_mix.
+    - have [cpos H]: exists cpos:nat->nat->Color, (forall x y:nat, Cpos x y (cpos x y)). apply unique_choice2. move=>x y.
+      rewrite/C_uniq in H_uniq. rewrite/C_exists in H_exists.
+      specialize (H_uniq x y). specialize (H_exists x y). move:H_exists=>[c H_exists].
+      exists c. rewrite/unique. split. done. move=>c' H. apply H_uniq. split. done. done.
+    - exists cpos. split. done. rewrite /F_mix. move=>x0 y0.
+      apply (H_mix x0 y0). split. done. split. rewrite addn1. done. rewrite addn1. done. 
   Qed.
 
-  Theorem Three_Color_Triangle_Problem_suf_out :
-    forall x n : nat,
-      (exists k : nat, n = 3 .^ k) ->
-      (forall(Cpos : nat -> nat -> Color -> Prop) (c0 c1 c2 : Color),
-          TriangleA Cpos x n c0 c1 c2).
+  (* 2つの Triangle は同値である *)
+  Lemma Triangle_equiv:
+    forall Cpos:nat->nat->Color->Prop, forall cpos:nat->nat->Color, 
+        (forall x y:nat, Cpos x y (cpos x y))
+        -> forall x y n:nat, Triangle Cpos x y n (cpos x y) (cpos (x+n) y) (cpos x (y+n)) <-> TriangleF cpos x y n.
   Proof.
-    rewrite /TriangleA.
-    move=> x n Step Cpos c0 c1 c2 C_exists C_uniq C_mix.  
-    by apply Three_Color_Triangle_Problem_suf_out2.
+    move=>Cpos cpos H x y n. split.
+    - move=>tri. apply tri. split. done. split. done. done. 
+    - move=>triF K. done. 
+  Qed.
+  
+  
+  (* 2つの WellColoredTriangle は同値である *)
+  Lemma WCTequiv: forall x n:nat, WellColoredTriangleF x n <-> WellColoredTriangle x n.
+  Proof.
+    move=>x n. split.
+    - move=>H. rewrite/WellColoredTriangle. rewrite/WellColoredTriangleF in H.
+      move=>Cpos H_uniq H_exists H_mix c2 c0 c1 H2 H3 H4.
+      have [cpos [K1 K2]]: exists cpos:nat->nat->Color, (forall x y:nat, (Cpos x y (cpos x y))) /\ F_mix cpos.
+      apply extract_cpos_from_Cpos. done. done. done.
+      specialize (H cpos K2).
+      have J0: c0 = cpos x 0. apply (H_uniq x 0). done.       
+      have J1: c1 = cpos (x+n) 0. apply (H_uniq (x+n) 0). done.
+      have J2: c2 = cpos x n. apply (H_uniq x n). done. 
+      rewrite J0. rewrite J1. rewrite J2. done. 
+    - move=>H. rewrite/WellColoredTriangleF. rewrite/WellColoredTriangle in H.
+      move=>cpos H_fmix. 
+      have [Cpos [H_uniq [H_exists [H_mix H1]]]]: exists Cpos:nat->nat->Color->Prop, C_uniq Cpos /\ C_exists Cpos /\ C_mix Cpos /\ forall y x:nat, Cpos x y (cpos x y).
+      apply make_Cpos_from_cpos. done.
+      rewrite/TriangleF. rewrite add0n.
+      specialize (H Cpos H_uniq H_exists H_mix (cpos x n) (cpos x 0) (cpos (x+n) 0)). apply H.
+      done. done. done. done. 
   Qed.
 
-  Lemma Three_Color_Triangle_Problem_nec_out1 :
-    forall(Cpos : nat -> nat -> Color -> Prop),
-      (forall x y : nat, exists c : Color, Cpos x y c) ->
-      (forall x y : nat, forall c0 c1 : Color, (Cpos x y c0 /\ Cpos x y c1) -> c0 = c1) ->
-      (forall x y : nat, forall c0 c1 c2 : Color, (Cpos x y c0 /\ Cpos (x + 1) y c1 /\ Cpos x (y + 1) c2) -> c2 = mix c0 c1) ->
-      (forall x n : nat,
-          n > 0 ->
-          ~ (exists k : nat, n = 3 .^ k) ->
-          ~ (forall(c0 c1 c2 : Color), Triangle Cpos x 0 n c0 c1 c2)
-      ).
+  (* 終わり *)
+  Theorem Three_Color_Triangle_Problem2  :
+    forall (n : nat) , n > 0 -> (exists k : nat, n = 3 .^ k) <-> (WellColoredTriangleF 0 n). 
   Proof.
-    move=> Cpos C_exists C_uniq C_mix x n Triangle'.
-    rewrite- Contraposition.
-    by apply Three_Color_Triangle_Problem_nec.
-  Qed.
-
-  Lemma Three_Color_Triangle_Problem_nec_out2 :
-    forall x n : nat,
-      n > 0 ->
-      (
-        ~ (exists k, n = 3 .^ k) ->
-        ~ (forall(Cpos : nat -> nat -> Color -> Prop) (c0 c1 c2  : Color),
-            TriangleA Cpos x n c0 c1 c2)
-      ).
-  Proof.
-    move=> x n NotZero H1.
-    
-  Admitted.
-
-  Theorem Three_Color_Triangle_Problem_nec_out :
-    forall x n : nat,
-      n > 0 ->
-      (
-        (forall(Cpos : nat -> nat -> Color -> Prop) (c0 c1 c2  : Color),
-            TriangleA Cpos x n c0 c1 c2) ->
-        (exists k, n = 3 .^ k)
-      ).
-  Proof.
-    move=> x n NotZero. rewrite Contraposition.
-    by apply Three_Color_Triangle_Problem_nec_out2.   
-  Qed.
-
-  Theorem Three_Color_Triangle_Problem_out :
-    forall x n : nat,
-      n > 0 ->
-      (
-        (exists k, n = 3 .^ k) <->
-        (forall(Cpos : nat -> nat -> Color -> Prop) (c0 c1 c2 :Color), TriangleA Cpos x n c0 c1 c2)
-      ).
-  Proof.
-    move=> x n NotZero. apply conj.
-    - by apply Three_Color_Triangle_Problem_suf_out.
-    - by apply Three_Color_Triangle_Problem_nec_out.
+    move=> n H. split. move=>K. apply/WCTequiv. by apply Three_Color_Triangle_Problem.
+    move/WCTequiv. by apply Three_Color_Triangle_Problem.
   Qed.
   
 
-  Theorem Three_Color_Triangle_Problem_modify :
-    forall (n : nat) , n > 0 ->
-    (exists k :nat, n = 3 .^ k) <->
-    (forall(f : nat -> Color) (c0 c1 c2 : Color), TriangleF f 0 0 n c0 c1 c2).
-  Proof.
-    move=> n rangeN.
-    have :
-      (forall(Cpos : nat -> nat -> Color -> Prop) (c0 c1 c2 : Color),
-          TriangleA Cpos 0 n c0 c1 c2) <->
-      (forall(f : nat -> Color) (c0 c1 c2 : Color),
-          TriangleF f 0 0 n c0 c1 c2).
-    - apply conj.
-      +  move=> H f. specialize (H (CposF f)).
-         move=> c0 c1 c2. apply H.
-         apply C_exists_F. apply C_uniq_F.
-         move=> x y c3 c4 c5; rewrite ! addn1. apply C_mix_F.
-    - move=> H Cpos c0 c1 c2. rewrite /TriangleA.
-      move=> C_exists C_uniq C_mix.
-      + have C_exists_uniq : forall x : nat, exists! c' : Color, Cpos x 0 c'.
-        move=> x. apply /unique_existence. apply conj.
-        * by apply C_exists.
-        * rewrite /uniqueness. 
-          move=> c0' c1' Cpos0' Cpos1'. by apply (C_uniq x 0).
-      + have get_f : exists f : nat -> Color, forall x : nat, Cpos x 0 (f x).
-        apply (unique_choice nat Color (Cpos n)).
-
-
-
-
-
-        
-        move=> y. apply /unique_existence. apply conj.
-        * by apply C_exists.
-        * rewrite /uniqueness.
-          move=> c0' c1' Cpos0' Cpos1'. by apply (C_uniq 0 y).
-      + move: get_f => [] f CposY.
-        rewrite /Triangle. move=> Cpos012.
-        specialize (H f c0 c1 c2). move: H.
-        rewrite /TriangleF. move=> H.
-        apply H. done.
-  Qed.
-  
 End Three_Color_Triangle_Problem_modify.
-
-(* Cpos をとる．Cax1,Cax2を仮定する．Triangle を示す (Aがないやつ)． *)
-(* Cpos から f を作ることができる． f x := c ただし， Cpos x 0 c となるもの *)
-(* (公理から ∀x ∃!c Cpos x 0 c が示せるので，これは定義可能なはず) *)
-(* 仮定より TriangleF f x 0 n c0 c1 c2 がいえる． *)
-(* Triangle がいえる． *)
