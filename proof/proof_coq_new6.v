@@ -20,6 +20,7 @@ ver6 の方針
 
 (*
 述語はやめる．関数で書けるならそっちの方がよい．
+-- 自然と rewrite を使うことになるので ssreflect の利点を生かすことになる
 紙に証明を書いてから実装するべし
 ssreflect 流で Prop でなく bool を使うべし
 
@@ -494,20 +495,8 @@ Section Three_Color_Triangle_Problem.
     move=> A. apply A. apply/andP. done. 
   Qed.
 
-
-
-
-
-
-
-
-
-
-
-
+  (* Begin: Three_Color_Triangle_Problem_nec_even --------------------*)
   
-
-
   Lemma Three_Color_Triangle_Problem_nec_even :
     forall x n :nat, (n > 0) && (odd n == false) -> ~(WellColoredTriangleF x n).
   Admitted.
@@ -537,7 +526,9 @@ Section Three_Color_Triangle_Problem.
       split. done. split. done. done.  
   Qed.
 *)
+  (* End: Three_Color_Triangle_Problem_nec_even --------------------*)
   
+  (* Begin: Three_Color_Triangle_Problem_nec_ShortOdd --------------------*)
   Lemma Three_Color_Triangle_Problem_nec_ShortOdd :
     forall x n k : nat, ((3.^k < n <= (3.^k).*2) && (odd n)) -> ~(WellColoredTriangleF x n).
   Admitted.
@@ -573,9 +564,22 @@ Section Three_Color_Triangle_Problem.
       + have A8: CposYBBY x (0+n) yel. rewrite- A7. done. 
       + have A9: yel = red. apply (H_uniq x (0+n)). split. done. done. done. 
 Qed.
-*)
+   *)
+
+
+
+
+
+
+
+
+
+
+
   
-  (* 奇数の場合-2 終わり *)
+  (* End: Three_Color_Triangle_Problem_nec_ShortOdd --------------------*)
+  
+  (* Begin: Three_Color_Triangle_Problem_nec_LongOdd --------------------*)
   Lemma Three_Color_Triangle_Problem_nec_LongOdd :
   forall (x n k : nat), ((3.^k).*2 + 1 <= n < (3.^(k.+1))) -> ~(WellColoredTriangleF x n).
   Admitted.
@@ -617,7 +621,8 @@ Qed.
         apply triBBR. split. done. done. done.         
   Qed.
  *)
-
+  (* End: Three_Color_Triangle_Problem_nec_LongOdd --------------------*)
+  
   Theorem Three_Color_Triangle_Problem_nec :
     forall (n x : nat), n > 0 -> (WellColoredTriangleF x n) -> (exists k :nat, n = 3 .^ k).
   Admitted.
