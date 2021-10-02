@@ -451,11 +451,48 @@ Section Three_Color_Triangle_Problem.
     by apply Three_Color_Triangle_Problem_suf''.    
   Qed.
 
-  (* ここから必要条件 *)
 
+  
+  (* ここから必要条件 ------------------------------------*)
 
+  (* ある段が全て赤ならその下はずっと赤 *)  
+  Lemma AllRedN :
+    forall cpos:nat->nat->Color, forall x y n : nat,
+        F_mix cpos        
+        -> (forall i :nat, (0 <= i <= n -> red = cpos (x+i) y))
+        -> forall q p : nat, (0 <= p+q <= n ->  red = cpos (x+p) (y+q)).
+  Proof.
+    move=> cpos x y n H_mix topcolor.
+    induction q.
+    - (* base case: q is 0 *)
+      move=> p. rewrite ! addn0. apply topcolor. 
+    - (* induction case: q is successor *)
+      move=> p. move/andP. move =>[rangePQ1 rangePQ2].
+      + have prevL: red = cpos (x+p) (y+q).
+        apply IHq.
+        apply /andP. split. done.
+        rewrite addnS in rangePQ2. by apply ltnW. 
+      + have prevR: red = cpos ((x+p).+1) (y+q).
+        rewrite- (addnS x p). 
+        apply IHq. apply /andP. split. done. 
+        rewrite addSn. rewrite addnS in rangePQ2. done.
+    - rewrite /F_mix in H_mix. specialize (H_mix (x+p) (y+q)). move:H_mix; move/ceqP; move=>H_mix.
+      rewrite addnS. rewrite- prevL in H_mix. rewrite- prevR in H_mix. rewrite H_mix. done. 
+  Qed.
 
-
+  (* ある段が全て赤なら最下段も赤 *)
+  Lemma AllRed:
+    forall cpos:nat->nat->Color, forall x y n : nat,
+        F_mix cpos
+        -> (forall i :nat, (0 <= i <= n -> red = cpos (x+i) y))
+        -> red = cpos x (y+n). 
+  Proof.
+    move=> cpos x y n H_mix topcolor.
+    have fromAllRedN: forall q p : nat, (0 <= p+q <= n ->  red = cpos (x+p) (y+q)).
+    apply AllRedN. done. done.
+    generalize (fromAllRedN n 0). rewrite addn0. rewrite add0n.
+    move=> A. apply A. apply/andP. done. 
+  Qed.
 
 
 
