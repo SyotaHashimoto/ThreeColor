@@ -667,6 +667,7 @@ Section Three_Color_Triangle_Problem.
       rewrite /TriangleF addnC addn0 -A1 -A2 -B2 B1 /= in Wct.
       have Wct' : cposYB x n = red. by apply EvenB. by rewrite Wct' in Wct.   
   Qed.
+  (* End: Three_Color_Triangle_Problem_nec_Even --------------------*)
 
   Definition colorYBBY (x n z : nat) :=
     if (0 <= z-x <= n./2) && (odd (z-x) == false) then yel
@@ -1121,11 +1122,6 @@ Section Three_Color_Triangle_Problem.
         done. 
   Qed.
   (* End: Three_Color_Triangle_Problem_nec_LongOdd --------------------*)
-  Lemma Contraposition :
-    forall b1 b2 : bool, (b1 -> b2) <-> (~~b2 -> ~~b1).
-  Proof.
-    move=> b1 b2. case b1, b2; do! by rewrite /=.
-  Qed.
   
   Theorem Three_Color_Triangle_Problem_nec :
     forall (n x : nat), n > 0 -> (WellColoredTriangleF x n) -> (exists k :nat, n = 3 .^ k).
