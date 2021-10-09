@@ -708,7 +708,6 @@ Section Three_Color_Triangle_Problem.
     move /andP; move=> [] NotZeroN OddN Triangle_hyp.
     have topcolor : forall i : nat, ((0 <= i <= n) -> Cpos (x+i) 0 (colorYB x n (x+i))).
     move=> i range. by apply C_paint.
-
     
     (* 最下段のマスの色が異なることで矛盾を導く *)
     
