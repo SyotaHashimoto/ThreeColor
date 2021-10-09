@@ -9,11 +9,11 @@ Require Import Coq.Logic.ClassicalUniqueChoice.
 
 Variable P :  nat -> nat -> Prop.
 
-Hypothesis P_exists : forall x : nat, (exists z : nat, P x z).
+Hypothesis P_exists : forall P:nat->nat->Prop, forall x : nat, (exists z : nat, P x z).
 
-Hypothesis P_uniq : forall x: nat, forall z0 z1 : nat, (P x z0 /\ P x z1) -> z0 = z1.
+Hypothesis P_uniq : forall P:nat->nat->Prop, forall x: nat, forall z0 z1 : nat, (P x z0 /\ P x z1) -> z0 = z1.
 
-Hypothesis P_mix : forall x: nat, forall z0 z1: nat, P x z0 /\ P (x.+1) z1 -> z1 = z0+3.
+Hypothesis P_mix : forall P:nat->nat->Prop, forall x: nat, forall z0 z1: nat, P x z0 /\ P (x.+1) z1 -> z1 = z0+3.
 (* 
 P_exists と P_uniq より各 i について P i ai となる ai は1つだけ存在する．
 P_mix より a1=a0+3，a2=a1+3,...,a(i+1)=ai+3 なので，P n z は z = 3*n + a0 を定めている
@@ -21,7 +21,7 @@ a0 を何にするかが不確定だが，これさえ与えれば全て確定�
 つまり，a0 を与えることが最上段の色の塗り方を与えることに相当する．
 *)
 
-Lemma P_property: forall a0 x:nat, P 0 a0 -> P x (3*x + a0). (* 上記の説明から得られる性質 *)
+Lemma P_property: forall P:nat->nat->Prop, forall a0 x:nat, P 0 a0 -> P x (3*x + a0). (* 上記の説明から得られる性質 *)
 Proof.
   move=>a0 x P0.
   induction x. done. 
@@ -31,7 +31,7 @@ Proof.
   have C: z1 = 3*x+a0+3. apply (P_mix x). split. done. done. rewrite A. rewrite- C. done. 
 Qed.
 
-Definition TriP x z0 z1 n := P x z0 /\ P (x+n) z1 -> exists k:nat, z1 = z0 + 5*k.
+Definition TriA P x z0 z1 n := P x z0 /\ P (x+n) z1 -> exists k:nat, z1 = z0 + 5*k.
 (*
 「P x z0 と P (x+n) z1 のとき z0 と z1 の差が5の倍数だ」
 これは上の話から z1-z0 = 3*n なので n が 5の倍数であることと同値 (3と5が互いに素なので)  
@@ -39,7 +39,7 @@ Definition TriP x z0 z1 n := P x z0 /\ P (x+n) z1 -> exists k:nat, z1 = z0 + 5*k
 これが三角形三色問題の簡易版
 *)  
 
-Hypothesis myLemma: forall x n: nat,  ~(exists k:nat, n = 5*k) -> ~(forall a0:nat, TriP x (3*x + a0) (3*(x+n)+a0) n).
+Hypothesis myLemma: forall x n: nat,  ~(exists k:nat, n = 5*k) -> ~(forall a0:nat, forall P: nat->nat->Prop, TriA P x (3*x + a0) (3*(x+n)+a0) n).
 (* 
 証明に突入しないように Hypothesis としているが，本当は示すべき補題 (下で示す)．
 これが Three_Color_Triangle_Problem_nec' や Three_Color_Triangle_Problem_nec_XX などの簡易版
@@ -74,7 +74,7 @@ Lemma shortcut: forall a b c k: nat, 3 * (a + b) + c = 3 * a + c + 5 * k -> exis
 Admitted. 
 
 (* 上の myLemma を示す *)
-Lemma myLem: forall(x n: nat),  ~(exists k:nat, n = 5*k) -> ~(forall a0:nat, TriP x (3*x + a0) (3*(x+n)+a0) n).
+Lemma myLem: forall(x n: nat),  ~(exists k:nat, n = 5*k) -> ~(forall a0:nat, forall P:nat->nat->Prop, TriP x (3*x + a0) (3*(x+n)+a0) n).
 Proof.
   move=>x n H Tri.
   have exA: exists a:nat, P 0 a. apply get_a0_with_choice.

@@ -112,6 +112,7 @@ foralln x, n > 0 -> (forallCpos c f, TriangleA Cpos x 0 n (f x) (f (x+n)) c) -> 
 <STEP.4> これがいえる！
 ∀ n x y, n > 0 -> (n=3^k) <-> (∀Cpos, TriangleA Cpos).
 
+-----------------------------------------
 
 <STEP.5> TriangleF にする
 forall n x y, n > 0 ->
