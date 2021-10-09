@@ -1,3 +1,4 @@
+
 Require Import PeanoNat Le Lt Plus Mult Even.
 From mathcomp
      Require Import ssreflect ssrbool ssrnat ssrfun eqtype.
@@ -85,5 +86,3 @@ Proof.
   have n_is_0_mod_5: exists k:nat, n = 5*k. 
   move:five. case=>k H1. by apply (shortcut x n a0 k). contradiction. 
 Qed.
-
-
