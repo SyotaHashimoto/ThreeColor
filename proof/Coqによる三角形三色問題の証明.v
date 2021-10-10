@@ -94,7 +94,7 @@ Section nat1.
           (* n.+1 = 3 ^ k のとき *)
           ** exists (k.+1). rewrite rangeN1. right; left.
              apply /andP. split. done.
-             rewrite- addnn. rewrite- {1} (add0n (3^k.+1)). rewrite- eq_mono_plus_le_plus. done. 
+             rewrite- addnn. rewrite- {1} (add0n (3^k.+1)). rewrite eq_mono_plus_le_plus. done. 
           ** exists k. rewrite Short2 Long2 connect3m. right. split. move: rangeN.
              move /andP. move=> [] range1 range2. by apply leqW. by [].
   Qed.        
@@ -509,13 +509,13 @@ Section Three_Color_Triangle_Problem.
     - have C1: 1+(n./2).*2 = n. rewrite- {2} (odd_double_half n). rewrite B. done.
     - have C2: (n./2).*2 = n.-1. apply/eqP. rewrite- eq_adjoint_S_P_eq. apply/eqP. done. by apply odd_gt0.
     - have C3: n-(n./2) = (n./2).+1. apply/eqP. rewrite eq_adjoint_minus_plus_eq. apply/eqP.     
-      rewrite- addn1. rewrite eq_comm_plus. rewrite- eq_assoc_plus. rewrite addnn. by rewrite eq_comm_plus.
+      rewrite- addn1. rewrite addnC. rewrite addnA. rewrite addnn. by rewrite addnC. 
       apply self_half. 
     - have C4: n./2 < 3^k. by rewrite eq_adjoint_half_double_lt.
-    - have C5: n-3^k <= n./2. rewrite eq_adjoint_minus_plus_le. rewrite eq_comm_plus.
+    - have C5: n-3^k <= n./2. rewrite eq_adjoint_minus_plus_le. rewrite addnC.
       rewrite- eq_adjoint_minus_plus_le. rewrite C3. done. 
     - have C6: i<=n./2. apply (trans_lelele rangeI2). done.
-    - have C7: n./2 < i + 3 ^ k. apply (trans_ltlelt C4). rewrite eq_comm_plus. apply leq_addr.
+    - have C7: n./2 < i + 3 ^ k. apply (trans_ltlelt C4). rewrite addnC. apply leq_addr.
     - have C8: i + 3 ^ k <= n. rewrite eq_adjoint_plus_minus_le. done. done. 
     - have C9: odd (3^k).
       (* 省略可能 *)
@@ -536,7 +536,7 @@ Section Three_Color_Triangle_Problem.
     - have Cpos1: (colorYBBY x n (x+i)) = (cpos (x+i) 0).
       apply color. apply rangeIa.
     - have Cpos2: (colorYBBY x n (x+i+3^k)) = (cpos (x+i+3^k) 0).
-      rewrite eq_assoc_plus. apply color. apply rangeIb.
+      rewrite- addnA. apply color. apply rangeIb.
     - have cpos_mix: cpos (x+i) (3^k)= mix (cpos (x+i) 0) (cpos (x+i+3^k) 0). 
       specialize (triangle (x+i) 0). rewrite /TriangleF in triangle. move:triangle; move/ceqP. done. 
     - have or: odd i || ~~odd i. apply orbN. move/orP in or. case:or=> [oddI|evenI].
@@ -544,9 +544,9 @@ Section Three_Color_Triangle_Problem.
         have blu1: colorYBBY x n (x+i) = blu.
         apply lemYBBY3. apply/andP. split. apply/andP; split. done. by apply (trans_lelele rangeI2). by rewrite oddI.
         have blu2: colorYBBY x n (x+i+3^k) = blu.
-        rewrite (eq_assoc_plus x i (3^k)). apply lemYBBY4.
+        rewrite- (addnA x i (3^k)). apply lemYBBY4.
         apply/andP. split. apply/andP; split. rewrite- eq_adjoint_half_double_lt in A3. 
-        apply (trans_ltltlt A3). rewrite- {1} (add0n (3^k)). rewrite- eq_mono_plus_lt_plus. by apply odd_gt0. done.
+        apply (trans_ltltlt A3). rewrite- {1} (add0n (3^k)). rewrite eq_mono_plus_lt_plus. by apply odd_gt0. done.
         rewrite eq_odd_plus. by rewrite C9. done.
 
         have colorYB_is_blu: colorYB x (n-3^k) (x+i) = blu.
@@ -554,10 +554,10 @@ Section Three_Color_Triangle_Problem.
         rewrite colorYB_is_blu; rewrite cpos_mix; rewrite- Cpos1; rewrite- Cpos2; rewrite blu1; rewrite blu2; done.
       + (* Case of evenI *)
         have yelYBBY1: colorYBBY x n (x+i) = yel.
-        apply lemYBBY1. rewrite- eq_false in evenI. rewrite evenI. rewrite rangeI1. rewrite C6. done.
+        apply lemYBBY1. rewrite- eqbF_neg in evenI. rewrite evenI. rewrite rangeI1. rewrite C6. done.
         have yelYBBY2: colorYBBY x n (x+i+3^k) = yel. rewrite- addnA. 
         apply lemYBBY2. rewrite C7. rewrite C8. rewrite eq_even_plus. by rewrite C9. done.        
-        have yelYB: colorYB x (n-3^k) (x+i) = yel. apply lemYB1. rewrite rangeI. rewrite- eq_false in evenI. done.
+        have yelYB: colorYB x (n-3^k) (x+i) = yel. apply lemYB1. rewrite rangeI. rewrite- eqbF_neg in evenI. done.
         rewrite yelYB; rewrite cpos_mix; rewrite- Cpos1; rewrite- Cpos2; rewrite yelYBBY1; rewrite yelYBBY2. done.
   Qed.
   
@@ -631,13 +631,11 @@ Section Three_Color_Triangle_Problem.
     have fromAllRed: red = cpos x (((3^k)+1)+((n-3^k)-1)).
     apply AllRed. done. rewrite subn1. rewrite addn1. done.
     have D: 0+n = (0 + 3 ^ k + 1 + (n - 3 ^ k - 1)).
-    apply/eqP. rewrite- addnA. rewrite- addnA.  
-    rewrite- eq_mono_plus_eq_plus_l. rewrite addnC. 
+    apply/eqP. rewrite- addnA. rewrite- addnA. rewrite! add0n. rewrite addnC.     
     rewrite- eq_adjoint_minus_plus_eq. rewrite addnC. 
-    rewrite- eq_adjoint_minus_plus_eq. done.
-    rewrite- eq_adjoint_plus_minus_lt. rewrite add0n. done.
-    apply ltnW. done. 
-    rewrite- D in fromAllRed. done. 
+    rewrite- eq_adjoint_minus_plus_eq. done. 
+    rewrite- eq_adjoint_plus_minus_lt. by rewrite add0n. 
+    by apply ltnW. by rewrite- D in fromAllRed. 
   Qed.
   
   Lemma Three_Color_Triangle_Problem_nec_ShortOdd :
@@ -676,7 +674,7 @@ Section Three_Color_Triangle_Problem.
       by rewrite- {2 3} (x_plus_y_minus_x_is_y x i). 
     - have H: (3 ^ k <= i <= n - 3 ^ k) = false.
       apply/eqP.
-      rewrite eq_false. rewrite eq_dual_and. rewrite ! eq_dual_le.
+      rewrite eqbF_neg. rewrite eq_dual_and. rewrite- ! eq_dual_le.
       apply/orP. left. move: range. move/andP. move=> [A B].
       have H1: (0 < 3^k) = true. by apply expn3Pos.
       by rewrite- eq_adjoint_S_P_le in B. 
@@ -700,7 +698,7 @@ Section Three_Color_Triangle_Problem.
       rewrite- {2 3} (x_plus_y_minus_x_is_y x i). done. 
     - have H: (3 ^ k <= i <= n - 3 ^ k) = false.
       apply/eqP.      
-      rewrite eq_false. rewrite eq_dual_and. rewrite ! eq_dual_le.
+      rewrite eqbF_neg. rewrite eq_dual_and. rewrite- ! eq_dual_le.
       apply/orP. right. move: range. move/andP. move=> [A B]. done.
     - by rewrite H in T.
   Qed.
@@ -790,7 +788,7 @@ Section Three_Color_Triangle_Problem.
            rewrite (addnC (3^k) i). rewrite- addnA. rewrite addnn. 
            apply (trans_lelele X). rewrite expnS.
            rewrite (mulnDl 1 2 (3^k)). rewrite mul2n. rewrite mul1n.
-           rewrite- eq_mono_plus_le_plus. done. done. done. 
+           rewrite eq_mono_plus_le_plus. done. done. done. 
         ++ have colB: blu = colorBYB x n k (x+(3^k)+i).
            rewrite- addnA. apply (lemBYB3 x 0 n k ((3^k)+i)). done.
         ++ rewrite colB. rewrite- addnA. by apply topcolor.
