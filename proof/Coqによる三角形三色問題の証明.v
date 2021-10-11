@@ -94,7 +94,7 @@ Section nat1.
           (* n.+1 = 3 ^ k のとき *)
           ** exists (k.+1). rewrite rangeN1. right; left.
              apply /andP. split. done.
-             rewrite- addnn. rewrite- {1} (add0n (3^k.+1)). rewrite eq_mono_plus_le_plus. done. 
+             rewrite- addnn. rewrite- {1} (add0n (3^k.+1)). rewrite -eq_mono_plus_le_plus. done. 
           ** exists k. rewrite Short2 Long2 connect3m. right. split. move: rangeN.
              move /andP. move=> [] range1 range2. by apply leqW. by [].
   Qed.        
@@ -546,7 +546,7 @@ Section Three_Color_Triangle_Problem.
         have blu2: colorYBBY x n (x+i+3^k) = blu.
         rewrite- (addnA x i (3^k)). apply lemYBBY4.
         apply/andP. split. apply/andP; split. rewrite- eq_adjoint_half_double_lt in A3. 
-        apply (trans_ltltlt A3). rewrite- {1} (add0n (3^k)). rewrite eq_mono_plus_lt_plus. by apply odd_gt0. done.
+        apply (trans_ltltlt A3). rewrite- {1} (add0n (3^k)). rewrite -eq_mono_plus_lt_plus. by apply odd_gt0. done.
         rewrite eq_odd_plus. by rewrite C9. done.
 
         have colorYB_is_blu: colorYB x (n-3^k) (x+i) = blu.
@@ -674,7 +674,7 @@ Section Three_Color_Triangle_Problem.
       by rewrite- {2 3} (x_plus_y_minus_x_is_y x i). 
     - have H: (3 ^ k <= i <= n - 3 ^ k) = false.
       apply/eqP.
-      rewrite eqbF_neg. rewrite eq_dual_and. rewrite- ! eq_dual_le.
+      rewrite eqbF_neg. rewrite eq_dual_and. rewrite ! eq_dual_le.
       apply/orP. left. move: range. move/andP. move=> [A B].
       have H1: (0 < 3^k) = true. by apply expn3Pos.
       by rewrite- eq_adjoint_S_P_le in B. 
@@ -698,7 +698,7 @@ Section Three_Color_Triangle_Problem.
       rewrite- {2 3} (x_plus_y_minus_x_is_y x i). done. 
     - have H: (3 ^ k <= i <= n - 3 ^ k) = false.
       apply/eqP.      
-      rewrite eqbF_neg. rewrite eq_dual_and. rewrite- ! eq_dual_le.
+      rewrite eqbF_neg. rewrite eq_dual_and. rewrite ! eq_dual_le.
       apply/orP. right. move: range. move/andP. move=> [A B]. done.
     - by rewrite H in T.
   Qed.
@@ -788,7 +788,7 @@ Section Three_Color_Triangle_Problem.
            rewrite (addnC (3^k) i). rewrite- addnA. rewrite addnn. 
            apply (trans_lelele X). rewrite expnS.
            rewrite (mulnDl 1 2 (3^k)). rewrite mul2n. rewrite mul1n.
-           rewrite eq_mono_plus_le_plus. done. done. done. 
+           rewrite -eq_mono_plus_le_plus. done. done. done. 
         ++ have colB: blu = colorBYB x n k (x+(3^k)+i).
            rewrite- addnA. apply (lemBYB3 x 0 n k ((3^k)+i)). done.
         ++ rewrite colB. rewrite- addnA. by apply topcolor.
