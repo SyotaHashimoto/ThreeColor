@@ -135,7 +135,7 @@ $n$が奇数 かつ$3^{k'} < n \leq 2 \cdot 3^{k}$のときは補題\ref{lem:sho
   $\forall \cpos, \forall x, n, k \in \N,$
   $(3^k < n \leq (3^k\cdot2) \land odd(n) = true) \Imp$
   $n > 0  \Imp Fmix(\cpos) \Imp $
-  $(\forall x_1, y_1 \in \N, \TF(\cpos,x_1,y_1,3^k) \Imp$
+  $(\forall x_1, y_1 \in \N, \TF(\cpos,x_1,y_1,3^k)) \Imp$
   $(\forall i \in \N, (0 \leq i \leq n \Imp \cpos(x+i,0) = \colorYBBY(x,n,x+i))) \Imp$
   $(\forall i \in \N, (0 \leq i \leq n - 3^k \Imp \cpos(x+i,3^k) = \colorYB(x,n-3^k,x+i))).$
 \end{lem}
@@ -163,9 +163,9 @@ $n$が奇数 かつ$3^{k'} < n \leq 2 \cdot 3^{k}$のときは補題\ref{lem:sho
 
 \begin{lem}[\ShortOddB] \label{lem:shortoddB}
   $\forall \cpos, \forall x, n, k \in \N,$
-  $(3^k < n \leq (3^k\cdot2) \land odd(n) = true) \Imp$
+  $(3^k < n \leq 3^k \cdot 2 \land odd(n) = true) \Imp$
   $n > 0  \Imp Fmix(\cpos) \Imp $
-  $(\forall x_1, y_1 \in \N, \TF(\cpos,x_1,y_1,3^k) \Imp$
+  $(\forall x_1, y_1 \in \N, \TF(\cpos,x_1,y_1,3^k)) \Imp$
   $(\forall i \in \N, (0 \leq i \leq n \Imp \cpos(x+i,0) = \colorYBBY(x,n,x+i))) \Imp$
   $(\forall i \in \N, (0 \leq i \leq n - 3^k-1 \Imp cpos(x+i,3^k+1)= \red)).$
 \end{lem}
@@ -190,10 +190,12 @@ $n$が奇数 かつ$3^{k'} < n \leq 2 \cdot 3^{k}$のときは補題\ref{lem:sho
 \end{proof}
 
 \begin{lem}[\ShortOddC] \label{lem:shortoddC}
-  $\forall x,y,n,k \in \N,$
-  $(3^k < n \leq (3^k\cdot2) \land odd(n) = true) \Imp$
-  $(\forall i \in \N, 0 \leq i \leq n \Imp \Cpos(x+i,y,\colorYBBY(x,n,x+i))) \Imp$
-  $\Cpos(x,y+n,\red).$
+  $\forall \cpos, \forall x, n, k \in \N,$
+  $(3^k < n \leq 3^k \cdot 2 \land odd(n) = true) \Imp$
+  $n > 0  \Imp Fmix(\cpos) \Imp $
+  $(\forall x_1, y_1 \in \N, \TF(\cpos,x_1,y_1,3^k)) \Imp$
+  $(\forall i \in \N, (0 \leq i \leq n \Imp \cpos(x+i,0) = \colorYBBY(x,n,x+i))) \Imp$
+  $(\forall i \in \N, (0 \leq i \leq n - 3^k-1 \Imp \cpos(x,n)= \red)).$
 \end{lem}
 補題\ref{lem:shortoddC}は最上段のマスの色を関数$\colorYBBY$で塗ると，最下段のマスの色は赤になるということを表している．
 \begin{proof}
@@ -222,76 +224,81 @@ $n$が奇数 かつ$3^{k'} < n \leq 2 \cdot 3^{k}$のときは補題\ref{lem:sho
 \subsubsection{$n$が奇数 かつ $2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$}
 $n$が奇数 かつ$2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$のときは補題\ref{lem:longoddA}，\ref{lem:longoddB}，\ref{lem:longoddC}を証明してから，補題\ref{lem:longodd}を証明して矛盾を導く．
 \begin{lem}[\LongOddA] \label{lem:longoddA}
-  $\forall k,n,x,y \in \N,$
-  $(3^k\cdot2 + 1 \leq n < 3^{k+1}) \Imp$
-  $(\forall i \in \N,(0 \leq i \leq n \Imp Cpos(x+i,y,\colorBYB(x,n,k,x+i)))) \Imp$ 
-      $($
-        $(\forall i \in \N,(0 \leq i \leq n - 3^k\cdot2 \Imp Cpos(x+i,y+3^k,\red)))$
-        $\land$
-        $(\forall i \in \N,(3^k \leq i \leq n - 3^k \Imp Cpos(x+i,y+3^k,\red)))$
-      $)$.
+  $\forall \cpos, \forall x, n, k \in \N,$
+  $(3^k \cdot 2 + 1 \leq n < 3^{k+1}) \Imp$
+  $Fmix(\cpos) \Imp $
+  $(\forall x_1, y_1 \in \N, \TF(\cpos,x_1,y_1,3^k)) \Imp$
+  $(\forall i \in \N, (0 \leq i \leq n \Imp \cpos(x+i,0) = \colorBYB(x,n,x+i))) \Imp$
+  $($
+   $(\forall i \in \N,(0 \leq i \leq n - 3^k \cdot 2 \Imp \cpos(x+i,3^k) = \red))$
+   $\land$
+   $(\forall i \in \N,(3^k \leq i \leq n - 3^k \Imp \cpos(x+i,3^k)=\red))$
+  $)$.
 \end{lem}
 補題\ref{lem:longoddA}は最上段のマスの色を関数$\colorBYB$で塗ると，最上段より$3^k$下の段のマスは外側から$n-2\cdot3^k+1$マスはすべて赤で塗られていることを表している．
 \begin{proof}
   $3^k\cdot2 + 1 \leq n < 3^{k+1}$を満たす$n$をとる．
   \begin{itemize}
   \item
+    $\forall i \in \N,(0 \leq i \leq n - 3^k \cdot 2 \Imp \cpos(x+i,3^k) = \red)$を示す．\\
     $0$ $\leq$ $i$ $\leq$ $n - 3^k \cdot 2$を満たすように任意に$i$をとると，
     $0 \leq i \leq n$，$0 \leq i \leq 3^k-1$を満たすので，
-    $\Cpos(x+i,y,\colorBYB(x,n,k,x+i))$であり，$\colorBYB(x,n,k,x+i)=\blu$が導ける．
-    よって，$\Cpos(x+i,y,\blu)$．
+    仮定より$\cpos(x+i,0)=\colorBYB(x,n,k,x+i)$であり，$\colorBYB(x,n,k,x+i)=\blu$が導ける．
+    よって，$\cpos(x+i,0)=\blu$．
     また，$0 \leq i+3^k \leq n$，$3^k \leq i+3^k \leq n-3^k$を満たすので，
-    $\Cpos(x+i+3^k,y,\colorBYB(x,n,k,x+i+3^k))$であり，$\colorBYB(x,n,k,x+i+3^k)=\yel$が導ける．
-    よって，$\Cpos(x+i+3^k,y,\yel)$．
-    公理\ref{axm:exists}より$\Cpos(x+i,y+3^k,c)$となる$c\in\Color$が存在するので，存在するこの色に$c$と名前をつける．
-    すると，定理$\ref{thm:tri_suf}$より$\WCT(x+i,y,3^k,\blu,\yel,c)$だから$c=\mix(\blu,\yel)=\red$が成立する．
-    よって，$\Cpos(x+i,y+3^k,\red)$．
+    $\cpos(x+i+3^k,0)=\colorBYB(x,n,k,x+i+3^k)$であり，$\colorBYB(x,n,k,x+i+3^k)=\yel$が導ける．
+    よって，$\cpos(x+i+3^k,0)=\yel$．
+    さらに，仮定より$\TF(\cpos,x+i,0,3^k)$だから$cpos(x+i,3^k)=\mix(\cpos(x+i,0)=\colorBYB(x,n,k,x+i),\cpos(x+i+3^k,0))=\mix(\blu,\yel)=\red$が成立する．
+    よって，$\cpos(x+i,3^k)=\red$．
   \item
+    $\forall i \in \N,(3^k \leq i \leq n - 3^k \Imp \cpos(x+i,3^k)=\red))$を示す．\\
     $3^k$ $\leq$ $i$ $\leq$ $n - 3^k$を満たすように任意に$i$をとると，
     $0 \leq i \leq n$，$3^k \leq i \leq n-3^k$を満たすので，
-    $\Cpos(x+i,y,\colorBYB(x,n,k,x+i))$であり，$\colorBYB(x,n,k,x+i)=\yel$が導ける．
-    よって，$\Cpos(x+i,y,\yel)$．
-    また，$0 \leq i+3^k \leq n$，$n-3^k+1 \leq i+3^k \leq n$を満たすので，
-    $\Cpos(x+i+3^k,y,\colorBYB(x,n,k,x+i+3^k))$であり，$\colorBYB(x,n,k,x+i+3^k)=\yel$が導ける．
-    よって，$\Cpos(x+i+3^k,y,\blu)$．
-    公理\ref{axm:exists}より$\Cpos(x+i,y+3^k,c)$となる$c\in\Color$が存在するので，存在するこの色に$c$と名前をつける．
-    すると，定理$\ref{thm:tri_suf}$より$\WCT(x+i,y,3^k,\yel,\blu,c)$だから$c=\mix(\yel,\blu)=\red$が成立する．
-    よって，$\Cpos(x+i,y+3^k,\red)$．
+    仮定より$\cpos(x+i,0)=\colorBYB(x,n,k,x+i)$であり，$\colorBYB(x,n,k,x+i)=\yel$が導ける．
+    よって，$\cpos(x+i,0)=\yel$．
+    また，$0 \leq i+3^k \leq n$，$3^k \leq i+3^k \leq n-3^k$を満たすので，
+    $\cpos(x+i+3^k,0)=\colorBYB(x,n,k,x+i+3^k)$であり，$\colorBYB(x,n,k,x+i+3^k)=\blu$が導ける．
+    よって，$\cpos(x+i+3^k,0)=\blu$．
+    さらに，仮定より$\TF(\cpos,x+i,0,3^k)$だから$cpos(x+i,3^k)=\mix(\cpos(x+i,0)=\colorBYB(x,n,k,x+i),\cpos(x+i+3^k,0))=\mix(\yel,\blu)=\red$が成立する．
+    よって，$\cpos(x+i,3^k)=\red$．
   \end{itemize}
 \end{proof}
 
 \begin{lem}[\LongOddB] \label{lem:longoddB}
-  $\forall k,n,x,y \in \N,$
+  $\forall \cpos, \forall x, n, k \in \N,$
   $(3^k \cdot 2 + 1 \leq n < 3^{k+1}) \Imp$
-  $(\forall i \in \N,$ $(0 \leq i \leq n$ $\Imp$ $\Cpos(x+i,y,\colorBYB(x,n,k,x+i))))$ $\Imp$ 
-  $\forall i \in \N,$ $(0 \leq i \leq n-3^k\cdot2 \Imp \Cpos(x+i,y+3^k\cdot2,red).$
+  $Fmix(\cpos) \Imp $
+  $(\forall x_1, y_1 \in \N, \TF(\cpos,x_1,y_1,3^k)) \Imp$
+  $(\forall i \in \N, (0 \leq i \leq n \Imp \cpos(x+i,0) = \colorBYB(x,n,x+i))) \Imp$
+  $\forall i \in \N,$ $(0 \leq i \leq n - 3^k \cdot 2 \Imp \cpos(x+i,3^k \cdot 2) = red).$
 \end{lem}
 補題\ref{lem:longoddB}は最上段のマスの色を関数$\colorBYB$で塗ると，最上段から$3^k\cdot2$下の段のマスはすべて赤で塗られていることを表している．
 \begin{proof}
-  $0$ $\leq$ $i$ $\leq$ $n - 3^k \cdot 2$を満たす$i$を任意にとると，
-  補題\ref{lem:longoddA}より$\Cpos(x+i,y+3^k,\red)$．
-  また，$3^k$ $\leq$ $i+3^k$ $\leq$ $n - 3^k$であるから
-  補題\ref{lem:longoddA}より$\Cpos(x+i+3^k,y+3^k,\red)$．
-  公理\ref{axm:exists}より$\Cpos(x+i,y+3^k,c)$となる$c\in\Color$が存在するので，
-  存在するこの色に$c$と名前をつける．
-  すると，定理\ref{thm:tri_suf}より$\WCT(x+i,y,3^k,\red,\red,c)$だから$c=\mix(\red,\red)=\red$．
-  よって，$\Cpos(x+i,y+3^k\cdot2,\red)$．
+  $0 \leq i \leq n - 3^k \cdot 2$を満たす$i$を任意にとると，
+  補題\ref{lem:longoddA}より$\cpos(x+i,3^k) = red$．
+  また，$3^k$ $\leq$ $i+3^k$ $\leq$ $n - 3^k$でもあるから
+  補題\ref{lem:longoddA}より$\cpos(x+i+3^k,3^k) =\red$．
+  さらに，仮定より$\TF(\cpos,x+i,3^k,3^k)$だから
+  $cpos(x+i,3^k \cdot 2)=\mix(\cpos(x+i,3^k),\cpos(x+i+3^k,3^k))=\mix(\red,\red)=\red$．
+  よって，$\cpos(x+i,3^k \cdot 2)=\red$．
 \end{proof}
 
 \begin{lem}[\LongOddC] \label{lem:longoddC}
-  $\forall k,n,x,y \in \N,$
-  $(3^k\cdot2 + 1 \leq n < 3^{k+1}) \Imp$
-  $(\forall i \in \N,$ $(0 \leq i \leq n$ $\Imp$ $\Cpos(x+i,y,\colorBYB(x,n,k,x+i))))$ $\Imp$ 
-  $\Cpos(x,y+n,\red).$
+  $\forall \cpos, \forall x, n, k \in \N,$
+  $(3^k \cdot 2 + 1 \leq n < 3^{k+1}) \Imp$
+  $Fmix(\cpos) \Imp $
+  $(\forall x_1, y_1 \in \N, \TF(\cpos,x_1,y_1,3^k)) \Imp$
+  $(\forall i \in \N, (0 \leq i \leq n \Imp \cpos(x+i,0) = \colorBYB(x,n,x+i))) \Imp$
+  $\cpos(x,n) = \red$
 \end{lem}
 補題\ref{lem:longoddC}は最上段のマスの色を関数$\colorBYB$で塗ると，最下段のマスは赤になることを表している．
 \begin{proof}
-  補題\ref{lem:longoddB}より$\forall i \in \N,$ $(0 \leq i \leq n-3^k\cdot2 \Imp \Cpos(x+i,y+3^k\cdot2,red).$
-  さらに，補題\ref{lem:AllRed}より$\Cpos(x,y+n,\red)$．
+  補題\ref{lem:longoddB}より$\forall i \in \N,$ $(0 \leq i \leq n - 3^k \cdot 2 \Imp \cpos(x+i,3^k \cdot 2) = red).$
+  さらに，補題\ref{lem:AllRed}より$\cpos(x,n)=\red$．
 \end{proof}
 \begin{lem}[\LongOdd] \label{lem:longodd}
   $\forall x,y,n,k \in \N,$
-  $(3^k\cdot2 + 1 \leq n < 3^{k+1}) \Imp$
+  $(3^k\cdot2 + 1 \leq n < 3^{k+1}) \I mp$
   $\lnot(\forall c \in \Color, \forall f:\N \to \Color, \WCT(x,y,n,f(x),f(x+n), c).$
 \end{lem}
 \begin{proof}
