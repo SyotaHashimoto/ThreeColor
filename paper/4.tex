@@ -5,24 +5,41 @@
 \subsection{十分条件}
 補題\ref{lem:tri_suf}をCoqに実装するために論理式の形にしたものが次の定理\ref{thm:tri_suf}である．
 \begin{thm}[十分条件] \label{thm:tri_suf}
-  $\forall k, n, x, y \in \N,$ $\forall c_0, c_1, c_2 \in \Color,$ $n = 3 ^ k \Imp \WCT(x,y,n,c_0,c_1,$ $c_2)$.
+  $\forall x, n \in \N, (\exists k \in \N, n = 3 ^ k \Imp \WCTF(x,n))$.
 \end{thm}
 \begin{proof}
-  $k$に関する数学的帰納法を用いて証明する．
+  補題\ref{lem:tri_suf} (pp.\pageref{lem:tri_suf}) でも述べたように
+  次を証明することで，定理\ref{thm:tri_suf}を示す．\\
+  $\forall \cpos, \forall k, n, x, y \in \N,$ $n = 3^k \Imp (Fmix(\cpos) \Imp$ $\TF(cpos,x,y)).$ \\
+  これを$k$に関する数学的帰納法を用いて証明する．
   $k=0$のときは$n=1$となるので明らかに成立する．
-  次に$k$のとき成立すると仮定して$k+1$のときも成立することを示す．
-  公理\ref{axm:exists}より図\ref{fig:suf_steps}にように$10$色の$c^x_y$が存在する．
-  以降，それぞれのマスに存在する色を図\ref{fig:suf_steps}のように名前をつけておくと，$\Cpos$を用いた命題が$10$個得られる．
+  次に$k$のとき成立すると仮定して$k+1$のときも成立することを示す．\\
+  $3^k$マスずつ離れたマスの色を図\ref{fig:suf_steps}のように表すことにする．
   \begin{figure}[h]
     \centering
     \input{suf_steps}
     \caption{三色三角形（$n=3^{k+1}$のとき）}
     \label{fig:suf_steps}
-  \end{figure} 
-  次にこれらの$10$色が塗られているマスを頂点としている$6$個の$3^k$段の三色三角形三角形は調和三角形であることを示す．
-  これは$k$に関する数学的帰納法の仮定からすぐに示せる．
-  すると，ここまでに証明した$10$個の$\Cpos$に関する命題と$6$個の$3^k$段の調和三角形三角形に関する命題から$c_2 = \mix(\mix(\mix(c_0,c_3),\mix(c_3,c_4)),$ $\mix(\mix(c_3,c_4),\mix(c_4,c_1)))$が導け，$\mixCut$より$c_2=\mix(c_0,c_1)$が成立する．
-  したがって，逆三角形の$3$つの頂点に塗られているマスは調和性を満たすので，$\WCT(x,y,3^{k+1},c_0,c_1,c_2)$．
+  \end{figure}
+  このとき，$3$つの端点のマスの色が$c_0=cpos(x,y^k)$，$c_3=cpos(x,y)$，
+  $c_5=cpos(x+3^k,y^k)$である$3^k$段の三色三角形が調和彩色三角形であることは，
+  帰納法の仮定からすぐに示せる．
+  同様にして，この三色三角形以外にも$5$つの三色三角形は調和彩色三角形である．
+  すなわち，次の$6$つが成立する．
+  \begin{itemize}
+    \item $\TF(cpos,x,y,3^k)$
+    \item $\TF(cpos,x+3^k,y,3^k)$
+    \item $\TF(cpos,x+2\cdot3^k,y,3^k)$
+    \item $\TF(cpos,x,y+3^k,3^k)$
+    \item $\TF(cpos,x+3^k,y+3^k,3^k)$
+    \item $\TF(cpos,x,y+2\cdot3^k,3^k)$
+  \end{itemize} % ここを直す！！！！！！
+  これらと補題\ref{lem:mixCut} $(\mixCut)$ を用いて式変形をすると，
+  \[
+  \cpos(x,y+3^k)=\mix(\cpos(x,y),\cpos(x+3^{k+1},y))
+  \]
+  が得られる．すなわち，$\TF(cpos,x,y,3^{k+1})$．\\
+  したがって，$\TF(cpos,x,y,n)$である．
 \end{proof}
 
 % 4.2 三角形三色問題の証明の Coq の実装(<=)
@@ -34,69 +51,61 @@
 \subsection{必要条件} \label{sec:nec}
 補題\ref{lem:tri_nec}をCoqに実装するために論理式の形にしたものが次の定理\ref{thm:tri_nec}である．
 \begin{thm}[必要条件] \label{thm:tri_nec}
-  $\forall k, n, x, y \in \N,$ $c_0, c_1, c_2 \in \Color,$
-  $n > 0$ $\Imp$ 
-  $\WCT(x,y,n,c_0,c_1,c_2) \Imp n = 3 ^ k$.
+  $\forall x, n \in \N, n > 0 \Imp$ \\
+  $(\WCTF(x,n) \Imp \exists k \in , n = 3^k)$ 
 \end{thm}
-次の補題\ref{lem:tri_nec'}を証明することで示す．
-\begin{lem} \label{lem:tri_nec'}
-  $\forall n, x, y \in \N,$ $n > 0$ $\Imp$ 
-  $\lnot(\exists k \in \N,$ $n = 3 ^ k)$ $\Imp$
-  $\lnot( \forall c \in \Color,$
-  $\forall f:\N$ $\to$ $\Color,$
-  $\WCT(x,y,n,f(x),f(x+n),c)$.
-\end{lem}
-補題\ref{lem:tri_nec'}を証明するためには
+補題\ref{lem:tri_nec} (pp.\pageref{lem:tri_nec}) でも述べたように
+次の対偶を証明することで定理\ref{thm:tri_nec}を示す．\\
+$\forall n, x \in \N, n > 0 \Imp$
+$(\lnot(\exists k \in \N, n = 3 ^ k) \Imp \lnot\WCTF(x,n))$ \\
+この対偶を証明するためには，
 \begin{itemize}
 \item
   $n > 0$
 \item
   $\lnot(\exists k \in \N, n = 3 ^ k)$，
 \item
-  $\forall c \in \Color,$ $\forall f:\N$ $\to$ $\Color,$ \\
-  $\WCT(x,y,n,f(x),f(x+n),c)$
+  $\WCTF(x,n)$
 \end{itemize}
 を仮定して矛盾を示せばよい．
 今回は$n$に関する場合分けをしてから各場合において矛盾を導く．
 \subsubsection{$n$が偶数}
-$n$が偶数のときは補題\ref{lem:evenA}，\ref{lem:evenB}を$2$つ証明してから，補題\ref{lem:even}を証明して矛盾を導く．
+$n$が偶数のときは補題\ref{lem:evenA}，\ref{lem:evenB}を証明してから，補題\ref{lem:even}を証明して矛盾を導く．
 \begin{lem}[\EvenA] \label{lem:evenA}
-  $\forall x, y, n \in \N,$
-  $n > 0 \Imp$
-  $(\forall i \in \N, (0 \leq i \leq n \Imp Cpos(x+i,y,\colorYB(x,n,(x+i)))))$ $\Imp$
-  $\forall i \in \N, (0 \leq i \leq n-1 \Imp Cpos(x+i,y+1,red)).$
+  $\forall \cpos, \forall x, n \in \N, n > 0  \Imp Fmix(\cpos) \Imp $
+  $(\forall i \in \N, (0 \leq i \leq n \Imp \cpos(x+i,0) = \colorYB(x,n,x+i))) \Imp$
+  $\forall i \in \N, (0 \leq i \leq n-1 \Imp \cpos(x+i,1) = red)).$
 \end{lem}
 補題\ref{lem:evenA}は最上段のマスの色を関数$\colorYB$で塗ると，最上段より$1$段下の段のマスの色はすべて赤であることを表している．
 \begin{proof}
   $0$ $\leq$ $i$ $\leq$ $n-1$を満たす$i$を任意にとると，
-  $\Cpos(x+i,y,\colorYB(x,n,x+i))$，$\Cpos(x+i+1,y,\colorYB(x,n,x+i+1))$が導ける．
-  公理\ref{axm:exists}より$\Cpos(x+i,y+1,c)$となる$c\in\Color$が存在するので，
-  存在するこの色に$c$と名前をつけると公理\ref{axm:mix}より$c=\mix(\colorYB(x,n,x+i),\colorYB(x,n,x+i+1))$が成立する．
+  仮定より$\cpos(x+i,0) = \colorYB(x,n,x+i)$，$\cpos(x+i+1,0) = \colorYB(x,n,x+i+1)$．
+  また，$\Fmix(\cpos)$より$\cpos(x+i,1) = \mix(\cpos(x+i,0),\cpos(x+i+1,0))$が導ける．
   \begin{itemize}
   \item
     $i$が偶数のとき \\
-    $\colorYB$の定義より，$\colorYB(x,n,x+i)=\blu$，$\colorYB(x,n,x+i+1)=\yel$であるから$c=\red$．
+    $\colorYB$の定義より，$\colorYB(x,n,x+i)=\blu$，$\colorYB(x,n,x+i+1)=\yel$であるから$\cpos(x+i,1)=\red$．
   \item
     $i$が奇数のとき \\
-    $\colorYB$の定義より，$\colorYB(x,n,x+i)=\yel$，$\colorYB(x,n,x+i+1)=\blu$であるから$c=\red$．
+    $\colorYB$の定義より，$\colorYB(x,n,x+i)=\yel$，$\colorYB(x,n,x+i+1)=\blu$であるから$\cpos(x+i,1)=\red$．
   \end{itemize}
-  よって，$i$の遇奇にかかわらず$c=\red$となるので$\Cpos(x+i,y+1,\red)$．
+  よって，$i$の遇奇にかかわらず$\cpos(x+i,1)=\red$．
 \end{proof}
 \begin{lem}[\EvenB] \label{lem:evenB}
-  $\forall x, y, n, \in \N, n > 0 \Imp$
-  $\forall i \in \N, (0 \leq i \leq n \Imp \Cpos(x+i,y,\colorYB(x,n,x+i))) \Imp \Cpos(x,y+n,\red).$
+  $\forall \cpos, \forall x, n \in \N, n > 0 \Imp \Fmix(\cpos) \Imp $
+  $(\forall i \in \N, (0 \leq i \leq n \Imp \cpos(x+i,0) = \colorYB(x,n,x+i))) \Imp$
+  $\cpos(x,n)=\red).$
 \end{lem}
 補題\ref{lem:evenB}は最上段のマスの色を関数$\colorYB$で塗ると，最下段のマスの色は赤になるということを表している．
 \begin{proof}
-  補題\ref{lem:evenA}より$\forall i \in \N,$ $(0 \leq i \leq n-1$ $\Imp$ $\Cpos(x+i,y+1,red))$．
-  さらに，補題\ref{lem:AllRed}より$\Cpos(x,y+n,\red)$．
+  補題\ref{lem:evenA}より$\forall i \in \N, (0 \leq i \leq n-1 \Imp \cpos(x+i,1) = red)$．
+  さらに，補題\ref{lem:AllRed}より$\cpos(x,n)=\red$．
 \end{proof}
 
 \begin{lem}[\Even] \label{lem:even}
-  $\forall x,y,n \in \N,$ 
-  $(n > 0 \land odd(n) = false)$ $\Imp$ 
-  $\lnot(\forall c \in \Color, \forall f : \N \to \Color,$
-  $\WCT(x,y,n,f(x),f(x+n),c))$.
+  $\forall x,n \in \N,$ 
+  $(n > 0 \land odd(n) = false) \Imp$ 
+  $\lnot\WCTF(x,n)$.
 \end{lem}
 ただし，補題\ref{lem:even}の中にある$odd(n)$は次のようにSSReflectで定義されている関数である．
 
@@ -108,44 +117,52 @@ odd(n) \eqDef
   false & (otherwise)
 \end{cases}
 \]
+
 \begin{proof}
-  公理\ref{axm:paint}より$f=\colorYB$とすると$\Cpos(x,y,\colorYB(x,n,x))$，$\Cpos(x+n,n,\colorYB$ $(x,n,x+n))$．
-  このとき，$0$と$n$は偶数であり，$0 \leq 0 \leq n$，$0 \leq n \leq n$を満たすので$\colorYB(x,n,x)=\colorYB(x,n,x+n)=\yel$．
-  さらに，公理\ref{axm:exists}より$\Cpos(x,y+n,c)$となる$c\in\Color$が存在するので，存在するこの色に$c$と名前をつける．
-  すると，仮定より$\WCT(x,y,n,\colorYB(x,n,x),$ $\colorYB(x,n,x+n),c)$であるから$c=\yel$となり，$\Cpos(x,y+n,\yel)$．
-  一方で，補題\ref{lem:evenB}より$\Cpos(x,y,\red)$となるので補題\ref{lem:falseColor}より矛盾が導ける．
+  補題\ref{lem:paint}より
+  $\exists \cposYB, \Fmix(\cposYB) \land \forall x_1, y_1 \in \N, \cposYB(x_1,y_1) = \lift(\colorYB(x,n),x_1,y_1)$．
+  さらに，存在する $\cposYB$ をそのまま $\cposYB$ として名付けると，
+  $\forall i \in \N, \colorYB(x,n,x+i) = \cposYB(x+i,0)$ を満たす．
+  また，$0 \leq 0 \leq n$，$0 \leq n \leq n$を満たすので
+  $\colorYB(x,n,x)=\colorYB(x,n,x+n)=\yel$．
+  さらに，仮定より$\TF(\cpos,x,0,n)$であるから$\cposYB(x,n)=\yel$となる．
+  一方で，補題\ref{lem:evenB}より$\cpos(x,y)=\red)$となるので矛盾する．
 \end{proof}
 
 \subsubsection{$n$が奇数 かつ $3^{k} < n \leq 2 \cdot 3^{k}$}
 $n$が奇数 かつ$3^{k'} < n \leq 2 \cdot 3^{k}$のときは補題\ref{lem:shortoddA}，\ref{lem:shortoddB}，\ref{lem:shortoddC}を証明してから，補題\ref{lem:shortodd}を証明して矛盾を導く.
 \begin{lem}[\ShortOddA] \label{lem:shortoddA}
-  $\forall x,y,n,k \in \N,$
+  $\forall \cpos, \forall x, n, k \in \N,$
   $(3^k < n \leq (3^k\cdot2) \land odd(n) = true) \Imp$
-  $(\forall i \in \N, 0 \leq i \leq n \Imp \Cpos(x+i,y,\colorYBBY(x,n,x+i))) \Imp$
-  $(\forall i \in \N, 0 \leq i \leq n - 3^k \Imp \Cpos(x+i,y+3^k,\colorYB(x,n-3^k,x+i))).$
+  $n > 0  \Imp Fmix(\cpos) \Imp $
+  $(\forall x_1, y_1 \in \N, \TF(\cpos,x_1,y_1,3^k) \Imp$
+  $(\forall i \in \N, (0 \leq i \leq n \Imp \cpos(x+i,0) = \colorYBBY(x,n,x+i))) \Imp$
+  $(\forall i \in \N, (0 \leq i \leq n - 3^k \Imp \cpos(x+i,3^k) = \colorYB(x,n-3^k,x+i))).$
 \end{lem}
 補題\ref{lem:shortoddA}は最上段のマスの色を関数$\colorYBBY$で塗ると，最上段より$3^k$下の段のマスは黄，青で交互に塗ってあることを表している．
 \begin{proof}
   $0$ $\leq$ $i$ $\leq$ $n-3^k$を満たす$i$を任意にとると，
-  $0 \leq i \leq n$，$0 \leq i+3^k \leq n$であるから
-  $\Cpos(x+i,y,\colorYBBY(x,n,x+i))$，$\Cpos(x+i+3^k,y,\colorYBBY(x,n,x+i+3^k))$が導ける．
-  公理\ref{axm:exists}より$\Cpos(x+i,y+3^k,c)$となる$c\in\Color$が存在するので，
-  存在するこの色に$c$と名前をつける．
-  すると，定理\ref{thm:tri_suf}より$\WCT(x+i,y,3^k,\colorYBBY(x,n,x+i),$ $\colorYBBY(x,n,x+i+3^k),c)$だから$c=\mix(\colorYBBY(x,n,x+i),\colorYBBY(x,n,x+i+3^k))$が成立する．
-  さらに，$n$は奇数であり$0 \leq i \leq n/2$，$n/2+1 \leq i+3^k \leq n$を満たすので$\colorYBBY$，$\colorYB$の色が$i$の遇奇によって定まる．
+  $0 \leq i \leq n$，$0 \leq i+3^k \leq n$であるから仮定より，
+  $\cpos(x+i,0) = \colorYBBY(x,n,x+i)$，
+  $\cpos(x+i+3^k,0) = \colorYBBY(x,n,x+i+3^k))$．
+  また，仮定の$\TF(\cpos,x+i,0,3^k)$より
+  $\cpos(x+i,3^k)=\mix(\cpos(x+i,n),\cpos(x+i+3^k,0))$が成立する．
+  さらに，$n$は奇数であり$0 \leq i \leq n/2$，$n/2+1 \leq i+3^k \leq n$を満たすので$\colorYBBY$，$\colorYB$の色は$i$の遇奇によって定まる．
   \begin{itemize}
   \item
     $i$が偶数のとき \\
     $\colorYBBY$の定義より$\colorYBBY(x,n,x+i)=\yel$，$\colorYBBY(x,n,x+i+3^k)=\yel$であり，$\colorYB$の定義より$\colorYB(x,n-3^k,x+i)=\yel$．
-    よって，$c=\mix(\yel,\yel)=\yel=\colorYB(x,n-3^k,x+i)$．
+    よって，$\cpos(x+i,3^k)=\mix(\yel,\yel)=\yel=\colorYB(x,n-3^k,x+i)$．
   \item
     $i$が奇数のとき \\
     $\colorYBBY$の定義より$\colorYB(x,n,x+i)=\blu$，$\colorYB(x,n,x+i+3^k)=\blu$であり，$\colorYB$の定義より$\colorYB(x,n-3^k,x+i)=blu$
-    よって，$c=\mix(\blu,\blu)=\blu=\colorYB(x,n-3^k,x+i)$．
+    よって，$\cpos(x+i,3^k)=\mix(\blu,\blu)=\blu=\colorYB(x,n-3^k,x+i)$．
   \end{itemize}
-  以上より，$i$の遇奇にかかわらず$\colorYBBY(x,n,x+i)=\colorYB(x,n-3^k,x+i)$となるので$\Cpos(x+i,y+3^k,\colorYB(x,n-3^k,x+i))$．
+  以上より，$i$の遇奇にかかわらず$\cpos(x+i,3^k) = \colorYB(x,n-3^k,x+i))$．
 \end{proof}
-
+%
+% ここまで修正済み
+%
 \begin{lem}[\ShortOddB] \label{lem:shortoddB}
   $\forall x,y,n,k \in \N,$
   $(3^k < n \leq 3^k\cdot2 \land odd(n) = true) \Imp$
