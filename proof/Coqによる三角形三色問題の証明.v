@@ -201,7 +201,7 @@ Section Three_Color_Triangle_Problem.
       rewrite expn0 in Step. rewrite Step.
       rewrite /TriangleF. rewrite ! addn1. by apply H_mix.
     - move=> n x y Step.
-      + have Triangle035 : TriangleF cpos x y (3^k). by apply IHk.
+      + have Triangle035 : TriangleF cpos x y (3^k). rewrite /TriangleF. by apply IHk.
       + have Triangle346 : TriangleF cpos (x+3^k) y (3^k). by apply IHk.
       + have Triangle417 : TriangleF cpos (x+(3^k).*2) y (3^k). by apply IHk.
       + have Triangle568 : TriangleF cpos x (y+3^k) (3^k). by apply IHk.
@@ -588,7 +588,7 @@ Section Three_Color_Triangle_Problem.
     generalize (fromOddA i.+1) => Cpos2.
     specialize (Cpos2 rangeI2).
     rewrite- addnS. done.
-    (* 「(x+i,3^k +1) のマスの色は赤」を示すには colorYB の値から mix で計算できる *)
+    (* 「(x +i,3^k +1) のマスの色は赤」を示すには colorYB の値から mix で計算できる *)
     have Color : red = mix (cpos (x+i) (3^k)) (cpos (x+i).+1 (3^k)).
     (* colorYB で塗られている色を示す．i の偶奇で場合分け *)
     - case (odd_or_even i) => [OddI1|EvenI1].
@@ -633,7 +633,7 @@ Section Three_Color_Triangle_Problem.
     have D: 0+n = (0 + 3 ^ k + 1 + (n - 3 ^ k - 1)).
     apply/eqP. rewrite- addnA. rewrite- addnA. rewrite! add0n. rewrite addnC.     
     rewrite- eq_adjoint_minus_plus_eq. rewrite addnC. 
-    rewrite- eq_adjoint_minus_plus_eq. done. 
+    rewrite- eq_adjoint_minus_plus_eq. done.
     rewrite- eq_adjoint_plus_minus_lt. by rewrite add0n. 
     by apply ltnW. by rewrite- D in fromAllRed. 
   Qed.
@@ -645,10 +645,10 @@ Section Three_Color_Triangle_Problem.
     have [cposYBBY [H_mix B]]: exists cposYBBY: nat->nat->Color, F_mix cposYBBY /\ forall x1 y1: nat, cposYBBY x1 y1 = F (colorYBBY x n) x1 y1.
     exists (F (colorYBBY x n)). split. apply cposF. done.
     specialize (triangle cposYBBY H_mix).
-    move: (cond). move/andP. case=>[K1 K2].
+    move: (cond). move/andP. case=>[K1 K2]. 
     + have tri3k: forall x1 y1: nat, TriangleF cposYBBY x1 y1 (3^k).
       move=> x1 y1. apply Three_Color_Triangle_Problem_suf''. exists k. done. done.
-    + have A1: (colorYBBY x n x) = cposYBBY x 0. rewrite B. done. 
+    + have A1: (colorYBBY x n x) = cposYBBY x 0. rewrite B. done.
     + have A2: forall i:nat, (colorYBBY x n (x+i)) = cposYBBY (x+i) 0. move=>i. rewrite B. done.
     + have A5: cposYBBY x 0 = cposYBBY (x+n) 0. rewrite- A1. rewrite- A2. apply lemYBBY5. rewrite K2. done. 
     + have cpos_x_0_yel: cposYBBY x 0 = yel. rewrite- (addn0 x). rewrite- A2. apply lemYBBY1. done.
@@ -657,7 +657,7 @@ Section Three_Color_Triangle_Problem.
       rewrite /TriangleF in triangle. move:triangle; move/ceqP; move=>triangle.
       rewrite cpos_x_0_yel in triangle. rewrite- cpos_xn_0_yel in triangle. done. 
     + have cpos_x_n_red: red = cposYBBY x n. 
-      apply (ShortOddC cposYBBY x n k). done. done. done. done.
+      apply (ShortOddC cposYBBY x n k). done. done. done. done. Print colorYBBY.
     + have contra: yel = red. rewrite cpos_x_n_yel. rewrite cpos_x_n_red. done . done. 
   Qed.
   (* End: Three_Color_Triangle_Problem_nec_ShortOdd --------------------*)
@@ -793,7 +793,7 @@ Section Three_Color_Triangle_Problem.
            rewrite- addnA. apply (lemBYB3 x 0 n k ((3^k)+i)). done.
         ++ rewrite colB. rewrite- addnA. by apply topcolor.
       + have CposR: red = cpos (x+i) (3^k). 
-        rewrite- addnA in CposB. rewrite (addnC (3^k) i)in CposB. rewrite addnA in CposB. 
+        rewrite- addnA in CposB. rewrite (addnC (3^k) i) in CposB. rewrite addnA in CposB. 
         rewrite- [(3 ^ k)]addn0. rewrite [(3^k + 0)]addnC. specialize (triangle (x+i) 0).
         rewrite/TriangleF in triangle. rewrite- CposB in triangle. apply/ceqP. rewrite- CposY in triangle. done. done.
   Qed.
@@ -816,7 +816,7 @@ Section Three_Color_Triangle_Problem.
       + have [fromA1 fromA2]: 
           (forall i: nat,(0 <= i <= n - (3^k).*2 -> red = cpos (x+i) (3^k)))
           /\ (forall i: nat,(3^k <= i <= n - 3^k -> red = cpos (x+i) (3^k))). by apply LongOddA.
-      + have CposR1: red = cpos (x+i) (3^k). 
+      + have CposR1: red = cpos (x+i) (3^k).
         apply fromA1. done.
       + have CposR2: red = cpos (x + i + 3 ^ k) (3 ^ k).
         rewrite- addnA. apply fromA2. rewrite leq_addl. rewrite A4. done. 

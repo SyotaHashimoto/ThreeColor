@@ -297,31 +297,26 @@ $n$が奇数 かつ$2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$のときは補題\ref{le
   さらに，補題\ref{lem:AllRed}より$\cpos(x,n)=\red$．
 \end{proof}
 \begin{lem}[\LongOdd] \label{lem:longodd}
-  $\forall x,y,n,k \in \N,$
-  $(3^k\cdot2 + 1 \leq n < 3^{k+1}) \Imp$
-  $\lnot(\forall c \in \Color, \forall f:\N \to \Color, \WCT(x,y,n,f(x),f(x+n), c).$
+  $\forall x, n, k \in \N,$
+  $(3^k\cdot2 + 1 \leq n < 3^{k+1} \land odd(n) = true) \Imp \lnot\WCTF(x,n).$
 \end{lem}
 \begin{proof}
-  公理\ref{axm:paint}より$f=\colorBYB$とすると
-  $\Cpos(x,y,\colorBYB(x,n,,k,x))$，$\Cpos(x,n,\colorBYB$ $(x,n,k,x+n))$．
-  公理\ref{axm:exists}より$\Cpos(x,y+n,c)$となる$c\in\Color$が存在するので，
-  存在するこの色に$c$と名前をつける．
-  すると，仮定より$\WCT(x,y,n,\colorBYB(x,n,k,x),$ \\
-  \colorBYB$(x,n,k,x+n))$であるから$c=\mix(\colorBYB(x,n,k,x),\colorBYB(x,n,k,x+n))$．
-  よって，$0 \leq 0 \leq 3^k-1$，$n-3^k+1 \leq n \leq n$より
-  $\colorBYB(x,n,k,x)=\colorBYB(x,n,x+n,k)=\blu$であるから$c=\mix(\blu,\blu)=\blu$となり，$\Cpos(x,y+n,\blu)$．
-  一方で，補題\ref{lem:longoddC}より$\Cpos(x,y+n,\red)$となるので補題\ref{lem:falseColor}より矛盾が導ける．
+  補題\ref{lem:paint}より
+  $\exists \cposBYB, \Fmix(\cposBYB) \land \forall x_1, y_1 \in \N, \cposBYB(x_1,y_1) = \lift(\colorBYB$ $(x,n),x_1,y_1)$．
+  さらに，存在する $\cposBYB$ をそのまま $\cposBYB$ として名付けると，
+  $\forall i \in \N, \cposBYB(x+i,0) = colorBYB(x,n,k,x+i)$ を満たす．
+  これより$\cposBYB(x,0) = \colorBYB(x,n,k,x)$，$\cposBYB(x+n,0) = $
+  $\colorBYB(x,n,k,x+n)$．
+  また，$0 \leq 0 \leq 3^k-1$，$n-3^k+1 \leq n \leq n$より
+  $\colorBYB(x,n,k,x)=\colorBYB(x,n,k,x+n)=\blu$．
+  さらに，仮定より$\TF(\cposBYB,x,0,n)$であるから
+  $\cposYBBY(x,n)=\mix(\cposBYB(x,0),\cposBYB(x+n,0))=\mix(\blu,\blu)=\blu$
+  となる.
+  一方で，定理\ref{thm:tri_suf}，補題\ref{lem:longoddC}より
+  $\cpos(x,n)=\red$となるので矛盾する.
 \end{proof}
 
-最後に補題\ref{lem:even}，\ref{lem:shortodd}，\ref{lem:longodd}を用いて
-\ref{sec:nec}節の冒頭で述べた定理\ref{thm:tri_nec}を証明する．
-\begin{proof}[定理$\ref{thm:tri_nec}$の証明]
-  補題\ref{lem:even}，\ref{lem:shortodd}，\ref{lem:longodd}より
-  補題\ref{lem:tri_nec'}が導ける．
-  このとき，$\lnot( \forall c \in \Color,$ $\forall f:\N$ $\to$ $\Color,$ $\WCT(x,y,n,f(x),f(x+n),c)$ は$n$段の調和彩色三角形となるような最上段の塗り方が存在しないということなので，$n$段の三色三角形は調和彩色三角形でないことと同値である．
-  したがって，$\lnot(\exists k \in \N, n = 3 ^ k)$ $\Imp$
-  $\lnot( \forall c_0, c_1, c_2 \in \Color,$ $\WCT(x,y,n,c_0,c_1,c_2)$．
-  この命題は定理\ref{thm:tri_nec}の対偶となるので定理\ref{thm:tri_nec}が示された．
-\end{proof}
-
-以上より，定理\ref{thm:tri_suf}（十分条件），定理\ref{thm:tri_nec}（必要条件）が成立するので，定理\ref{thm:tri_iff}（必要十分条件）が示された．
+以上より補題\ref{lem:even}，\ref{lem:shortodd}，\ref{lem:longodd}から
+\ref{sec:nec}節の冒頭で述べた定理\ref{thm:tri_nec}を証明された．
+さらに，定理\ref{thm:tri_suf}（十分条件），定理\ref{thm:tri_nec}（必要条件）が
+成立するので定理\ref{thm:tri_iff}（必要十分条件）も示された．
