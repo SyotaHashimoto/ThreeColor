@@ -13,7 +13,9 @@ Coq を用いて作成した証明ファイルを公開することで他の人�
 
 本研究では，Coq + SSReflect を用いて三角形三色問題の証明の形式化を完成させた．
 \footnote{
-  \url{https://github.com/SyotaHashimoto/ThreeColor}から完成させたCoqのコードをダウンロードすることができる．
+  \url{https://github.com/SyotaHashimoto/ThreeColor} から
+  完成させたCoqのコード (``Coqによる三角形三色問題の証明.v'') を
+  ダウンロードすることができる．
 }
 SSReflect~\cite{SSReflect,CoqBook} は「証明によるリーズニングよりも計算を積極的に用いた方が証明は簡略化される」(ポワンカレ原理)のポリシーに基づいて設計された Coq の拡張ライブラリである．
 簡単な同値変形で示すことができる命題論理や等式・不等式に関する主張の証明などは論理式として推論で示すよりも bool 型の項と見なして変形した方が効率がよく，SSReflect はその機能を提供する．
