@@ -168,7 +168,7 @@ Section Three_Color_Triangle_Problem.
 
   (* (x,0) から始まる n 段の三角形に要請通りの任意の色塗りをしても 3頂点(x,0),(x+n,0),(x,n)の色は調和している *)
   Definition WellColoredTriangleF x n := forall cpos: nat->nat->Color, F_mix cpos -> TriangleF cpos x 0 n.
-    
+
   (* ----- mix の性質 ----- *) 
   
   Lemma mixCut (c0 c1 c2 c3 : Color) :
@@ -848,7 +848,7 @@ Section Three_Color_Triangle_Problem.
   Proof.
     - move=> x n k rangeN triangle.
       have [cposBYB [H_mix B]]: exists cposBYB: nat->nat->Color, F_mix cposBYB /\ forall x1 y1: nat, cposBYB x1 y1 = liftpaint (colorBYB x n k) x1 y1.
-      exists (F (colorBYB x n k)). split. apply cposF. done.
+      exists (liftpaint (colorBYB x n k)). split. apply cposF. done.
       specialize (triangle cposBYB H_mix).
       have topcolor : forall i : nat, ((0 <= i <= n) -> (colorBYB x n k (x+i)) = cposBYB (x+i) 0).
       move=>i range. rewrite B. done. 
