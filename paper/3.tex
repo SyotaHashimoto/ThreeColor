@@ -142,16 +142,16 @@
   $\lift$ $:$ $color \to \N \to \N \to \Color$ を以下で再帰的関数として定義する．
   ただし，$color$ は型が $\N \to \Color$ の関数である．
   
-  $\lift(\color,x,y) \eqDef$
+  $\lift(\colorF,x,y) \eqDef$
   \[
   \begin{cases}
-    \color(x) \quad (y = 0 \text{のとき}) \\
+    \colorF(x) \quad (y = 0 \text{のとき}) \\
     \mix(\lift(color,x,y'),\lift(color,x+1,y')) & \\
     \qquad \qquad \qquad \qquad \qquad \qquad \quad (y = y'+1 \text{のとき})
   \end{cases}
   \]
   演算 $\lift$ は塗り方の規則を再現する関数の$1$つである．
-  $y=0$ のときは最上段のマスの色は塗り方を表す関数 $\color$ で塗っていることを表している．
+  $y=0$ のときは最上段のマスの色は塗り方を表す関数 $\colorF$ で塗っていることを表している．
   また，$y=y'+1$の形をしているときは，最上段から$y'$段目にある隣り合う$2$マスの色に対して，$\mix$を適用することでその間にある$y$段目のマスの色が得られることを表している．
   すなわち，この関数は三角三色問題におけるマスの色の塗り方の規則を表している．
 \end{dfn}
