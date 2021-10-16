@@ -4,7 +4,7 @@
 % 関数 \mix・記号の説明
 % WellColoredTriangle x y n c0 c1 c2 :=
 % Cpos x y c0 /\ Cpos (x+n) y c1 /\ Cpos x (y+n) c2 -> c2 = \mix c0 c1
-\subsection{定義}
+\subsection{調和彩色三角形の定義}
 三角形三色問題のような幾何的な直観に基づく問題や前節で述べたような証明をCoqに実装するには，図形の状況を表現する論理式を用意し，それらを用いて問題の暗黙の前提や色塗り規則などを関数化することで形式化する必要がある．
 ここでは実装する際に用いた定義や関数，論理式について述べる．
 \begin{dfn}[$\Color$]
@@ -29,17 +29,14 @@
 \end{dfn}
 \begin{dfn}[$\cpos$]
   $\cpos$ $:$ $\N \to \N \to \Color$ を
-  \begin{center}
-  \text{左から} x \text{番目，上から} y \text{段目のマスの色を返す関数}
-  \end{center}
-  として定義する．
+  左から $x$ 番目，上から y 段目のマスの色を返す関数として定義する．
 \end{dfn}
 \begin{exm}
   図$\ref{fig:nine_steps}$において，逆三角形の$3$つの端点のマスに関して
   次が成立する：
   \begin{itemize}
-    \item $\cpos(0,0) = \yel.$
-    \item $\cpos(9,0) = \blu.$
+    \item $\cpos(0,0) = \yel,$
+    \item $\cpos(9,0) = \blu,$
     \item $\cpos(0,9) = \red.$
   \end{itemize}
 \end{exm}
@@ -47,28 +44,24 @@
   $\cpos$ $:$ $\N \to \N \to \Color$ に対して，
   $\Fmix(\cpos)$を次のように定義する．
 
-  
   $\Fmix(\cpos)$ $\iffDef$
-  
   $(\forall$ $x,y \in\N,$
   $(\cpos(x,y)$ $=$ $\mix$ $(\cpos(x,y),$ $\cpos(x+1,y)).$
 
-  $\Fmix$は隣接する三角形に配置されたマスの色は調和性を満たしていることを
-  論理式に書き直したものである．
+  $\Fmix$は隣接する$1$辺の長さが$1$である三角形に配置されたマスの色は
+  調和性を満たしていることを論理式に書き直したものである．
   すなわち，逆三角形に塗られている色はランダムに塗られているわけではなく，
-  規則に従ってマスの色が塗られた三色三角形であることを表している．
+  $x,y$ を任意にすることで規則に従ってマスの色が塗られた三色三角形で
+  あることを表している．
 \end{dfn}
-
 
 \begin{dfn}[$\WCTF$]
   $x, n \in \N$ に対して，
   \WCTF$(x, n)$を次のように定義する．
   
   \WCT$(x, n)$ $\iffDef$
-  
   $(\forall$ $\cpos$ $:$ $\N$ $\to$ $\N$ $\to$ $\Color,$
-  $(\Fmix(\cpos)$ $\to$ $\TF(\cpos,0,n)).$
-
+  $(\Fmix(\cpos)$ $\to$ $\TF(\cpos,0,n)).$ \\
   ただし，$\TF(\cpos,0,n))$ は以下で定義されている．
   \[
   \cpos(x,y+n) \eqDef \mix(cpos(x,y),cpos(x+n,y)).
@@ -77,7 +70,7 @@
   $x$は逆三角形の左端のマス$(x,0)$
   \footnote
       {
-        左から$x$番目，上から$y$段目のマスを座標のように $(x,y)$ と表すことにする．
+        左から$x$番目，上から$y$段目のマスを座標のように $(x,y)$ と表している．
         すなわち，$(x,0)$は左から$x$番目，上から$0$段目 (最上段) のマスを表している．
       }
   を基準として定めるために用いており，$n$は逆三角形の一辺の長さを表している．
@@ -89,7 +82,7 @@
 ここからはマスに塗る色の塗り方を表す関数について述べていく．
 まず，最初に必要条件で用いる最上段のマスの塗り方を$3$つ紹介する．
 \begin{dfn}[$\colorYB$]
-  $\colorYB$ $:$ $(\N \times \N \times \N)$ $\to$ $\Color$ を以下で定義する．
+  $\colorYB$ $:$ $\N \to \N \to \N$ $\to$ $\Color$ を以下で定義する．
 
   $\colorYB (x,n,z) \eqDef$
   \[
@@ -105,7 +98,7 @@
   また，$\colorYB$は最上段のマスを交互に塗っていることを$z-x$の偶奇によって定めている．
 \end{dfn}
 \begin{dfn}[$\colorYBBY$]
-  $\colorYBBY$ $:$ $(\N \times \N \times \N)$ $\to$ $\Color$ を以下で定義する．
+  $\colorYBBY$ $:$ $\N \to \N \to \N$ $\to$ $\Color$ を以下で定義する．
 
   $\colorYBBY(x,n,z) \eqDef$
   \[
@@ -123,7 +116,7 @@
   このようにして，$\colorYBBY$は外側から内側に向かって対称的に最上段のマスを交互に塗っていることを$z-x$の偶奇によって定めている．
 \end{dfn}
 \begin{dfn}[$\colorBYB$]
-  $\colorBYB$ $:$ $(\N \times \N \times \N \times \N )$ $\to$ $\Color$ を以下で定義する．
+  $\colorBYB$ $:$ $\N \to \N \to \N \to \N$ $\to$ $\Color$ を以下で定義する．
 
   $\colorBYB(x,n,k,z) \eqDef$
   \[
@@ -153,15 +146,15 @@
   演算 $\lift$ は塗り方の規則を再現する関数の$1$つである．
   $y=0$ のときは最上段のマスの色は塗り方を表す関数 $\colorF$ で塗っていることを表している．
   また，$y=y'+1$の形をしているときは，最上段から$y'$段目にある隣り合う$2$マスの色に対して，$\mix$を適用することでその間にある$y$段目のマスの色が得られることを表している．
-  すなわち，この関数は三角三色問題におけるマスの色の塗り方の規則を表している．
+  すなわち，この関数は最上段の色の塗り方を拡張して逆三角形のすべてのマスの塗り方を表した関数である．
 \end{dfn}
 
 % 3.3 補題
-% mixCut, AllRed
-\subsection{補題} \label{sec:lem}
-次に証明を円滑に進めていくために用いた補題について述べる．
+% mixCut, AllRed，cposF
+\subsection{関数の性質} \label{sec:lem}
+次に証明を円滑に進めていくために用いた関数の性質に関する補題について述べる．
 \begin{lem}[$\mixCut$] \label{lem:mixCut}
-  $\forall c_0, c_1, c_2, c_3 \in Color$に対して，
+  $\forall c_0, c_1, c_2, c_3 \in \Color$に対して，
   $\mix( \mix ( \mix(c_0,c_1) , \mix(c_1,c_2) ), \mix( \mix(c_1,c_2),$\\
   $\mix(c_2,c_3) ) )$ $=$ $\mix(c_0,c_3)$.
 
@@ -171,10 +164,22 @@
 \end{lem}
 
 \begin{lem}[$\AllRed$] \label{lem:AllRed}
-  $\forall x, y, n\in \N$ に対して，
-  $(\forall i. \in \N,$ $(0 \leq i \leq n$ $\Imp$ $\Cpos(x+i,y,red)))$ $\Imp$ $\Cpos(x,y+n,red)$. 
+  $\forall \cpos : \N \to \N \to \Color$，$x, y, n\in \N$ に対して，
+  $\Fmix(cpos)$ $\Imp$
+  $(\forall i. \in \N,$ $(0 \leq i \leq n$ $\Imp$ $\cpos(x+i,y) = \red))$ $\Imp$
+  $\cpos(x,y+n) = \red$.
 
   三角形三色問題の必要条件$(\text{補題}\ref{lem:tri_nec})$の証明において，$n$がどの場合でもすべてのマスが赤に塗られている段があることに帰着させて矛盾を導いている．
   AllRedにより，すべてのマスが赤で塗られている段があるときは最下段のマスは赤であることを推測できるという補題である．
+\end{lem}
+
+\begin{lem}[$\cposF$] \label{lem:paint}
+  $\forall$ $\colorF$ $:$ $\N$ $\to$ $\Color$ に対して，
+  $\Fmix(\lift(\colorF)).$
+
+  $\cposF$は$\lift$に従ってマスの色を塗ると，常に$\Fmix$を満たすことを表している．
+  すなわち，最上段のマスの塗り方を表す関数に影響されず，
+  隣接する$1$辺の長さが$1$である三角形に配置されたマスの色は調和性を
+  満たしていること表している．
 \end{lem}
 
