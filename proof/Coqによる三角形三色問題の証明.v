@@ -177,14 +177,14 @@ Section Three_Color_Triangle_Problem.
 
   (* ----- 色づけ関数のリフト (最上段のみ色塗りから全域への色塗りに拡張する) ----- *)
   (* ----- 後に定義する colorYBBY や colorBYB などに対して適用する ----- *)  
-  Fixpoint F (color : nat -> Color) (x y : nat) : Color :=
+  Fixpoint liftpaint (color : nat -> Color) (x y : nat) : Color :=
     match y with
     | 0 => color x
-    | y'.+1 => mix (F color x y') (F color(x.+1) y')
+    | y'.+1 => mix (liftpaint color x y') (liftpaint color(x.+1) y')
     end.
   
   (* ----- リフトして作った色塗り関数は F_mix を満たす ----- *)  
-  Lemma cposF: forall color:nat->Color, F_mix (F color).
+  Lemma cposF: forall color:nat->Color, F_mix (liftpaint color).
   Proof. move=>color x y. apply/ceqP. done. Qed.
   
   (* ----- 三角形三色問題 ----- *)
@@ -399,8 +399,8 @@ Section Three_Color_Triangle_Problem.
   Proof.
     move=> x n /andP [] Notzero Even Wct.
     rewrite /WellColoredTriangleF in Wct.
-    - have [cposYB[H_mix Paint]] : exists cposYB: nat->nat->Color, F_mix cposYB /\ forall x1 y1: nat, cposYB x1 y1 = F (colorYB x n) x1 y1.
-      exists (F (colorYB x n)); split. apply cposF. by [].
+    - have [cposYB[H_mix Paint]] : exists cposYB: nat->nat->Color, F_mix cposYB /\ forall x1 y1: nat, cposYB x1 y1 = liftpaint (colorYB x n) x1 y1.
+      exists (liftpaint (colorYB x n)); split. apply cposF. by [].
     - have Topcolor : forall i : nat, colorYB x n (x+i) = cposYB (x+i) 0.
       move=> i; by rewrite Paint.
       + have A1 : colorYB x n x = cposYB x 0. by rewrite Paint.
@@ -642,8 +642,8 @@ Section Three_Color_Triangle_Problem.
     forall x n k : nat, ((3^k < n <= (3^k).*2) && (odd n)) -> ~(WellColoredTriangleF x n).
   Proof.
     move=> x n k cond triangle. rewrite/WellColoredTriangleF in triangle.
-    have [cposYBBY [H_mix B]]: exists cposYBBY: nat->nat->Color, F_mix cposYBBY /\ forall x1 y1: nat, cposYBBY x1 y1 = F (colorYBBY x n) x1 y1.
-    exists (F (colorYBBY x n)). split. apply cposF. done.
+    have [cposYBBY [H_mix B]]: exists cposYBBY: nat->nat->Color, F_mix cposYBBY /\ forall x1 y1: nat, cposYBBY x1 y1 = liftpaint (colorYBBY x n) x1 y1.
+    exists (liftpaint (colorYBBY x n)). split. apply cposF. done.
     specialize (triangle cposYBBY H_mix).
     move: (cond). move/andP. case=>[K1 K2]. 
     + have tri3k: forall x1 y1: nat, TriangleF cposYBBY x1 y1 (3^k).
@@ -847,7 +847,7 @@ Section Three_Color_Triangle_Problem.
     forall (x n k : nat), ((3^k).*2 + 1 <= n < (3^(k.+1))) -> ~(WellColoredTriangleF x n). 
   Proof.
     - move=> x n k rangeN triangle.
-      have [cposBYB [H_mix B]]: exists cposBYB: nat->nat->Color, F_mix cposBYB /\ forall x1 y1: nat, cposBYB x1 y1 = F (colorBYB x n k) x1 y1.
+      have [cposBYB [H_mix B]]: exists cposBYB: nat->nat->Color, F_mix cposBYB /\ forall x1 y1: nat, cposBYB x1 y1 = liftpaint (colorBYB x n k) x1 y1.
       exists (F (colorBYB x n k)). split. apply cposF. done.
       specialize (triangle cposBYB H_mix).
       have topcolor : forall i : nat, ((0 <= i <= n) -> (colorBYB x n k (x+i)) = cposBYB (x+i) 0).
@@ -859,7 +859,7 @@ Section Three_Color_Triangle_Problem.
         exists k. done. done.
       + have cposR: red = cposBYB x n. by apply (LongOddC cposBYB x n k).
       + have cposB1: blu = cposBYB x 0. rewrite- (addn0 x). rewrite- topcolor. rewrite (addn0 x). 
-        rewrite- {2} (addn0 x). apply (lemBYB1 x 0). done. done.  
+        rewrite- {2} (addn0 x). apply (lemBYB1 x 0). done. done.
       + have cposB2: blu = cposBYB (x+n) 0. rewrite- topcolor. apply (lemBYB3 x 0). apply/andP. split. 
         rewrite (eq_adjoint_minus_plus_lt n A1). rewrite- eq_lt_plus_l. apply expn3Pos. done. rewrite leqnn. done. 
       + have triBBR: TriangleF cposBYB x 0 n. rewrite/TriangleF. apply/ceqP. rewrite add0n.
