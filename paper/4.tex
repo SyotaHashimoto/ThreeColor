@@ -69,7 +69,7 @@ $(\lnot(\exists k \in \N, n = 3 ^ k) \Imp \lnot\WCTF(x,n))$ \\
 \end{itemize}
 を仮定して矛盾を示せばよい．
 今回は$n$に関する場合分けをしてから各場合において矛盾を導く．
-\subsubsection{$n$が偶数}
+\subsubsection{$n$が偶数の場合}
 $n$が偶数のときは補題\ref{lem:evenA}，\ref{lem:evenB}を証明してから，補題\ref{lem:even}を証明して矛盾を導く．
 \begin{lem}[\EvenA] \label{lem:evenA}
   $\forall \cpos, \forall x, n \in \N, n > 0  \Imp Fmix(\cpos) \Imp $
@@ -129,7 +129,7 @@ odd(n) \eqDef
   一方で，補題\ref{lem:evenB}より$\cpos(x,n)=\red$となるので矛盾する．
 \end{proof}
 
-\subsubsection{$n$が奇数 かつ $3^{k} < n \leq 2 \cdot 3^{k}$}
+\subsubsection{$n$が奇数 かつ $3^{k} < n \leq 2 \cdot 3^{k}$の場合}
 $n$が奇数 かつ$3^{k'} < n \leq 2 \cdot 3^{k}$のときは補題\ref{lem:shortoddA}，\ref{lem:shortoddB}，\ref{lem:shortoddC}を証明してから，補題\ref{lem:shortodd}を証明して矛盾を導く.
 \begin{lem}[\ShortOddA] \label{lem:shortoddA}
   $\forall \cpos, \forall x, n, k \in \N,$
@@ -221,7 +221,7 @@ $n$が奇数 かつ$3^{k'} < n \leq 2 \cdot 3^{k}$のときは補題\ref{lem:sho
 \end{proof}
 
 
-\subsubsection{$n$が奇数 かつ $2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$}
+\subsubsection{$n$が奇数 かつ $2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$の場合}
 $n$が奇数 かつ$2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$のときは補題\ref{lem:longoddA}，\ref{lem:longoddB}，\ref{lem:longoddC}を証明してから，補題\ref{lem:longodd}を証明して矛盾を導く．
 \begin{lem}[\LongOddA] \label{lem:longoddA}
   $\forall \cpos, \forall x, n, k \in \N,$
