@@ -1,7 +1,7 @@
 From mathcomp Require Import ssreflect ssrbool ssrnat ssrfun eqtype.
 
+(*
 Section nat1.
-
 Let connect3m n m :
   (3 ^ m <= n <= (3 ^ m).*2) || ((3 ^ m).*2.+1 <= n < 3 ^ m.+1)
   <-> 3 ^ m <= n < 3 ^ m.+1.
@@ -38,94 +38,24 @@ split=> [[<-|/andP[/ltnW ->//]]|/andP[]].
 Qed.
 
 End nat1.
+*)
 
-Lemma nat_total2 n : exists k,
- n = 0 \/ n = 3 ^ k \/ 3 ^ k < n <= (3 ^ k).*2 \/ (3 ^ k).*2.+1 <= n < 3 ^ k.+1.
+Lemma nat_total n : exists k,
+    n = 0 \/ n = 3 ^ k \/ 3 ^ k < n <= (3 ^ k).*2 \/ (3 ^ k).*2.+1 <= n < 3 ^ k.+1.
 Proof.
-  have H (k): 3^k>=1. by apply (leq_ltn_trans (leq0n k)); apply ltn_expl.
+  have H(k): 3^k>=1 by [apply (leq_ltn_trans (leq0n k)); apply ltn_expl].
   elim n. exists 0; by left. move=> n0 [k0 [IH0|[IH1|[IH2|IH3]]]].
   exists 0; by rewrite IH0; right; left.
-  exists k0; rewrite -IH1; right; right; left; rewrite -addnn -addn1 !leq_add2l IH1; apply (H k0).
-  case: k0 IH2 => [K0|k0].
-  + exists 1; right; left; rewrite expn0 -eqn_leq in K0; rewrite expn1; apply eq_S; by move /eqnP in K0. 
-  + exists (k0.+1). right;right; left. 
-    case/andP: IH2 => [IH2a IH2b]; apply/andP; split. by apply (ltn_trans IH2a).
-
-    
-    Search "ltn_trans". 
-
-
-
-    Search "eqn".
-  move: K0. 
-
-ltn_predRL: forall m n : nat, (m < n.-1) = (m.+1 < n)
-
-
-
-  
-  
-  exists k0; have [K0|Kge0] := eqVneq n0 (3^k0).*2. right;right;right.
-
-
-  rewrite expnS {2}(_: 3 = 2+1)// mulnDl mul2n mul1n -!K0 -addn1 ltn_add2l.
-
-  
-  exists k0; rewrite !K0 expn0 expn1 -addn1 (_: 1.*2 = 1). 
-  have _: n0 = 2.
-  move: IH2. rewrite K0 expn0 -muln2 (_: 1*2 = 2). lia.
-
-  rewrite K0 expn0 (_: 1.*2 = 1) in IH2.
-
-Search (_.*2).
-  
-Search (_^1).
-
-
-  rewrite expn0 expn1. 
-
-Search (_^_). 
-
-
-rewrite (leq_eqVlt (leq0n k0)) => /predU1P[-> _|-> ->]; [left|right].
-  
-Search "leq_eqVlt". 
-  
-  move: IH2 => /andP[IH2a IH2b]. move: IH2b; rewrite leq_eqVlt => /predU1P[IH2b0|IH2b1].
-
-  Search (_<=_).
-
-
-
-  
-  have H1: leq_eqVlt k0 0.
-
-  first by exists 0; right; left.
-  
-Search eqVneq
-  exists k0. right;right;right. rewrite expnSr {3}(_ : 3 = 2 + 1)// mulnDr muln1 muln2 IH2b0 -addn1 leq_add2l ltn_add2l. 
-
-
-
-  rewrite -!IH2b0. 
-by // 2!mulnDr !muln1.
-
-  Search (_^_.+1).
-
-  
-Check predU1P.
-  => /predU1P[]. ; case=> IH2a; move /orP => [IH2b0|IH2b1].
-  exists k0. right; right; right. 
-
-
-
-  case: IH2. 
-
-       
-Search (0<=_).
-       Search "leq_ltn_trans".
-       
-
+  exists k0; by rewrite -IH1; right;right;left; rewrite -addnn -addn1 !leq_add2l IH1; apply H.
+  case/andP : IH2 => IH2a; rewrite leq_eqVlt => /predU1P[->|B]. case: k0 IH2a=>[K0|k0].
+  exists 1; right;left; by rewrite expn0 expn1.
+  exists (k0.+1); right;right;right.
+  have H1: 3^k0.+1>1 by rewrite expnS (ltn_trans (ltnSn 1))// -{1}(muln1 3) leq_pmul2l// apply H.
+  apply /andP; split=>//.
+  by rewrite (expnSr 3 k0.+1) {3}(_:3 = 2+1)// -(addn1 ((3^k0.+1).*2)) mulnDr muln2 ltn_add2l muln1.
+  exists k0; right;right;left; apply/andP; split; last first. by []. by apply ltnW.
+  case/andP: IH3=>IH3. rewrite leq_eqVlt => /predU1P[A|B]. exists (k0.+1); by [right;left]. 
+  exists k0; right;right;right. apply/andP; split; last first. by []. by rewrite (ltn_trans IH3).
 Qed.  
 
 
