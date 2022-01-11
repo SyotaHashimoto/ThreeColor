@@ -2,7 +2,6 @@ From mathcomp Require Import ssreflect ssrbool ssrnat ssrfun eqtype.
 
 (* Three Color Triangle Problem (TCTP) *)
 
-
 Section Three_Color_Triangle_definitions.
 
   (* --- Definitions --- *)
@@ -69,34 +68,22 @@ End Three_Color_Triangle_definitions.
 Section Three_Color_Triangle_Problem.
 
 (* ----- 三角形三色問題 ----- *)
-Lemma Three_Color_Triangle_Problem_suf' (cpos : coloring) (k x y : nat) :
-  F_mix cpos -> TriangleF cpos x y (3 ^ k).
-Proof.
-move=> H_mix; elim: k x y => [|k IHk] x y.
-- by rewrite expn0 /TriangleF !addn1; exact/H_mix.
-- rewrite /TriangleF -(mixCut _ (cpos (x + 3 ^ k) y) (cpos (x + (3 ^ k).*2) y)).
-  have <- : TriangleF cpos x y (3 ^ k) by exact: IHk (*Triangle035*).
-  rewrite -addnn addnA.
-  have <- : TriangleF cpos (x + 3 ^ k) y (3 ^ k) by exact: IHk. (*Triangle346*)
-  have <- : TriangleF cpos x (y + 3 ^ k) (3  ^k) by exact: IHk. (*Triangle568*)
-  have -> : 3 ^ k.+1 = (3 ^ k).*2 + 3 ^ k.
-    by rewrite expnS (mulnDl 1 2) mul1n mul2n addnC.
-  rewrite -!addnA addnn !addnA.
-  (*Triangle417*)
-  have <- : TriangleF cpos (x + (3 ^ k).*2) y (3 ^ k) by exact: IHk.
-  rewrite -addnn !addnA.
-  (*Triangle679*)
-  have <- : TriangleF cpos (x + 3 ^ k) (y + 3 ^ k) (3 ^ k) by exact: IHk.
-  rewrite -!addnA addnn !addnA.
-  (*Triangle892*)
-  have <- : TriangleF cpos x (y + (3 ^ k).*2) (3  ^k) by exact: IHk.
-  by rewrite addnAC.
-Qed.
-
-(* 十分条件 *)
 Theorem Three_Color_Triangle_Problem_suf x n :
   (exists k, n = 3 ^ k) -> WellColoredTriangleF x n.
-Proof. by move=> [k ->] cpos; exact: Three_Color_Triangle_Problem_suf'. Qed.
+Proof.
+  move=> [k ->] cpos H_mix; suff H y : TriangleF cpos x y (3 ^ k) by exact /(H 0).
+  elim: k x y => [|k IHk] x y.
+  - by rewrite expn0 /TriangleF !addn1; exact/H_mix.
+  - rewrite /TriangleF -(mixCut _ (cpos (x + 3 ^ k) y) (cpos (x + (3 ^ k).*2) y)).    
+    have <- : TriangleF cpos x y (3 ^ k) by exact: IHk.
+    rewrite -addnn addnA; have <- : TriangleF cpos (x + 3 ^ k) y (3 ^ k) by exact: IHk.
+    have <- : TriangleF cpos x (y + 3 ^ k) (3  ^k) by exact: IHk.
+    have -> : 3 ^ k.+1 = (3 ^ k).*2 + 3 ^ k by rewrite expnS (mulnDl 1 2) mul1n mul2n addnC.
+    rewrite -!addnA addnn !addnA; have <- : TriangleF cpos (x + (3 ^ k).*2) y (3 ^ k) by exact: IHk.
+    rewrite -addnn !addnA; have <- : TriangleF cpos (x + 3 ^ k) (y + 3 ^ k) (3 ^ k) by exact: IHk.
+    rewrite -!addnA addnn !addnA; have <- : TriangleF cpos x (y + (3 ^ k).*2) (3  ^k) by exact: IHk.
+    by rewrite addnAC.
+Qed.
 
 (* ここから必要条件 ------------------------------------*)
 
