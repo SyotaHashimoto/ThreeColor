@@ -4,7 +4,6 @@ From mathcomp Require Import ssreflect ssrbool ssrnat ssrfun eqtype.
 
 Section Three_Color_Triangle_definitions.
 
-  (* --- Definitions --- *)
   (* Color: the type for the three colors in TCTP *)
   (* red, blu (=blue), and yel (=yellow) *)
   Inductive Color : Set := red | yel | blu.
@@ -39,31 +38,26 @@ Section Three_Color_Triangle_definitions.
     | blu, blu => blu
     end.
 
-  Lemma mixCut c0 c1 c2 c3 :
-    mix (mix (mix c0 c1) (mix c1 c2)) (mix (mix c1 c2) (mix c2 c3)) = mix c0 c3.
+  Lemma mixCut c0 c1 c2 c3: mix (mix (mix c0 c1) (mix c1 c2)) (mix (mix c1 c2) (mix c2 c3)) = mix c0 c3.
   Proof. by move: c0 c1 c2 c3 => [] [] [] []. Qed.
 
   Definition coloring := nat -> nat -> Color.
 
   Definition F_mix cpos := forall x y, cpos x y.+1 = mix (cpos x y) (cpos x.+1 y).
 
-  (* meaning: The color of the node (x,y+n) is the mixure of those of the nodes (x,y) and (x+n,y) *)
+  (* Meaning: The color of the node (x,y+n) is the mixure of those of the nodes (x,y) and (x+n,y). *)
   Definition TriangleF cpos x y n := cpos x (y + n) = mix (cpos x y) (cpos (x + n) y).
 
-  (* (x,0) から始まる n 段の三角形に要請通りの任意の色塗りをしても 3頂点(x,0),(x+n,0),(x,n)の色は調和している *)
+  (* Meaning: The triangle (x,0)-(x+n,0)-(x,n) makes a well-colored triangle for any expected coloring. *)
   Definition WellColoredTriangleF x n := forall cpos, F_mix cpos -> TriangleF cpos x 0 n.
 
-  (* ----- 色づけ関数のリフト (最上段のみ色塗りから全域への色塗りに拡張する) ----- *)
-  (* ----- 後に定義する colorYBBY や colorBYB などに対して適用する ----- *)
+  (* Lifting of top-level coloring functions (This will be applied to colorYBBY and colorBYB defined later) *)
   Fixpoint liftpaint (color : nat -> Color) x y :=
-    if y is y'.+1 then mix (liftpaint color x y') (liftpaint color x.+1 y')
-    else color x.
+    if y is y'.+1 then mix (liftpaint color x y') (liftpaint color x.+1 y') else color x.
 
 End Three_Color_Triangle_definitions.
 
 Section Three_Color_Triangle_Problem.
-
-  (* ----- 三角形三色問題 ----- *)
 
   (* この補題は削除予定 *)
   Lemma Three_Color_Triangle_Problem_suf' (cpos : coloring) (k x y : nat) :
@@ -90,8 +84,7 @@ Section Three_Color_Triangle_Problem.
           by rewrite addnAC.
   Qed.
 
-Theorem Three_Color_Triangle_Problem_suf x n :
-  (exists k, n = 3 ^ k) -> WellColoredTriangleF x n.
+Theorem Three_Color_Triangle_Problem_suf x n : (exists k, n = 3 ^ k) -> WellColoredTriangleF x n.
 Proof.
   move=> [k ->] cpos H_mix; suff H y : TriangleF cpos x y (3 ^ k) by exact /(H 0).
   elim: k x y => [|k IHk] x y.
@@ -107,26 +100,26 @@ Proof.
     by rewrite addnAC.
 Qed.
 
-(* ここから必要条件 ------------------------------------*)
-
+(* Proof of the necessary condition ------------------------------------*)
 Section AllRed.
-Variables (cpos : coloring) (x y n : nat).
-Hypothesis H_mix : F_mix cpos.
-Hypothesis topcolor : forall i, i <= n -> cpos (x + i) y = red.
+  (* AllRed: The lower most cell is red if there is a line whose all cells are red *)    
+  Variables (cpos : coloring) (x y n : nat).
+  Hypothesis H_mix : F_mix cpos.
+  Hypothesis topcolor : forall i, i <= n -> cpos (x + i) y = red.
 
-(* ある段が全て赤なら最下段も赤 *)
-Lemma AllRed : cpos x (y + n) = red.
-Proof.
-  suff AllRed' q p : p + q <= n -> cpos (x + p) (y + q) = red.
-  rewrite -(addn0 x); exact: AllRed'.
-  elim: q p => [p|q IHq p pqn]; first by rewrite !addn0; apply topcolor.
-  by rewrite addnS H_mix IHq ?(leq_trans _ pqn)// -?addnS ?IHq// ?addnS// addSnnS.
-Qed.
+  Lemma AllRed : cpos x (y + n) = red.
+  Proof.
+    suff AllRed' q p : p + q <= n -> cpos (x + p) (y + q) = red.
+    rewrite -(addn0 x); exact: AllRed'.
+    elim: q p => [p|q IHq p pqn]; first by rewrite !addn0; apply topcolor.
+    by rewrite addnS H_mix IHq ?(leq_trans _ pqn)// -?addnS ?IHq// ?addnS// addSnnS.
+  Qed.
 
 End AllRed.
 
-(* Begin: Three_Color_Triangle_Problem_nec_even --------------------*)
-(* colorYB x n z : 最上段の x から x+n までのマスを黄，青と交互に塗る (範囲外は黄にする) *) (* 注意：コードが変わった*)
+  (* Begin: Three_Color_Triangle_Problem_nec_even --------------------*)
+  (* colorYB x n z : 最上段の x から x+n までのマスを黄，青と交互に塗る (範囲外は黄にする) *)
+  (* 注意：コードが変わった*)
 Definition colorYB n x := if (x <= n) && ~~ odd x then yel else blu.
 
 Section Even.
@@ -162,8 +155,7 @@ Qed.
 
 End Even.
 
-Lemma Three_Color_Triangle_Problem_nec_even x n :
-  n > 0 -> ~~ odd n -> ~ WellColoredTriangleF x n.
+Lemma Three_Color_Triangle_Problem_nec_even x n : n > 0 -> ~~ odd n -> ~ WellColoredTriangleF x n.
 Proof.
 move=> n_gt0 Even Wct.
 have [cposYB[H_mix Paint]] : exists cposYB, F_mix cposYB /\
@@ -179,11 +171,9 @@ by apply: EvenAB => // i ni; rewrite Paint/= addnC addnK.
 Qed.
 (* End: Three_Color_Triangle_Problem_nec_Even --------------------*)
 
-Definition colorYBBY n x :=
-  if ((x <= n./2) && odd x) || ((n./2.+1 <= x <= n) && ~~ odd x)
-  then blu else yel.
+Definition colorYBBY n x := if ((x <= n./2) && odd x) || ((n./2.+1 <= x <= n) && ~~ odd x) then blu else yel.
 
-(* colorYBBY の性質 *)
+(* Some properties of colorYBBY *)
 Lemma lemYBBY1 n i : i <= n./2 -> ~~ odd i -> colorYBBY n i = yel.
 Proof.
   by move=> ni /negbTE oi; rewrite /colorYBBY oi /= !(andbF,andbT)/= ltnNge ni.
@@ -212,8 +202,7 @@ Hypothesis H_mix : F_mix cpos.
 Hypothesis triangle : forall x1 y1, TriangleF cpos x1 y1 (3 ^ k).
 Hypothesis color : forall i, i <= n -> colorYBBY n i = cpos (x + i) 0.
 
-Let ShortOddA i : i <= n - 3 ^ k ->
-  colorYB (n - 3 ^ k) i = cpos (x + i) (3 ^ k).
+Let ShortOddA i : i <= n - 3 ^ k -> colorYB (n - 3 ^ k) i = cpos (x + i) (3 ^ k).
 Proof.
   move=> rangeI.
   have nk2 : n < (3 ^ k).*2.
@@ -233,8 +222,7 @@ Proof.
   have Cpos1 : colorYBBY n i = cpos (x + i) 0 by exact/color/rangeIa.
   have Cpos2 : colorYBBY n (i + 3 ^ k) = cpos (x + i + 3 ^ k) 0.
   by rewrite -addnA color.
-  have cpos_mix : cpos (x + i) (3 ^ k) =
-                    mix (cpos (x + i) 0) (cpos (x +i + 3 ^ k) 0).
+  have cpos_mix : cpos (x + i) (3 ^ k) = mix (cpos (x + i) 0) (cpos (x +i + 3 ^ k) 0).
   by rewrite -triangle.
   have lemYB1 m j : j <= m -> ~~ odd j -> colorYB m j = yel by move=> mj oj; rewrite /colorYB mj oj.
   have lemYB2 m j : odd j -> colorYB m j = blu by move=> oj; rewrite /colorYB oj andbF.
@@ -251,13 +239,11 @@ Proof.
     by rewrite cpos_mix -Cpos1 -Cpos2 YBBYyel1 YBBYyel2.
 Qed.
 
-Let C4 : 0 < n - 3 ^ k.
-Proof. by rewrite ltn_subCr subn0; move/andP : range => []. Qed.
-
 Let ShortOddB i : i <= (n - 3 ^ k).-1 -> cpos (x + i) (3 ^ k).+1 = red.
 Proof.
   move=> rangeI.
   have rangeI1 : i <= n - 3 ^ k by rewrite (leq_trans rangeI)// leq_pred.
+  have ?: 0 < n - 3 ^ k by rewrite ltn_subCr subn0; move/andP : range => []. 
   have rangeI2 : i.+1 <= n - 3 ^ k by rewrite (leq_ltn_trans rangeI)// ltn_predL.
   (* 3^k 段下のマスの色は colorYB で塗られていることを示す *)
   (* 「(x +i,3^k +1) のマスの色は赤」を示すには colorYB の値から mix で計算できる *)
@@ -274,15 +260,16 @@ Qed.
 
 Lemma ShortOddC : cpos x n = red.
 Proof.
-have -> : n = 3 ^ k + 1 + (n - 3 ^ k).-1.
+  have -> : n = 3 ^ k + 1 + (n - 3 ^ k).-1.
+  have ?: 0 < n - 3 ^ k by rewrite ltn_subCr subn0; move/andP : range => [].   
   by rewrite -addnA addnC add1n prednK// ?subnK// ?subn_gt0// ltnW// -subn_gt0.
-by rewrite AllRed// => i ?; rewrite addn1 ShortOddB.
+  by rewrite AllRed// => i ?; rewrite addn1 ShortOddB.
 Qed.
 
 End ShortOdd.
 
 Lemma Three_Color_Triangle_Problem_nec_ShortOdd x n k :
-  3 ^ k < n <= (3 ^ k).*2 -> odd n -> ~ WellColoredTriangleF x n.
+3 ^ k < n <= (3 ^ k).*2 -> odd n -> ~ WellColoredTriangleF x n.
 Proof.
 move=> K oddn; rewrite/WellColoredTriangleF => triangle.
 have [cposYBBY [H_mix B]] : exists cposYBBY, F_mix cposYBBY /\
@@ -303,8 +290,9 @@ by rewrite cpos_x_n_yel.
 Qed.
 (* End: Three_Color_Triangle_Problem_nec_ShortOdd --------------------*)
 
-(* Begin: Three_Color_Triangle_Problem_nec_LongOdd --------------------*)
-(* colorBYB x n k z : 最上段の x から x+n までの左端＋右端 3^k 個を青，中央を黄で塗る (範囲外は青にする) *) (* 注意：コードが変わった*)
+  (* Begin: Three_Color_Triangle_Problem_nec_LongOdd --------------------*)
+  (* colorBYB x n k z : 最上段の x から x+n までの左端＋右端 3^k 個を青，中央を黄で塗る (範囲外は青にする) *)
+  (* 注意：コードが変わった*)
 Definition colorBYB n k x := if 3 ^ k <= x <= n - 3 ^ k then yel else blu.
 
 (* colorBYB の性質 *)
@@ -329,7 +317,7 @@ Hypotheses (rangeN : (3 ^ k).*2.+1 <= n < 3 ^ k.+1) (H_mix : F_mix cpos).
 Hypothesis triangle : forall x1 y1, TriangleF cpos x1 y1 (3 ^ k).
 Hypothesis color : forall i, i <= n -> colorBYB n k i = cpos (x + i) 0.
 
-(* n の範囲条件から導かれる不等式 *)
+(* An inequality obtained from the range of n *)
 Let fromRangeN :
   prod (3 ^ k <= n) (prod ((3 ^ k).*2 <= n) (n - (3 ^ k).*2 <= (3 ^ k).-1)).
 Proof.
@@ -389,8 +377,7 @@ Proof.
 Qed.
 
 End LongOdd.
-
-(* 奇数の場合-2 終わり *)
+  
 Lemma Three_Color_Triangle_Problem_nec_LongOdd x n k :
   (3 ^ k).*2.+1 <= n < 3 ^ k.+1 -> ~ WellColoredTriangleF x n.
 Proof.
@@ -411,7 +398,6 @@ have cposB2 : cposBYB (x + n) 0 = blu.
 suff: mix blu blu = red by [].
 by rewrite -cposR -{1}cposB1 -cposB2 -[in LHS](add0n n) triangle.
 Qed.
-(* End: Three_Color_Triangle_Problem_nec_LongOdd --------------------*)
 
 Lemma nat_total n : exists k,
     n = 0 \/ n = 3 ^ k \/ 3 ^ k < n <= (3 ^ k).*2 \/ (3 ^ k).*2.+1 <= n < 3 ^ k.+1.
@@ -453,7 +439,7 @@ Qed.
 
 (* Main Theorem *)
 Theorem Three_Color_Triangle_Problem2 n :
-  n > 0 -> (exists k, n = 3 ^ k) <-> WellColoredTriangleF 0 n.
+n > 0 -> (exists k, n = 3 ^ k) <-> WellColoredTriangleF 0 n.
 Proof. exact: Three_Color_Triangle_Problem_sufnec. Qed.
 
 End Three_Color_Triangle_Problem.
