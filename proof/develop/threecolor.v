@@ -59,15 +59,37 @@ Section Three_Color_Triangle_definitions.
     if y is y'.+1 then mix (liftpaint color x y') (liftpaint color x.+1 y')
     else color x.
 
-  (* ----- リフトして作った色塗り関数は F_mix を満たす ----- *)
-(*Lemma cposF (color : nat -> Color) : F_mix (liftpaint color).
-Proof. by []. Qed.*)
-
 End Three_Color_Triangle_definitions.
 
 Section Three_Color_Triangle_Problem.
 
-(* ----- 三角形三色問題 ----- *)
+  (* ----- 三角形三色問題 ----- *)
+
+  (* この補題は削除予定 *)
+  Lemma Three_Color_Triangle_Problem_suf' (cpos : coloring) (k x y : nat) :
+    F_mix cpos -> TriangleF cpos x y (3 ^ k).
+  Proof.
+    move=> H_mix; elim: k x y => [|k IHk] x y.
+    - by rewrite expn0 /TriangleF !addn1; exact/H_mix.
+    - rewrite /TriangleF -(mixCut _ (cpos (x + 3 ^ k) y) (cpos (x + (3 ^ k).*2) y)).
+      have <- : TriangleF cpos x y (3 ^ k) by exact: IHk (*Triangle035*).
+      rewrite -addnn addnA.
+      have <- : TriangleF cpos (x + 3 ^ k) y (3 ^ k) by exact: IHk. (*Triangle346*)
+      have <- : TriangleF cpos x (y + 3 ^ k) (3  ^k) by exact: IHk. (*Triangle568*)
+      have -> : 3 ^ k.+1 = (3 ^ k).*2 + 3 ^ k.
+        by rewrite expnS (mulnDl 1 2) mul1n mul2n addnC.
+        rewrite -!addnA addnn !addnA.
+        (*Triangle417*)
+        have <- : TriangleF cpos (x + (3 ^ k).*2) y (3 ^ k) by exact: IHk.
+        rewrite -addnn !addnA.
+        (*Triangle679*)
+        have <- : TriangleF cpos (x + 3 ^ k) (y + 3 ^ k) (3 ^ k) by exact: IHk.
+        rewrite -!addnA addnn !addnA.
+        (*Triangle892*)
+        have <- : TriangleF cpos x (y + (3 ^ k).*2) (3  ^k) by exact: IHk.
+          by rewrite addnAC.
+  Qed.
+
 Theorem Three_Color_Triangle_Problem_suf x n :
   (exists k, n = 3 ^ k) -> WellColoredTriangleF x n.
 Proof.
@@ -92,15 +114,14 @@ Variables (cpos : coloring) (x y n : nat).
 Hypothesis H_mix : F_mix cpos.
 Hypothesis topcolor : forall i, i <= n -> cpos (x + i) y = red.
 
-(* ある段が全て赤ならその下はずっと赤 *)
-Let AllRedN q p : p + q <= n -> cpos (x + p) (y + q) = red.
+(* ある段が全て赤なら最下段も赤 *)
+Lemma AllRed : cpos x (y + n) = red.
 Proof.
+  suff AllRed' q p : p + q <= n -> cpos (x + p) (y + q) = red.
+  rewrite -(addn0 x); exact: AllRed'.
   elim: q p => [p|q IHq p pqn]; first by rewrite !addn0; apply topcolor.
   by rewrite addnS H_mix IHq ?(leq_trans _ pqn)// -?addnS ?IHq// ?addnS// addSnnS.
 Qed.
-
-(* ある段が全て赤なら最下段も赤 *)
-Lemma AllRed : cpos x (y + n) = red. Proof. by rewrite -(addn0 x) AllRedN. Qed.
 
 End AllRed.
 
@@ -108,20 +129,14 @@ End AllRed.
 (* colorYB x n z : 最上段の x から x+n までのマスを黄，青と交互に塗る (範囲外は黄にする) *) (* 注意：コードが変わった*)
 Definition colorYB n x := if (x <= n) && ~~ odd x then yel else blu.
 
-(* colorYB の性質 *)
-Lemma lemYB1 n i : i <= n -> ~~ odd i -> colorYB n i = yel.
-Proof. by move=> ni oi; rewrite /colorYB ni oi. Qed.
-
-Lemma lemYB2 n i : odd i -> colorYB n i = blu.
-Proof. by move=> oi; rewrite /colorYB oi andbF. Qed.
-
 Section Even.
 Variables (cpos : coloring) (x n : nat).
 Hypotheses (NotZero : n > 0) (H_mix : F_mix cpos).
 Hypothesis topcolor : forall i, i <= n -> cpos (x + i) 0 = colorYB n i.
 
-Let EvenA i : i <= n.-1 -> cpos (x + i) 1 = red.
+Lemma EvenAB : cpos x n = red.
 Proof.
+  suff EvenA i : i <= n.-1 -> cpos (x + i) 1 = red; first by rewrite -(prednK NotZero) -add1n AllRed// EvenA.
   move=> rangeI.
   (* 最上段のマスが colorYB で塗られていることを示す *)
   have rangetop1 : i <= n by rewrite (leq_trans rangeI)// leq_pred.
@@ -131,6 +146,8 @@ Proof.
   (* 最上段より 1 段下のマスの色は mix と colorYB で得られることを示す *)
   have Cpos3 : cpos (x + i) 1 = mix (cpos (x + i) 0) (cpos (x + i).+1 0).
   exact/H_mix.
+  have lemYB1 m j : j <= m -> ~~ odd j -> colorYB m j = yel by move=> mj oj; rewrite /colorYB mj oj.
+  have lemYB2 m j : odd j -> colorYB m j = blu by move=> oj; rewrite /colorYB oj andbF.
   (* colorYB で塗られている色を求める *)
   have [OddI|EvenI] := boolP (odd i).
   - have Color1 : colorYB n i = blu by exact: lemYB2.
@@ -143,9 +160,6 @@ Proof.
     by rewrite Cpos1 -addnS Cpos2 /= in Cpos3.
 Qed.
 
-Lemma EvenB : cpos x n = red.
-Proof. by rewrite -(prednK NotZero) -add1n AllRed// EvenA. Qed.
-
 End Even.
 
 Lemma Three_Color_Triangle_Problem_nec_even x n :
@@ -155,14 +169,13 @@ move=> n_gt0 Even Wct.
 have [cposYB[H_mix Paint]] : exists cposYB, F_mix cposYB /\
   forall x1 y1, cposYB x1 y1 = liftpaint (fun y => colorYB n (y - x)) x1 y1.
   by exists (liftpaint (fun y => colorYB n (y - x))).
-have := Wct cposYB H_mix.
-rewrite /TriangleF addnC addn0.
+have := Wct cposYB H_mix; rewrite /TriangleF addnC addn0.
 have <- : colorYB n 0 = cposYB x 0 by rewrite Paint/= subnn.
 have <- : colorYB n n = cposYB (x + n) 0 by rewrite Paint/= addnC addnK.
 have -> : colorYB n 0 = yel by [].
 have -> : colorYB n n = yel by rewrite /colorYB leqnn Even.
 have ->// : cposYB x n = red.
-by apply: EvenB => // i ni; rewrite Paint/= addnC addnK.
+by apply: EvenAB => // i ni; rewrite Paint/= addnC addnK.
 Qed.
 (* End: Three_Color_Triangle_Problem_nec_Even --------------------*)
 
@@ -223,6 +236,8 @@ Proof.
   have cpos_mix : cpos (x + i) (3 ^ k) =
                     mix (cpos (x + i) 0) (cpos (x +i + 3 ^ k) 0).
   by rewrite -triangle.
+  have lemYB1 m j : j <= m -> ~~ odd j -> colorYB m j = yel by move=> mj oj; rewrite /colorYB mj oj.
+  have lemYB2 m j : odd j -> colorYB m j = blu by move=> oj; rewrite /colorYB oj andbF.
   have [oddI|evenI] := boolP (odd i).
   - have blu1 : colorYBBY n i = blu by exact: lemYBBY3.
     have blu2 : colorYBBY n (i + 3 ^ k) = blu.
@@ -283,7 +298,7 @@ have cpos_x_n_yel : cposYBBY x n = yel.
     by rewrite B -A2 -lemYBBY5//= subnn.
   by rewrite cpos_x_0_yel.
 have : cposYBBY x n = red.
-  by apply: (ShortOddC _ k) => // ? ?; exact: Three_Color_Triangle_Problem_suf'.
+   apply: (ShortOddC _ k) => // ? ?. exact: Three_Color_Triangle_Problem_suf'.
 by rewrite cpos_x_n_yel.
 Qed.
 (* End: Three_Color_Triangle_Problem_nec_ShortOdd --------------------*)
