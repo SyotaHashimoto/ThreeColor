@@ -42,40 +42,41 @@ Section Three_Color_Triangle_definitions.
 
   Definition coloring := nat -> nat -> Color.
 
-  Definition F_mix cpos := forall x y, cpos x y.+1 = mix (cpos x y) (cpos x.+1 y).
+  Definition Next cpos := forall x y, cpos x y.+1 = mix (cpos x y) (cpos x.+1 y).
 
   (* Meaning: The color of the node (x,y+n) is the mixure of those of the nodes (x,y) and (x+n,y). *)
-  Definition TriangleF cpos x y n := cpos x (y + n) = mix (cpos x y) (cpos (x + n) y).
+  Definition Triangle cpos x y n := cpos x (y + n) = mix (cpos x y) (cpos (x + n) y).
 
   (* Meaning: The triangle (x,0)-(x+n,0)-(x,n) makes a well-colored triangle for any expected coloring. *)
-  Definition WellColoredTriangleF x n := forall cpos, F_mix cpos -> TriangleF cpos x 0 n.
+  Definition WellColoredTriangle x n := forall cpos, Next cpos -> Triangle cpos x 0 n.
 
   (* Lifting of top-level coloring functions (This will be applied to colorYBBY and colorBYB defined later) *)
-  Fixpoint liftpaint (color : nat -> Color) x y :=
-    if y is y'.+1 then mix (liftpaint color x y') (liftpaint color x.+1 y') else color x.
+  Fixpoint liftcoloring (color : nat -> Color) x y :=
+    if y is y'.+1 then mix (liftcoloring color x y') (liftcoloring color x.+1 y') else color x.
 
 End Three_Color_Triangle_definitions.
 
 Section Three_Color_Triangle_Problem.
-
+  
+(* Proof of the sufficient conditions ------------------------------------*)
   Lemma Three_Color_Triangle_Problem_suf (cpos : coloring) (k x y : nat) :
-    F_mix cpos -> TriangleF cpos x y (3 ^ k).
+    Next cpos -> Triangle cpos x y (3 ^ k).
   Proof.
-    move=> H_mix; elim: k x y => [|k IHk] x y.
-    - by rewrite expn0 /TriangleF !addn1; exact/H_mix.
-    - rewrite /TriangleF -(mixCut _ (cpos (x + 3 ^ k) y) (cpos (x + (3 ^ k).*2) y)).
-      have <- : TriangleF cpos x y (3 ^ k) by exact: IHk.
+    move=> Rule; elim: k x y => [|k IHk] x y.
+    - by rewrite expn0 /Triangle !addn1; exact/Rule.
+    - rewrite /Triangle -(mixCut _ (cpos (x + 3 ^ k) y) (cpos (x + (3 ^ k).*2) y)).
+      have <- : Triangle cpos x y (3 ^ k) by exact: IHk.
       rewrite -addnn addnA.
-      have <- : TriangleF cpos (x + 3 ^ k) y (3 ^ k) by exact: IHk.
-      have <- : TriangleF cpos x (y + 3 ^ k) (3  ^k) by exact: IHk.
+      have <- : Triangle cpos (x + 3 ^ k) y (3 ^ k) by exact: IHk.
+      have <- : Triangle cpos x (y + 3 ^ k) (3  ^k) by exact: IHk.
       have -> : 3 ^ k.+1 = (3 ^ k).*2 + 3 ^ k.
       by rewrite expnS (mulnDl 1 2) mul1n mul2n addnC.
       rewrite -!addnA addnn !addnA.
-      have <- : TriangleF cpos (x + (3 ^ k).*2) y (3 ^ k) by exact: IHk.
+      have <- : Triangle cpos (x + (3 ^ k).*2) y (3 ^ k) by exact: IHk.
       rewrite -addnn !addnA.
-      have <- : TriangleF cpos (x + 3 ^ k) (y + 3 ^ k) (3 ^ k) by exact: IHk. 
+      have <- : Triangle cpos (x + 3 ^ k) (y + 3 ^ k) (3 ^ k) by exact: IHk. 
       rewrite -!addnA addnn !addnA.
-      have <- : TriangleF cpos x (y + (3 ^ k).*2) (3  ^k) by exact: IHk.
+      have <- : Triangle cpos x (y + (3 ^ k).*2) (3  ^k) by exact: IHk.
       by rewrite addnAC.
   Qed.
 
@@ -83,15 +84,15 @@ Section Three_Color_Triangle_Problem.
 Section AllRed.
   (* AllRed: The lower most cell is red if there is a line whose all cells are red *)    
   Variables (cpos : coloring) (x y n : nat).
-  Hypothesis H_mix : F_mix cpos.
+  Hypothesis Rule : Next cpos.
   Hypothesis topcolor : forall i, i <= n -> cpos (x + i) y = red.
 
   Lemma AllRed : cpos x (y + n) = red.
   Proof.
-    suff AllRed' q p : p + q <= n -> cpos (x + p) (y + q) = red.
-    rewrite -(addn0 x); exact: AllRed'.
+    suff H q p : p + q <= n -> cpos (x + p) (y + q) = red.
+    rewrite -(addn0 x); exact: H.
     elim: q p => [p|q IHq p pqn]; first by rewrite !addn0; apply topcolor.
-    by rewrite addnS H_mix IHq ?(leq_trans _ pqn)// -?addnS ?IHq// ?addnS// addSnnS.
+    by rewrite addnS Rule IHq ?(leq_trans _ pqn)// -?addnS ?IHq// ?addnS// addSnnS.
   Qed.
 
 End AllRed.
@@ -102,7 +103,7 @@ Definition colorYB n x := if (x <= n) && ~~ odd x then yel else blu.
 
 Section Even.
 Variables (cpos : coloring) (x n : nat).
-Hypotheses (NotZero : n > 0) (H_mix : F_mix cpos).
+Hypotheses (NotZero : n > 0) (Rule : Next cpos).
 Hypothesis topcolor : forall i, i <= n -> cpos (x + i) 0 = colorYB n i.
 
 Lemma Even : cpos x n = red.
@@ -113,7 +114,7 @@ Proof.
   have rangetop2 : i.+1 <= n. by rewrite -add1n -leq_subRL ?subn1.
   have Cpos1 := topcolor i rangetop1.
   have Cpos2 := topcolor i.+1 rangetop2.
-  have Cpos3 : cpos (x + i) 1 = mix (cpos (x + i) 0) (cpos (x + i).+1 0); first exact/H_mix.
+  have Cpos3 : cpos (x + i) 1 = mix (cpos (x + i) 0) (cpos (x + i).+1 0); first exact/Rule.
   have lemYB1 m j : j <= m -> ~~ odd j -> colorYB m j = yel by move=> mj oj; rewrite /colorYB mj oj.
   have lemYB2 m j : odd j -> colorYB m j = blu by move=> oj; rewrite /colorYB oj andbF.
   have [OddI|EvenI] := boolP (odd i).
@@ -129,11 +130,11 @@ Qed.
 
 End Even.
 
-Lemma Three_Color_Triangle_Problem_nec_even x n : n > 0 -> ~~ odd n -> ~ WellColoredTriangleF x n.
+Lemma Three_Color_Triangle_Problem_nec_even x n : n > 0 -> ~~ odd n -> ~ WellColoredTriangle x n.
 Proof.
   move=> n_gt0 EvenN Wct.
-  have [cposYB[H_mix Paint]] : exists cposYB, F_mix cposYB /\ forall x1 y1, cposYB x1 y1 = liftpaint (fun y => colorYB n (y - x)) x1 y1; first by exists (liftpaint (fun y => colorYB n (y - x))).
-  have := Wct cposYB H_mix; rewrite /TriangleF addnC addn0.
+  have [cposYB[Rule Paint]] : exists cposYB, Next cposYB /\ forall x1 y1, cposYB x1 y1 = liftcoloring (fun y => colorYB n (y - x)) x1 y1; first by exists (liftcoloring (fun y => colorYB n (y - x))).
+  have := Wct cposYB Rule; rewrite /Triangle addnC addn0.
   have <- : colorYB n 0 = cposYB x 0 by rewrite Paint/= subnn.
   have <- : colorYB n n = cposYB (x + n) 0 by rewrite Paint/= addnC addnK.
   have -> : colorYB n 0 = yel by rewrite /=.
@@ -167,8 +168,8 @@ Qed.
 Section ShortOdd.
 Variables (cpos : coloring) (k x n : nat).
 Hypotheses (range : 3 ^ k < n <= (3 ^ k).*2) (oN : odd n).
-Hypothesis H_mix : F_mix cpos.
-Hypothesis triangle : forall x1 y1, TriangleF cpos x1 y1 (3 ^ k).
+Hypothesis Rule : Next cpos.
+Hypothesis triangle : forall x1 y1, Triangle cpos x1 y1 (3 ^ k).
 Hypothesis color : forall i, i <= n -> colorYBBY n i = cpos (x + i) 0.
 
 Let ShortOddA i : i <= n - 3 ^ k -> colorYB (n - 3 ^ k) i = cpos (x + i) (3 ^ k).
@@ -233,15 +234,15 @@ Qed.
 End ShortOdd.
 
 Lemma Three_Color_Triangle_Problem_nec_ShortOdd x n k :
-3 ^ k < n <= (3 ^ k).*2 -> odd n -> ~ WellColoredTriangleF x n.
+3 ^ k < n <= (3 ^ k).*2 -> odd n -> ~ WellColoredTriangle x n.
 Proof.
-  move=> K oddn; rewrite/WellColoredTriangleF => triangle.
-  have [cposYBBY [H_mix B]] : exists cposYBBY, F_mix cposYBBY /\ forall x1 y1, cposYBBY x1 y1 = liftpaint (fun y => colorYBBY n (y - x)) x1 y1; first by exists (liftpaint (fun y => colorYBBY n (y - x))).
-  have {}triangle := triangle cposYBBY H_mix.
+  move=> K oddn; rewrite/WellColoredTriangle => triangle.
+  have [cposYBBY [Rule B]] : exists cposYBBY, Next cposYBBY /\ forall x1 y1, cposYBBY x1 y1 = liftcoloring (fun y => colorYBBY n (y - x)) x1 y1; first by exists (liftcoloring (fun y => colorYBBY n (y - x))).
+  have {}triangle := triangle cposYBBY Rule.
   have A2 i : colorYBBY n i = cposYBBY (x + i) 0 by rewrite B/= addnC addnK.
   have cpos_x_n_yel : cposYBBY x n = yel.
   have cpos_x_0_yel : cposYBBY x 0 = yel by rewrite -(addn0 x) -A2 lemYBBY1.
-  move: triangle; rewrite /TriangleF.
+  move: triangle; rewrite /Triangle.
   have -> : cposYBBY (x + n) 0 = yel.
   have <- // : cposYBBY x 0 = cposYBBY (x + n) 0; by rewrite B -A2 -lemYBBY5//= subnn.
   by rewrite cpos_x_0_yel.
@@ -273,8 +274,8 @@ Qed.
 
 Section LongOdd.
 Variables (cpos : coloring) (k x n : nat).
-Hypotheses (rangeN : (3 ^ k).*2.+1 <= n < 3 ^ k.+1) (H_mix : F_mix cpos).
-Hypothesis triangle : forall x1 y1, TriangleF cpos x1 y1 (3 ^ k).
+Hypotheses (rangeN : (3 ^ k).*2.+1 <= n < 3 ^ k.+1) (Rule : Next cpos).
+Hypothesis triangle : forall x1 y1, Triangle cpos x1 y1 (3 ^ k).
 Hypothesis color : forall i, i <= n -> colorBYB n k i = cpos (x + i) 0.
 
 (* An inequality obtained from the range of n *)
@@ -304,7 +305,7 @@ Proof.
     have A7 : 3 ^ k + i <= n by rewrite (leq_trans A5)// leq_subr.
     have colY : colorBYB n k (3 ^ k + i) = yel by rewrite lemBYB2// leq_addr A5.
     by rewrite -colY -addnA color// (addnC i).
-    by have := triangle (x + i) 0; rewrite /TriangleF CposB CposY => ->.
+    by have := triangle (x + i) 0; rewrite /Triangle CposB CposY => ->.
   - have CposY : cpos (x + i) 0 = yel.
     by rewrite -(lemBYB2 n k i)// ?C//; apply/esym/color.
     have : cpos (x + 3 ^ k + i) 0 = blu.
@@ -315,7 +316,7 @@ Proof.
     have <- : colorBYB n k (3 ^ k +i) = blu by exact: lemBYB3.
     by rewrite -addnA -color// -leq_subRL// fromRangeN.
     rewrite addnAC => CposB; rewrite -[3 ^ k]add0n.
-    by have := triangle (x + i) 0; rewrite /TriangleF CposB CposY => ->.
+    by have := triangle (x + i) 0; rewrite /Triangle CposB CposY => ->.
 Qed.
 
 Let LongOddB i : i <= n - (3 ^ k).*2 -> cpos (x + i) (3 ^ k).*2 = red.
@@ -326,7 +327,7 @@ Proof.
   have CposR1 : cpos (x + i) (3 ^ k) = red by exact: LongOddA.1.
   have CposR2 : cpos (x + i + 3 ^ k) (3 ^ k) = red.
   by rewrite -addnA; apply: LongOddA.2; rewrite leq_addl A4.
-  by have := triangle (x + i) (3 ^ k); rewrite /TriangleF addnn CposR1 CposR2.
+  by have := triangle (x + i) (3 ^ k); rewrite /Triangle addnn CposR1 CposR2.
 Qed.
 
 Lemma LongOddC : cpos x n = red.
@@ -339,13 +340,13 @@ Qed.
 End LongOdd.
   
 Lemma Three_Color_Triangle_Problem_nec_LongOdd x n k :
-  (3 ^ k).*2.+1 <= n < 3 ^ k.+1 -> ~ WellColoredTriangleF x n.
+  (3 ^ k).*2.+1 <= n < 3 ^ k.+1 -> ~ WellColoredTriangle x n.
 Proof.
   move=> range triangle.
-  have [cposBYB [H_mix B]] : exists cposBYB, F_mix cposBYB /\ forall x1 y1, cposBYB x1 y1 = liftpaint (fun y => colorBYB n k (y - x)) x1 y1; first by exists (liftpaint (fun y => colorBYB n k (y - x))).
-  have {}triangle := triangle cposBYB H_mix.
+  have [cposBYB [Rule B]] : exists cposBYB, Next cposBYB /\ forall x1 y1, cposBYB x1 y1 = liftcoloring (fun y => colorBYB n k (y - x)) x1 y1; first by exists (liftcoloring (fun y => colorBYB n k (y - x))).
+  have {}triangle := triangle cposBYB Rule.
   have topcolor i : i <= n -> colorBYB n k i = cposBYB (x + i) 0; first by rewrite B/= addnC addnK.
-  have tri3k x1 y1 : TriangleF cposBYB x1 y1 (3 ^ k); first exact: Three_Color_Triangle_Problem_suf.
+  have tri3k x1 y1 : Triangle cposBYB x1 y1 (3 ^ k); first exact: Three_Color_Triangle_Problem_suf.
   have cposR : cposBYB x n = red by exact: (LongOddC _ k).
   have cposB1 : cposBYB x 0 = blu by rewrite -(addn0 x) -topcolor// lemBYB1.
   have cposB2 : cposBYB (x + n) 0 = blu.
@@ -355,34 +356,34 @@ Proof.
   by rewrite -cposR -{1}cposB1 -cposB2 triangle.
 Qed.
        
-Lemma nat_total n : exists k, n = 0 \/ n = 3 ^ k \/ 3 ^ k < n <= (3 ^ k).*2 \/ (3 ^ k).*2.+1 <= n < 3 ^ k.+1.
+Lemma nat_case n : exists k, n = 0 \/ n = 3 ^ k \/ 3 ^ k < n <= (3 ^ k).*2 \/ (3 ^ k).*2.+1 <= n < 3 ^ k.+1.
 Proof.
-  elim: n => [|n [k [IH0|[IH1|[IH2|IH3]]]]]; first by exists 0; left.
+  elim: n => [|n [k [IH0|[IH1|[|]]]]]; first by exists 0; left.
   - exists 0; right; left; by rewrite IH0.
   - exists k; right; right; left; by rewrite -IH1 -addnn -addn1 !leq_add2l IH1 expn_gt0.
-  - case /andP : IH2 => IH2a ; rewrite leq_eqVlt => /predU1P[->|IH2b].
-    case: k IH2a => [|k]; first by exists 1 ; right; left; rewrite expn0 expn1.
+  - case /andP => IH2L; rewrite leq_eqVlt => /predU1P[->|IH2R].
+    case: k IH2L => [|k]; first by exists 1 ; right; left; rewrite expn0 expn1.
     exists (k.+1); right; right; right; apply /andP; split; first by[].
     rewrite (expnSr 3 k.+1) {3}(_:3 = 2+1)// -(addn1 ((3^k.+1).*2)) mulnDr muln2 ltn_add2l muln1.
     by rewrite expnS (ltn_trans (ltnSn 1))// -{1}(muln1 3) leq_pmul2l//expn_gt0.
     by exists k; right; right; left; apply/andP; split; [exact:ltnW|].
-  - case /andP : IH3 => IH3a; rewrite leq_eqVlt => /predU1P[|IH3b]; first by exists (k.+1); right; left.
-    by exists k; right; right; right; apply/andP; split; [rewrite (ltn_trans IH3a)|].
+  - case /andP => IH3L; rewrite leq_eqVlt => /predU1P[|IH3R]; first by exists (k.+1); right; left.
+    by exists k; right; right; right; apply/andP; split; [rewrite (ltn_trans IH3L)|].
 Qed. 
  
 Theorem Three_Color_Triangle_Problem_nec n x :
-  n > 0 -> WellColoredTriangleF x n -> exists k, n = 3 ^ k.
+  n > 0 -> WellColoredTriangle x n -> exists k, n = 3 ^ k.
 Proof.
-  move=> + Wct; case: (nat_total n) => k [->//|n_is_not0 n_gt0]. 
+  move=> + Wct; case: (nat_case n) => k [->//|n_case n_gt0]. 
   have [Odd|Even] := boolP (odd n).
-  case: n_is_not0 => [n_is_exp3k|[Short|Long]]; first by exists k.
+  case: n_case => [n_is_exp3k|[Short|Long]]; first by exists k.
   - by exfalso; exact: (Three_Color_Triangle_Problem_nec_ShortOdd x n k).
   - by exfalso; exact: (Three_Color_Triangle_Problem_nec_LongOdd x n k).
   - by exfalso; exact: (Three_Color_Triangle_Problem_nec_even x n).
 Qed.
 
 Theorem Three_Color_Triangle_Problem_sufnec n x :
-  n > 0 -> (exists k, n = 3 ^ k) <-> WellColoredTriangleF x n.
+  n > 0 -> (exists k, n = 3 ^ k) <-> WellColoredTriangle x n.
 Proof.
   move=> n_gt0; split => [[k] n_is_exp3k cpos|]; first rewrite n_is_exp3k.
   - exact: (Three_Color_Triangle_Problem_suf cpos k x 0).
@@ -391,7 +392,7 @@ Qed.
 
 (* Main Theorem *)
 Theorem Three_Color_Triangle_Problem n :
-  n > 0 -> (exists k, n = 3 ^ k) <-> WellColoredTriangleF 0 n.
+  n > 0 -> (exists k, n = 3 ^ k) <-> WellColoredTriangle 0 n.
 Proof. exact: Three_Color_Triangle_Problem_sufnec. Qed.
 
 End Three_Color_Triangle_Problem.
