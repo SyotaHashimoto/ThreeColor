@@ -63,7 +63,7 @@ Section Three_Color_Triangle_Problem.
     Next cpos -> Triangle cpos x y (3 ^ k).
   Proof.
     move=> Rule; elim: k x y => [|k IHk] x y.
-    - by rewrite expn0 /Triangle !addn1; exact/Rule.
+    - by rewrite expn0 /Triangle !addn1; exact /Rule.
     - rewrite /Triangle -(mixCut _ (cpos (x + 3 ^ k) y) (cpos (x + (3 ^ k).*2) y)).
       have <- : Triangle cpos x y (3 ^ k) by exact: IHk.
       rewrite -addnn addnA.
@@ -89,8 +89,8 @@ Section AllRed.
 
   Lemma AllRed : cpos x (y + n) = red.
   Proof.
-    suff H q p : p + q <= n -> cpos (x + p) (y + q) = red.
-    rewrite -(addn0 x); exact: H.
+    suff Red q p : p + q <= n -> cpos (x + p) (y + q) = red.
+    by rewrite -(addn0 x); exact: Red.
     elim: q p => [p|q IHq p pqn]; first by rewrite !addn0; apply topcolor.
     by rewrite addnS Rule IHq ?(leq_trans _ pqn)// -?addnS ?IHq// ?addnS// addSnnS.
   Qed.
@@ -108,7 +108,7 @@ Hypothesis topcolor : forall i, i <= n -> cpos (x + i) 0 = colorYB n i.
 
 Lemma Even : cpos x n = red.
 Proof.
-  suff EvenA i : i <= n.-1 -> cpos (x + i) 1 = red; first by rewrite -(prednK NotZero) -add1n AllRed// EvenA.
+  suff Even i : i <= n.-1 -> cpos (x + i) 1 = red; first by rewrite -(prednK NotZero) -add1n AllRed// EvenA.
   move=> rangeI.
   have rangetop1 : i <= n by rewrite (leq_trans rangeI)// leq_pred.
   have rangetop2 : i.+1 <= n. by rewrite -add1n -leq_subRL ?subn1.
@@ -208,7 +208,7 @@ Proof.
 Qed.
 
 (* 3^k 段下のマスの色は colorYB で塗られていることを示す *)
-  (* 「(x +i,3^k +1) のマスの色は赤」を示すには colorYB の値から mix で計算できる *)
+(* 「(x +i,3^k +1) のマスの色は赤」を示すには colorYB の値から mix で計算できる *)
 Let ShortOddB i : i <= (n - 3 ^ k).-1 -> cpos (x + i) (3 ^ k).+1 = red.
 Proof.
   move=> rangeI.
