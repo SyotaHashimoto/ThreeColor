@@ -1,7 +1,7 @@
 From mathcomp Require Import ssreflect ssrbool ssrnat ssrfun eqtype.
 (* Three Color Triangle Problem (TCTP) *)
 
-Section Three_Color_Triangle_definitions.
+Section TCTP_definitions.
 
   (* Color: the type for the three colors in TCTP *)
   (* red, blu (=blue), and yel (=yellow) *)
@@ -12,7 +12,7 @@ Section Three_Color_Triangle_definitions.
     | red, red => true
     | blu, blu => true
     | yel, yel => true
-    | _  ,_   => false
+    | _  , _   => false
     end.
 
   Lemma eqcolP : Equality.axiom eqcol.
@@ -37,222 +37,208 @@ Section Three_Color_Triangle_definitions.
     | blu, blu => blu
     end.
 
-  Lemma mixCut c0 c1 c2 c3: mix (mix (mix c0 c1) (mix c1 c2)) (mix (mix c1 c2) (mix c2 c3)) = mix c0 c3.
+  Lemma mixcut c0 c1 c2 c3: mix (mix (mix c0 c1) (mix c1 c2)) (mix (mix c1 c2) (mix c2 c3)) = mix c0 c3.
   Proof. by move: c0 c1 c2 c3 => [] [] [] []. Qed.
 
   Definition coloring := nat -> nat -> Color.
 
-  Definition Next cpos := forall x y, cpos x y.+1 = mix (cpos x y) (cpos x.+1 y).
+  Definition next cpos := forall x y, cpos x y.+1 = mix (cpos x y) (cpos x.+1 y).
 
   (* Meaning: The color of the node (x,y+n) is the mixure of those of the nodes (x,y) and (x+n,y). *)
   Definition Triangle cpos x y n := cpos x (y + n) = mix (cpos x y) (cpos (x + n) y).
 
   (* Meaning: The triangle (x,0)-(x+n,0)-(x,n) makes a well-colored triangle for any expected coloring. *)
-  Definition WellColoredTriangle x n := forall cpos, Next cpos -> Triangle cpos x 0 n.
+  Definition WellColoredTriangle x n := forall cpos, next cpos -> Triangle cpos x 0 n.
 
   (* Lifting of top-level coloring functions (This will be applied to colorYBBY and colorBYB defined later) *)
   Fixpoint liftcoloring (color : nat -> Color) x y :=
     if y is y'.+1 then mix (liftcoloring color x y') (liftcoloring color x.+1 y') else color x.
 
-End Three_Color_Triangle_definitions.
+End TCTP_definitions.
 
-Section Three_Color_Triangle_Problem.
+Section TCTP.
   
 (* Proof of the sufficient conditions ------------------------------------*)
-  Lemma Three_Color_Triangle_Problem_suf (cpos : coloring) (k x y : nat) :
-    Next cpos -> Triangle cpos x y (3 ^ k).
+  Lemma TCTP_suf (cpos : coloring) (k x y : nat) :
+    next cpos -> Triangle cpos x y (3 ^ k).
   Proof.
-    move=> Rule; elim: k x y => [|k IHk] x y.
-    - by rewrite expn0 /Triangle !addn1; exact /Rule.
-    - rewrite /Triangle -(mixCut _ (cpos (x + 3 ^ k) y) (cpos (x + (3 ^ k).*2) y)).
-      have <- : Triangle cpos x y (3 ^ k) by exact: IHk.
-      rewrite -addnn addnA.
-      have <- : Triangle cpos (x + 3 ^ k) y (3 ^ k) by exact: IHk.
-      have <- : Triangle cpos x (y + 3 ^ k) (3  ^k) by exact: IHk.
-      have -> : 3 ^ k.+1 = (3 ^ k).*2 + 3 ^ k.
-      by rewrite expnS (mulnDl 1 2) mul1n mul2n addnC.
-      rewrite -!addnA addnn !addnA.
-      have <- : Triangle cpos (x + (3 ^ k).*2) y (3 ^ k) by exact: IHk.
-      rewrite -addnn !addnA.
-      have <- : Triangle cpos (x + 3 ^ k) (y + 3 ^ k) (3 ^ k) by exact: IHk. 
-      rewrite -!addnA addnn !addnA.
-      have <- : Triangle cpos x (y + (3 ^ k).*2) (3  ^k) by exact: IHk.
-      by rewrite addnAC.
+    move=> rule; elim: k x y => [|k IHk] x y; first by rewrite expn0 /Triangle !addn1; exact /rule.
+    rewrite /Triangle -(mixcut _ (cpos (x + 3 ^ k) y) (cpos (x + (3 ^ k).*2) y)).
+    have <- : Triangle cpos x y (3 ^ k) by exact: IHk.
+    rewrite -addnn addnA.
+    have <- : Triangle cpos (x + 3 ^ k) y (3 ^ k) by exact: IHk.
+    have <- : Triangle cpos x (y + 3 ^ k) (3  ^k) by exact: IHk.
+    have -> : 3 ^ k.+1 = (3 ^ k).*2 + 3 ^ k.
+    by rewrite expnS (mulnDl 1 2) mul1n mul2n addnC.
+    rewrite -!addnA addnn !addnA.
+    have <- : Triangle cpos (x + (3 ^ k).*2) y (3 ^ k) by exact: IHk.
+    rewrite -addnn !addnA.
+    have <- : Triangle cpos (x + 3 ^ k) (y + 3 ^ k) (3 ^ k) by exact: IHk. 
+    rewrite -!addnA addnn !addnA.
+    have <- : Triangle cpos x (y + (3 ^ k).*2) (3  ^k) by exact: IHk.
+    by rewrite addnAC.
   Qed.
 
 (* Proof of the necessary condition ------------------------------------*)
-Section AllRed.
-  (* AllRed: The lower most cell is red if there is a line whose all cells are red *)    
+Section allred.
+  (* allred: The lower most cell is red if there is a line whose all cells are red *)    
   Variables (cpos : coloring) (x y n : nat).
-  Hypothesis Rule : Next cpos.
-  Hypothesis topcolor : forall i, i <= n -> cpos (x + i) y = red.
+  Hypothesis rule : next cpos.
+  Hypothesis topcoloring : forall i, i <= n -> cpos (x + i) y = red.
 
-  Lemma AllRed : cpos x (y + n) = red.
+  Lemma allred : cpos x (y + n) = red.
   Proof.
-    suff Red q p : p + q <= n -> cpos (x + p) (y + q) = red.
-    by rewrite -(addn0 x); exact: Red.
-    elim: q p => [p|q IHq p pqn]; first by rewrite !addn0; apply topcolor.
-    by rewrite addnS Rule IHq ?(leq_trans _ pqn)// -?addnS ?IHq// ?addnS// addSnnS.
+    suff bottom q p : p + q <= n -> cpos (x + p) (y + q) = red by rewrite -(addn0 x); exact: bottom. 
+    elim: q p => [p|q IHq p pqn]; first by rewrite !addn0; apply topcoloring.
+    by rewrite addnS rule IHq ?(leq_trans _ pqn)// -?addnS ?IHq// ?addnS// addSnnS.
   Qed.
 
-End AllRed.
+End allred.
 
-(* Begin: Three_Color_Triangle_Problem_nec_even --------------------*)
-(* colorYB x n z : 最上段の x から x+n までのマスを黄，青と交互に塗る (範囲外は黄にする) *)
-Definition colorYB n x := if (x <= n) && ~~ odd x then yel else blu.
+(* Begin: TCTP_nec_even --------------------*)
+(* coloringYB x n z : 最上段の x から x+n までのマスを黄，青と交互に塗る (範囲外は黄にする) *)
+Definition coloringYB n x := if (x <= n) && ~~ odd x then yel else blu.
 
-Section Even.
+Section TCTP_nec_even.
 Variables (cpos : coloring) (x n : nat).
-Hypotheses (NotZero : n > 0) (Rule : Next cpos).
-Hypothesis topcolor : forall i, i <= n -> cpos (x + i) 0 = colorYB n i.
+Hypotheses (n_gt_0 : n > 0) (rule : next cpos).
+Hypothesis topcoloring : forall i, i <= n -> cpos (x + i) 0 = coloringYB n i.
 
-Lemma Even : cpos x n = red.
+Lemma even_bottom : cpos x n = red.
 Proof.
-  suff Even i : i <= n.-1 -> cpos (x + i) 1 = red; first by rewrite -(prednK NotZero) -add1n AllRed// EvenA.
-  move=> rangeI.
-  have rangetop1 : i <= n by rewrite (leq_trans rangeI)// leq_pred.
-  have rangetop2 : i.+1 <= n. by rewrite -add1n -leq_subRL ?subn1.
-  have Cpos1 := topcolor i rangetop1.
-  have Cpos2 := topcolor i.+1 rangetop2.
-  have Cpos3 : cpos (x + i) 1 = mix (cpos (x + i) 0) (cpos (x + i).+1 0); first exact/Rule.
-  have lemYB1 m j : j <= m -> ~~ odd j -> colorYB m j = yel by move=> mj oj; rewrite /colorYB mj oj.
-  have lemYB2 m j : odd j -> colorYB m j = blu by move=> oj; rewrite /colorYB oj andbF.
-  have [OddI|EvenI] := boolP (odd i).
-  - have Color1 : colorYB n i = blu by exact: lemYB2.
-    have Color2 : colorYB n i.+1 = yel by rewrite lemYB1//= OddI.
-    rewrite Color1 in Cpos1; rewrite Color2 in Cpos2.
-    by rewrite Cpos1 -addnS Cpos2 /= in Cpos3.
-  - have Color1 : colorYB n i = yel by exact: lemYB1.
-    have Color2 : colorYB n i.+1 = blu by exact: lemYB2.
-    rewrite Color1 in Cpos1; rewrite Color2 in Cpos2.
-    by rewrite Cpos1 -addnS Cpos2 /= in Cpos3.
+  suff even_next i : i <= n.-1 -> cpos (x + i) 1 = red; first by rewrite -(prednK n_gt_0) -add1n allred//.
+  move=> i_leq_pn .
+  have i_leq_n : i <= n by rewrite (leq_trans i_leq_pn) // leq_pred.
+  have i_lt_n : i < n by rewrite -add1n -leq_subRL ?subn1.
+  have -> : cpos (x + i) 1 = mix (cpos (x + i) 0) (cpos (x + i).+1 0); first exact/rule.
+  have -> := topcoloring i i_leq_n; rewrite -addnS.
+  have -> := topcoloring i.+1 i_lt_n.
+  have YB_yel m j : j <= m -> ~~ odd j  -> coloringYB m j = yel.
+  by move=> m_gtj oj; rewrite /coloringYB m_gtj oj.
+  have YB_blu m j : odd j -> coloringYB m j = blu by move=> oj; rewrite /coloringYB oj andbF.
+  have [oi|ei] := boolP (odd i).
+  - have -> : coloringYB n i = blu by exact: YB_blu.
+    have -> // : coloringYB n i.+1 = yel by rewrite YB_yel //= oi.
+  - have -> : coloringYB n i = yel by exact: YB_yel.
+    have -> // : coloringYB n i.+1 = blu by exact: YB_blu.
 Qed.
 
-End Even.
+End TCTP_nec_even.
 
-Lemma Three_Color_Triangle_Problem_nec_even x n : n > 0 -> ~~ odd n -> ~ WellColoredTriangle x n.
+Lemma TCTP_nec_even x n : n > 0 -> ~~ odd n -> ~ WellColoredTriangle x n.
 Proof.
-  move=> n_gt0 EvenN Wct.
-  have [cposYB[Rule Paint]] : exists cposYB, Next cposYB /\ forall x1 y1, cposYB x1 y1 = liftcoloring (fun y => colorYB n (y - x)) x1 y1; first by exists (liftcoloring (fun y => colorYB n (y - x))).
-  have := Wct cposYB Rule; rewrite /Triangle addnC addn0.
-  have <- : colorYB n 0 = cposYB x 0 by rewrite Paint/= subnn.
-  have <- : colorYB n n = cposYB (x + n) 0 by rewrite Paint/= addnC addnK.
-  have -> : colorYB n 0 = yel by rewrite /=.
-  have -> : colorYB n n = yel by rewrite /colorYB leqnn EvenN.
-  have -> // : cposYB x n = red by apply: Even => // i ni; rewrite Paint/= addnC addnK.
+  move=> n_gt_0 en WCT.
+  have [coloring[rule lift]] : exists cpos, next cpos /\ forall x1 y1, cpos x1 y1 = liftcoloring (fun y => coloringYB n (y - x)) x1 y1; first by exists (liftcoloring (fun y => coloringYB n (y - x))).
+  have := WCT coloring rule; rewrite /Triangle addnC addn0.
+  have <- : coloringYB n 0 = coloring x 0 by rewrite lift/= subnn.
+  have <- : coloringYB n n = coloring (x + n) 0 by rewrite lift/= addnC addnK.
+  have -> : coloringYB n 0 = yel by rewrite /=.
+  have -> : coloringYB n n = yel by rewrite /coloringYB leqnn en.
+  have -> // : coloring x n = red by apply: even_bottom => // i ni; rewrite lift/= addnC addnK.
 Qed.
-(* End: Three_Color_Triangle_Problem_nec_Even --------------------*)
+(* End: TCTP_nec_even --------------------*)
 
-Definition colorYBBY n x := if ((x <= n./2) && odd x) || ((n./2.+1 <= x <= n) && ~~ odd x) then blu else yel.
+(* Begin: TCTP_nec_shortodd --------------------*)
+Definition coloringYBBY n x := if ((x <= n./2) && odd x) || ((n./2.+1 <= x <= n) && ~~ odd x) then blu else yel.
 
-(* Some properties of colorYBBY *)
-Lemma lemYBBY1 n i : i <= n./2 -> ~~ odd i -> colorYBBY n i = yel.
-Proof. by move=> ni /negbTE oi; rewrite /colorYBBY oi /= !(andbF,andbT)/= ltnNge ni. Qed.
-
-Lemma lemYBBY2 n i : n./2.+1 <= i -> odd i -> colorYBBY n i = yel.
-Proof. by move=> r oi; rewrite /colorYBBY oi !(andbF,andbT) leqNgt orbF r. Qed.
-
-Lemma lemYBBY3 n i : i <= n./2 -> odd i -> colorYBBY n i = blu.
-Proof. by move=> ni oi; rewrite /colorYBBY ni oi. Qed.
-
-Lemma lemYBBY4 n i : n./2.+1 <= i <= n -> ~~ odd i -> colorYBBY n i = blu.
-Proof. by move=> ni /negbTE oi; rewrite /colorYBBY oi !(andbT,andbF) ni. Qed.
-
-Lemma lemYBBY5 n : odd n -> colorYBBY n 0 = colorYBBY n n.
+(* Some properties of coloringYBBY *)
+Lemma YBBY_e_yel n i : i <= n./2 -> ~~ odd i -> coloringYBBY n i = yel.
 Proof.
-  move=> on; rewrite /colorYBBY leq0n on/= !(andbF,andbT) orbF.
+  by move=> i_leq_hn /negbTE oi; rewrite /coloringYBBY oi /= !(andbF,andbT)/= ltnNge i_leq_hn.
+Qed.
+
+Lemma YBBY_o_yel n i : n./2.+1 <= i -> odd i -> coloringYBBY n i = yel.
+Proof. by move=> r oi; rewrite /coloringYBBY oi !(andbF,andbT) leqNgt orbF r. Qed.
+
+Lemma YBBY_odd_blu n i : i <= n./2 -> odd i -> coloringYBBY n i = blu.
+Proof. by move=> ni oi; rewrite /coloringYBBY ni oi. Qed.
+
+Lemma YBBY_e_blu n i : n./2.+1 <= i <= n -> ~~ odd i -> coloringYBBY n i = blu.
+Proof. by move=> ni /negbTE oi; rewrite /coloringYBBY oi !(andbT,andbF) ni. Qed.
+
+Lemma YBBY_both n : odd n -> coloringYBBY n 0 = coloringYBBY n n.
+Proof.
+  move=> on; rewrite /coloringYBBY leq0n on/= !(andbF,andbT) orbF.
   rewrite ifF //; apply/negbTE; rewrite -ltnNge.
   by rewrite -{2}(odd_double_half n) on add1n ltnS -addnn leq_addl.
 Qed.
 
-Section ShortOdd.
+Section TCTP_nec_shortodd.
 Variables (cpos : coloring) (k x n : nat).
-Hypotheses (range : 3 ^ k < n <= (3 ^ k).*2) (oN : odd n).
-Hypothesis Rule : Next cpos.
+Hypotheses (n_range : 3 ^ k < n <= (3 ^ k).*2) (on : odd n).
+Hypothesis rule : next cpos.
 Hypothesis triangle : forall x1 y1, Triangle cpos x1 y1 (3 ^ k).
-Hypothesis color : forall i, i <= n -> colorYBBY n i = cpos (x + i) 0.
-
-Let ShortOddA i : i <= n - 3 ^ k -> colorYB (n - 3 ^ k) i = cpos (x + i) (3 ^ k).
-Proof.
-  move=> rangeI.
-  have nk2 : n < (3 ^ k).*2.
-  move: range => /andP[_]; rewrite leq_eqVlt => /predU1P[nk|//].
-  by move: oN; rewrite nk odd_double.
-  have ? : n./2 < 3 ^ k.
-  rewrite -(@ltn_pmul2l 2)// !mul2n (leq_trans _ nk2)// ltnS.
-  by rewrite -{2}(odd_double_half n) oN add1n.
-  have ? : n - 3 ^ k <= n./2.
-  rewrite leq_subCl -{1}(odd_double_half n) oN add1n -addnn subSn ?leq_addr//.
-  by rewrite -addnBA// subnn addn0.
-  have ? : i <= n./2 by exact: (leq_trans rangeI).
-  have nik : n./2 < i + 3 ^ k by rewrite ltn_addl.
-  have ? : i + 3 ^ k <= n.
-  by rewrite addnC -leq_subRL// ltnW//; move/andP : range => [].
-  have rangeIa : i <= n by rewrite (leq_trans rangeI)// leq_subr.
-  have Cpos1 : colorYBBY n i = cpos (x + i) 0 by exact/color/rangeIa.
-  have Cpos2 : colorYBBY n (i + 3 ^ k) = cpos (x + i + 3 ^ k) 0 by rewrite -addnA color.
-  have cpos_mix : cpos (x + i) (3 ^ k) = mix (cpos (x + i) 0) (cpos (x +i + 3 ^ k) 0); first by rewrite -triangle.
-  have lemYB1 m j : j <= m -> ~~ odd j -> colorYB m j = yel by move=> mj oj; rewrite /colorYB mj oj.
-  have lemYB2 m j : odd j -> colorYB m j = blu by move=> oj; rewrite /colorYB oj andbF.
-  have [oddI|evenI] := boolP (odd i).
-  - have blu1 : colorYBBY n i = blu by exact: lemYBBY3.
-    have blu2 : colorYBBY n (i + 3 ^ k) = blu.
-    by rewrite lemYBBY4// ?nik// oddD oddX orbT oddI.
-    have -> : colorYB (n - 3 ^ k) i = blu by exact: lemYB2.
-    by rewrite cpos_mix -Cpos1 -Cpos2 blu1 blu2.
-  - have YBBYyel1 : colorYBBY n i = yel by exact: lemYBBY1.
-    have YBBYyel2 : colorYBBY n (i + 3 ^ k) = yel.
-    by rewrite lemYBBY2// ?nik// oddD oddX orbT /= addbT evenI.
-    have -> : colorYB (n - 3 ^ k) i = yel by exact: lemYB1.
-    by rewrite cpos_mix -Cpos1 -Cpos2 YBBYyel1 YBBYyel2.
-Qed.
+Hypothesis color : forall i, i <= n -> coloringYBBY n i = cpos (x + i) 0.
 
 (* 3^k 段下のマスの色は colorYB で塗られていることを示す *)
-(* 「(x +i,3^k +1) のマスの色は赤」を示すには colorYB の値から mix で計算できる *)
-Let ShortOddB i : i <= (n - 3 ^ k).-1 -> cpos (x + i) (3 ^ k).+1 = red.
+Let shortodd_coloringYB i : i <= n - 3 ^ k -> coloringYB (n - 3 ^ k) i = cpos (x + i) (3 ^ k).
 Proof.
-  move=> rangeI.
-  have rangeI1 : i <= n - 3 ^ k by rewrite (leq_trans rangeI)// leq_pred.
-  have ?: 0 < n - 3 ^ k by rewrite ltn_subCr subn0; move/andP : range => []. 
-  have rangeI2 : i.+1 <= n - 3 ^ k by rewrite (leq_ltn_trans rangeI)// ltn_predL.
+  move=> i_range.
+  have n_lt_range : n < (3 ^ k).*2.
+  move: n_range => /andP[_]; rewrite leq_eqVlt => /predU1P[n_eq|//].
+  by move: on; rewrite n_eq odd_double.
+  have i_leq_n1 : i <= n by rewrite (leq_trans i_range)// leq_subr.
+  have i_leq_n2 : i + 3 ^ k <= n.
+  by rewrite addnC -leq_subRL// ltnW//; move/andP : n_range => [].
+  have hn_range0 : n./2 < 3 ^ k.
+  rewrite -(@ltn_pmul2l 2)// !mul2n (leq_trans _ n_lt_range)// ltnS.
+  by rewrite -{2}(odd_double_half n) on add1n.
+  have hn_range1 : i <= n./2.
+  apply: (leq_trans i_range).
+  by rewrite leq_subCl -{1}(odd_double_half n) on add1n -addnn subSn ?leq_addr// -addnBA// subnn addn0.
+  have hn_range2 : n./2 < i + 3 ^ k.  by rewrite ltn_addl //.
+  have -> : cpos (x + i) (3 ^ k) = mix (cpos (x + i) 0) (cpos (x +i + 3 ^ k) 0) by rewrite -triangle.
+  have <- : coloringYBBY n i = cpos (x + i) 0 by exact /color /i_leq_n1.
+  have <- : coloringYBBY n (i + 3 ^ k) = cpos (x + i + 3 ^ k) 0 by rewrite -addnA color.
+  have YB_yel m j : j <= m -> ~~ odd j -> coloringYB m j = yel by move=> mj oj; rewrite /coloringYB mj oj.
+  have YB_blu m j : odd j -> coloringYB m j = blu by move=> oj; rewrite /coloringYB oj andbF.
+  have [oi|ei] := boolP (odd i).
+  - have -> : coloringYBBY n i = blu by exact: YBBY_odd_blu.
+    have -> : coloringYBBY n (i + 3 ^ k) = blu.
+    by rewrite YBBY_e_blu// ?hn_range2// oddD oddX orbT oi.
+    have ->// : coloringYB (n - 3 ^ k) i = blu by exact: YB_blu.
+  - have -> : coloringYBBY n i = yel by exact: YBBY_e_yel.      
+    have -> : coloringYBBY n (i + 3 ^ k) = yel.
+    by rewrite YBBY_o_yel// ?hn_range2// oddD oddX orbT /= addbT ei.
+    have ->// : coloringYB (n - 3 ^ k) i = yel by exact: YB_yel.
+Qed.
+
+Lemma shortodd_bottom : cpos x n = red.
+Proof.
+  have shortodd_coloringYB_next i : i <= (n - 3 ^ k).-1 -> cpos (x + i) (3 ^ k).+1 = red.
+  move=> i_range.
+  have n_gt_0: 0 < n - 3 ^ k by rewrite ltn_subCr subn0; move/andP : n_range => [].
+  have  i_leq_n1 : i <= n - 3 ^ k by rewrite (leq_trans i_range)// leq_pred.
+  have  i_leq_n2 : i.+1 <= n - 3 ^ k by rewrite (leq_ltn_trans i_range)// ltn_predL.
   suff : mix (cpos (x  +i) (3 ^ k)) (cpos (x + i).+1 (3 ^ k)) = red by move=> <-.
   have [oi|ei] := boolP (odd i).
-  - rewrite -ShortOddA// (_ : colorYB _ _ = blu); first by rewrite -addnS -ShortOddA// /colorYB rangeI2/= oi.
-    by rewrite /colorYB rangeI1 oi.    
-  - rewrite -(ShortOddA i)// (_ : colorYB _ _ = yel); first by rewrite -addnS -ShortOddA// /colorYB rangeI2 /= ei.
-    by rewrite /colorYB ei rangeI1.
-Qed.
-
-Lemma ShortOddC : cpos x n = red.
-Proof.
+  - rewrite -shortodd_coloringYB// (_ : coloringYB _ _ = blu).
+    by rewrite -addnS -shortodd_coloringYB// /coloringYB i_leq_n2/= oi.
+    by rewrite /coloringYB i_leq_n1 oi.    
+  - rewrite -(shortodd_coloringYB i)// (_ : coloringYB _ _ = yel).
+    by rewrite -addnS -shortodd_coloringYB// /coloringYB i_leq_n2 /= ei.
+    by rewrite /coloringYB ei i_leq_n1.
   have -> : n = 3 ^ k + 1 + (n - 3 ^ k).-1.
-  have ?: 0 < n - 3 ^ k by rewrite ltn_subCr subn0; move/andP : range => [].
+  have n_gt_0 : 0 < n - 3 ^ k by rewrite ltn_subCr subn0; case /andP : n_range. 
   by rewrite -addnA addnC add1n prednK// ?subnK// ?subn_gt0// ltnW// -subn_gt0.
-  by rewrite AllRed// => i ?; rewrite addn1 ShortOddB.
+  by rewrite allred// => i ?; rewrite addn1 shortodd_coloringYB_next.
 Qed.
 
-End ShortOdd.
+End TCTP_nec_shortodd.
 
-Lemma Three_Color_Triangle_Problem_nec_ShortOdd x n k :
-3 ^ k < n <= (3 ^ k).*2 -> odd n -> ~ WellColoredTriangle x n.
+Lemma TCTP_nec_shortodd x n k : 3 ^ k < n <= (3 ^ k).*2 -> odd n -> ~ WellColoredTriangle x n.
 Proof.
-  move=> K oddn; rewrite/WellColoredTriangle => triangle.
-  have [cposYBBY [Rule B]] : exists cposYBBY, Next cposYBBY /\ forall x1 y1, cposYBBY x1 y1 = liftcoloring (fun y => colorYBBY n (y - x)) x1 y1; first by exists (liftcoloring (fun y => colorYBBY n (y - x))).
-  have {}triangle := triangle cposYBBY Rule.
-  have A2 i : colorYBBY n i = cposYBBY (x + i) 0 by rewrite B/= addnC addnK.
-  have cpos_x_n_yel : cposYBBY x n = yel.
-  have cpos_x_0_yel : cposYBBY x 0 = yel by rewrite -(addn0 x) -A2 lemYBBY1.
-  move: triangle; rewrite /Triangle.
-  have -> : cposYBBY (x + n) 0 = yel.
-  have <- // : cposYBBY x 0 = cposYBBY (x + n) 0; by rewrite B -A2 -lemYBBY5//= subnn.
-  by rewrite cpos_x_0_yel.
-  have : cposYBBY x n = red.
-  apply: (ShortOddC _ k) => // ? ?; exact: Three_Color_Triangle_Problem_suf.
-  by rewrite cpos_x_n_yel.
+  move=> n_gt_0 on WCT; rewrite/WellColoredTriangle in WCT.
+  have [cpos [rule lift]] : exists cpos, next cpos /\ forall x1 y1, cpos x1 y1 = liftcoloring (fun y => coloringYBBY n (y - x)) x1 y1; first by exists (liftcoloring (fun y => coloringYBBY n (y - x))).
+  have := WCT cpos rule; rewrite /Triangle addnC addn0.
+  have topcoloring i : coloringYBBY n i = cpos (x + i) 0 by rewrite lift/= addnC addnK.
+  have <- : cpos x 0 = cpos (x + n) 0; first by rewrite lift -topcoloring -YBBY_both//= subnn.
+  have -> : cpos x 0 = yel by rewrite lift/= subnn.
+  have -> // : cpos x n = red by apply: (shortodd_bottom _ k) => // ? ?; apply: TCTP_suf.
 Qed.
-(* End: Three_Color_Triangle_Problem_nec_ShortOdd --------------------*)
+(* End: TCTP_nec_shortodd --------------------*)
 
-(* Begin: Three_Color_Triangle_Problem_nec_LongOdd --------------------*)
+(* Begin: TCTP_nec_LongOdd --------------------*)
 (* colorBYB x n k z : 最上段の x から x+n までの左端＋右端 3^k 個を青，中央を黄で塗る (範囲外は青にする) *)
 Definition colorBYB n k x := if 3 ^ k <= x <= n - 3 ^ k then yel else blu.
 
@@ -274,7 +260,7 @@ Qed.
 
 Section LongOdd.
 Variables (cpos : coloring) (k x n : nat).
-Hypotheses (rangeN : (3 ^ k).*2.+1 <= n < 3 ^ k.+1) (Rule : Next cpos).
+Hypotheses (rangeN : (3 ^ k).*2.+1 <= n < 3 ^ k.+1) (rule : next cpos).
 Hypothesis triangle : forall x1 y1, Triangle cpos x1 y1 (3 ^ k).
 Hypothesis color : forall i, i <= n -> colorBYB n k i = cpos (x + i) 0.
 
@@ -333,24 +319,24 @@ Qed.
 Lemma LongOddC : cpos x n = red.
 Proof.
   have : cpos x ((3 ^ k).*2 + (n - (3 ^ k).*2)) = red.
-  by rewrite AllRed// => i; exact: LongOddB.
+  by rewrite allred// => i; exact: LongOddB.
   by rewrite addnC subnK// fromRangeN.
 Qed.
 
 End LongOdd.
   
-Lemma Three_Color_Triangle_Problem_nec_LongOdd x n k :
+Lemma TCTP_nec_LongOdd x n k :
   (3 ^ k).*2.+1 <= n < 3 ^ k.+1 -> ~ WellColoredTriangle x n.
 Proof.
   move=> range triangle.
-  have [cposBYB [Rule B]] : exists cposBYB, Next cposBYB /\ forall x1 y1, cposBYB x1 y1 = liftcoloring (fun y => colorBYB n k (y - x)) x1 y1; first by exists (liftcoloring (fun y => colorBYB n k (y - x))).
-  have {}triangle := triangle cposBYB Rule.
-  have topcolor i : i <= n -> colorBYB n k i = cposBYB (x + i) 0; first by rewrite B/= addnC addnK.
-  have tri3k x1 y1 : Triangle cposBYB x1 y1 (3 ^ k); first exact: Three_Color_Triangle_Problem_suf.
+  have [cposBYB [rule B]] : exists cposBYB, next cposBYB /\ forall x1 y1, cposBYB x1 y1 = liftcoloring (fun y => colorBYB n k (y - x)) x1 y1; first by exists (liftcoloring (fun y => colorBYB n k (y - x))).
+  have {}triangle := triangle cposBYB rule.
+  have topcoloring i : i <= n -> colorBYB n k i = cposBYB (x + i) 0; first by rewrite B/= addnC addnK.
+  have tri3k x1 y1 : Triangle cposBYB x1 y1 (3 ^ k); first exact: TCTP_suf.
   have cposR : cposBYB x n = red by exact: (LongOddC _ k).
-  have cposB1 : cposBYB x 0 = blu by rewrite -(addn0 x) -topcolor// lemBYB1.
+  have cposB1 : cposBYB x 0 = blu by rewrite -(addn0 x) -topcoloring// lemBYB1.
   have cposB2 : cposBYB (x + n) 0 = blu.
-  rewrite -topcolor// lemBYB3// ltn_subrL expn_gt0 /=.
+  rewrite -topcoloring// lemBYB3// ltn_subrL expn_gt0 /=.
   by move/andP : range => [+ _]; apply: leq_trans.
   suff: mix blu blu = red by [].
   by rewrite -cposR -{1}cposB1 -cposB2 triangle.
@@ -371,51 +357,28 @@ Proof.
     by exists k; right; right; right; apply/andP; split; [rewrite (ltn_trans IH3L)|].
 Qed. 
  
-Theorem Three_Color_Triangle_Problem_nec n x :
+Theorem TCTP_nec n x :
   n > 0 -> WellColoredTriangle x n -> exists k, n = 3 ^ k.
 Proof.
   move=> + Wct; case: (nat_case n) => k [->//|n_case n_gt0]. 
   have [Odd|Even] := boolP (odd n).
   case: n_case => [n_is_exp3k|[Short|Long]]; first by exists k.
-  - by exfalso; exact: (Three_Color_Triangle_Problem_nec_ShortOdd x n k).
-  - by exfalso; exact: (Three_Color_Triangle_Problem_nec_LongOdd x n k).
-  - by exfalso; exact: (Three_Color_Triangle_Problem_nec_even x n).
+  - by exfalso; exact: (TCTP_nec_shortodd x n k).
+  - by exfalso; exact: (TCTP_nec_LongOdd x n k).
+  - by exfalso; exact: (TCTP_nec_even x n).
 Qed.
 
-Theorem Three_Color_Triangle_Problem_sufnec n x :
+Theorem TCTP_sufnec n x :
   n > 0 -> (exists k, n = 3 ^ k) <-> WellColoredTriangle x n.
 Proof.
   move=> n_gt0; split => [[k] n_is_exp3k cpos|]; first rewrite n_is_exp3k.
-  - exact: (Three_Color_Triangle_Problem_suf cpos k x 0).
-  - exact: Three_Color_Triangle_Problem_nec.
+  - exact: (TCTP_suf cpos k x 0).
+  - exact: TCTP_nec.
 Qed.
 
 (* Main Theorem *)
-Theorem Three_Color_Triangle_Problem n :
+Theorem TCTP n :
   n > 0 -> (exists k, n = 3 ^ k) <-> WellColoredTriangle 0 n.
-Proof. exact: Three_Color_Triangle_Problem_sufnec. Qed.
+Proof. exact: TCTP_sufnec. Qed.
 
-End Three_Color_Triangle_Problem.
-
-
-
-
-
-(* Lemma nat_total n : exists k, *)
-(*     n = 0 \/ n = 3 ^ k \/ 3 ^ k < n <= (3 ^ k).*2 \/ (3 ^ k).*2.+1 <= n < 3 ^ k.+1. *)
-(* Proof. *)
-(*   have H(k): 3^k>=1 by [apply (leq_ltn_trans (leq0n k)); apply ltn_expl]. *)
-(*   elim n. exists 0. by left. *)
-(*   move=> n0 [k0 [IH0|[IH1|[IH2|IH3]]]]. *)
-(*   exists 0. by rewrite IH0; right; left. *)
-(*   exists k0. by rewrite -IH1; right;right;left; rewrite -addnn -addn1 !leq_add2l IH1; apply H. *)
-(*   case/andP : IH2 => IH2a; rewrite leq_eqVlt => /predU1P[->|B]. case: k0 IH2a=>[K0|k0]. *)
-(*   exists 1; right;left. by rewrite expn0 expn1. *)
-(*   exists (k0.+1); right;right;right. *)
-(*   have H1: 3^k0.+1>1 by rewrite expnS (ltn_trans (ltnSn 1))// -{1}(muln1 3) leq_pmul2l// apply H. *)
-(*   apply /andP; split=>//. *)
-(*   by rewrite (expnSr 3 k0.+1) {3}(_:3 = 2+1)// -(addn1 ((3^k0.+1).*2)) mulnDr muln2 ltn_add2l muln1. *)
-(*   exists k0; right;right;left; apply/andP; split. by apply ltnW. by [].  *)
-(*   case/andP: IH3=>IH3. rewrite leq_eqVlt => /predU1P[A|B]. exists (k0.+1). by right;left.  *)
-(*   exists k0; right;right;right. apply/andP; split; last first. by []. by rewrite (ltn_trans IH3). *)
-(* Qed.  *)
+End TCTP.
