@@ -1,0 +1,40 @@
+% 3^{k'+1} 段の三角形
+\begin{tikzpicture}
+  {\normalsize{
+      % 3^(k+1)段目
+      \node (a0) {$c_{2}$};
+      % 2*3^k段目
+      \node[above left=0.5cm of a0] (b0) {$c_{8}$};
+      \node[above right=0.5cm of a0] (b1) {$c_{9}$};
+      % 3^k段目
+      \node[above left=0.5cm of b0] (c0) {$c_{5}$};
+      \node[above right=0.5cm of b0] (c1) {$c_{6}$};
+      \node[above right=0.5cm of b1] (c2) {$c_{7}$};
+      % 0段目
+      \node[above left=0.5cm of c0] (d0) {$c_{0}$};
+      \node[above right=0.5cm of c0] (d1) {$c_{3}$};
+      \node[above left=0.5cm of c2] (d2) {$c_{4}$};
+      \node[above right=0.5cm of c2] (d3) {$c_{1}$};
+      % 点線 [3^(k+1)段 〜 2*3^k 段]
+      \node[blue] at ($(a0)!.5!(b0)$) {$\ddots$};
+      \node[blue] at ($(b0)!.5!(b1)$) {$\cdots$};
+      \node[blue] at ($(a0)!.5!(b1)$) {$\iddots$};
+      % 点線 [2*3^k 段 〜 3^k 段]
+      \node[teal] at ($(b0)!.5!(c0)$) {$\ddots$};
+      \node[teal] at ($(c0)!.5!(c1)$) {$\cdots$};
+      \node[teal] at ($(b0)!.5!(c1)$) {$\iddots$};
+      \node[red] at ($(b1)!.5!(c1)$) {$\ddots$};
+      \node[red] at ($(c1)!.5!(c2)$) {$\cdots$};
+      \node[red] at ($(b1)!.5!(c2)$) {$\iddots$};
+      % 点線 [3^k 段 〜 0 段]
+      \node[red] at ($(c0)!.5!(d0)$) {$\ddots$};
+      \node[red] at ($(d0)!.5!(d1)$) {$\cdots$};
+      \node[red] at ($(c0)!.5!(d1)$) {$\iddots$};
+      \node[blue] at ($(c1)!.5!(d1)$) {$\ddots$};
+      \node[blue] at ($(d1)!.5!(d2)$) {$\cdots$};
+      \node[blue] at ($(c1)!.5!(d2)$) {$\iddots$};
+      \node[teal] at ($(c2)!.5!(d2)$) {$\ddots$};
+      \node[teal] at ($(d2)!.5!(d3)$) {$\cdots$};
+      \node[teal] at ($(c2)!.5!(d3)$) {$\iddots$};
+  }}
+\end{tikzpicture}

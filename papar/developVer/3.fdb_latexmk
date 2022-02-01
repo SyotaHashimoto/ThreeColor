@@ -1,0 +1,14 @@
+# Fdb version 3
+["dvipdf"] 0 "3.dvi" "3.pdf" "3" 0
+  "3.dvi" 0 -1 0 "latex"
+  (generated)
+  "3.pdf"
+["latex"] 1634383926 "3.tex" "3.dvi" "3" 1634383926
+  "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1557092114 35484 cb1661360667bf4db662a8895053b554 ""
+  "/usr/local/texlive/2019/texmf-var/web2c/eptex/platex.fmt" 1585995541 4524394 fc10479e4830ae23218d5834ba1eef86 ""
+  "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
+  "3.aux" 1630442261 8 a94a2480d3289e625eea47cd1b285758 ""
+  "3.tex" 1634383905 9776 621949422a549faf016a7ea76540a6a0 ""
+  (generated)
+  "3.dvi"
+  "3.log"

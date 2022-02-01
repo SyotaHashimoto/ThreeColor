@@ -1,0 +1,54 @@
+% oddshort_steps
+\definecolor{grayR}{rgb}{0.50, 0.50, 0.50}
+\definecolor{grayB}{rgb}{0.10, 0.10, 0.10}
+\definecolor{grayY}{rgb}{1.00, 1.00, 1.00}
+%\def\myRed{red}
+%\def\myBlue{blue}
+%\def\myYellow{yellow}
+\def\myRed{grayR}
+\def\myBlue{grayB}
+\def\myYellow{grayY}
+
+\begin{tikzpicture}[scale=0.25]
+  %3^(k'+1)段目
+  \filldraw[fill=\myRed,yshift={25*sqrt(3)*5}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  %3^k'+2 〜 3^(k'+1)-1段目
+  \node[xshift={-25*0.7},yshift={25*sqrt(3)*1.85}](0,0){$\ddots$};
+  \node[xshift={25*0.7},yshift={25*sqrt(3)*1.85}](0,0){$\iddots$};
+  %3^k'+1段目
+  \filldraw[fill=\myRed,xshift={-25*5},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=\myRed,xshift={-25*3},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[yshift={25*sqrt(3)*2.15}](0,0){$\cdots$};
+  \filldraw[fill=\myRed,xshift={25*3},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=\myRed,xshift={25*5},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  %3^k'+1 〜 3^(k'+1)-1段目
+  \node[xshift={-25*2},yshift={25*sqrt(3)*2.6}](0,0){$\ddots$};
+  \node[xshift={25*0.8},yshift={25*sqrt(3)*2.6}](0,0){$\iddots$};
+  \node[xshift={-25*0.8},yshift={25*sqrt(3)*2.6}](0,0){$\ddots$};
+  \node[xshift={25*2},yshift={25*sqrt(3)*2.6}](0,0){$\iddots$};
+  %3^k'段目
+  \filldraw[fill=\myRed,xshift={-25*11},yshift={25*sqrt(3)*11}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={-25*2},yshift={25*sqrt(3)*2.9}](0,0){$\cdots$};
+  \filldraw[fill=\myRed,xshift={-25*5},yshift={25*sqrt(3)*11}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=\myYellow,xshift={-25*3},yshift={25*sqrt(3)*11}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[yshift={25*sqrt(3)*2.9}](0,0){$\cdots$};
+  \filldraw[fill=\myYellow,xshift={25*3},yshift={25*sqrt(3)*11}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=\myRed,xshift={25*5},yshift={25*sqrt(3)*11}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={25*2},yshift={25*sqrt(3)*2.9}](0,0){$\cdots$};
+  \filldraw[fill=\myRed,xshift={25*11},yshift={25*sqrt(3)*11}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  %1 〜 3^k'-1段目
+  \node[xshift={-25*3},yshift={25*sqrt(3)*3.35}](0,0){$\ddots$};
+  \node[xshift={-25*1.2},yshift={25*sqrt(3)*3.35}](0,0){$\iddots$};
+  \node[xshift={25*1.2},yshift={25*sqrt(3)*3.35}](0,0){$\ddots$};
+  \node[xshift={25*3},yshift={25*sqrt(3)*3.35}](0,0){$\iddots$};
+  %0段目
+  \filldraw[fill=\myYellow,xshift={-25*14},yshift={25*sqrt(3)*14}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={-25*2.4},yshift={25*sqrt(3)*3.65}](0,0){$\cdots$};
+  \filldraw[fill=\myYellow,xshift={-25*5},yshift={25*sqrt(3)*14}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=\myBlue,xshift={-25*3},yshift={25*sqrt(3)*14}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[yshift={25*sqrt(3)*3.65}](0,0){$\cdots$};
+  \filldraw[fill=\myBlue,xshift={25*3},yshift={25*sqrt(3)*14}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=\myYellow,xshift={25*5},yshift={25*sqrt(3)*14}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[xshift={25*2.4},yshift={25*sqrt(3)*3.65}](0,0){$\cdots$};
+  \filldraw[fill=\myYellow,xshift={25*14},yshift={25*sqrt(3)*14}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+\end{tikzpicture}

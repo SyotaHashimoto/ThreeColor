@@ -1,0 +1,21 @@
+% 導入，三角形三色問題の説明，Coq+ssreflect の説明，やったこと，もくじ
+% 三角形三色問題の証明の概要 (数学)
+% 2.1 n=3^k => 調和三角形
+% 2.2 調和 (well-colored) => n=3^k
+% 調和彩色三角形 (well-colored triangle)
+% 三色三角形が調和している
+% 三色三角形が調和性をみたす
+%\input{3}
+% 三角形三色問題の証明の Coq の実装の準備
+% 3.1 公理
+% 3.2 関数 mix・記号の説明, mixCut, WellColoredTriangle n
+%\input{4}
+% 4.1 三角形三色問題の証明の Coq の実装(=>)
+% 4.2 三角形三色問題の証明の Coq の実装(<=)
+%     n が偶数の場合，n が奇数で短い場合，n が奇数で長い場合
+%\input{5} % 結論，まとめ
+%\input{bib}
+%\input{authors}
+
+% WellColoredTriangle x y n c0 c1 c2 :=
+% Cpos x y c0 /\ Cpos (x+n) y c1 /\ Cpos x (y+n) c2 -> Cconf c0 c1 c2
