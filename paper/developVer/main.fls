@@ -1,4 +1,4 @@
-PWD /Users/mocha/Documents/ThreeColor/paper
+PWD /Users/mocha/Documents/ThreeColor/paper/developVer
 INPUT /usr/local/texlive/2019/texmf.cnf
 INPUT /usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2019/texmf.cnf
@@ -253,12 +253,12 @@ INPUT wellcolored.tex
 INPUT wellcolored.tex
 INPUT notwellcolored.tex
 INPUT notwellcolored.tex
+INPUT nine_steps.tex
+INPUT nine_steps.tex
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/ptex-fonts/standard/tmin6.tfm
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/ptex-fonts/standard/min6.tfm
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmti7.tfm
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmti7.tfm
-INPUT nine_steps.tex
-INPUT nine_steps.tex
 INPUT ind_steps.tex
 INPUT ind_steps.tex
 INPUT even_steps.tex
