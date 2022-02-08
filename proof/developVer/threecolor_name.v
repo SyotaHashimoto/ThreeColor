@@ -49,8 +49,8 @@ Section TCTP_definitions.
   Definition WellColoredTriangle x n := forall cpos, next cpos -> Triangle cpos x 0 n.
 
   (* Lifting of top-level coloring functions (This will be applied to colorYBBY and colorBYB defined later) *)
-  Fixpoint liftcoloring (color : nat -> Color) x y :=
-    if y is y'.+1 then mix (liftcoloring color x y') (liftcoloring color x.+1 y') else color x.
+  Fixpoint liftcoloring (topcoloring : nat -> Color) x y :=
+    if y is y'.+1 then mix (liftcoloring topcoloring x y') (liftcoloring topcoloring x.+1 y') else topcoloring x.
 End TCTP_definitions.
 
 Section TCTP.
@@ -311,7 +311,7 @@ Proof.
   have := WCT cpos rule; rewrite /Triangle addnC addn0.
   have topcoloring i : i <= n -> coloringBYB n k i = cpos (x + i) 0; first by rewrite lift /= addnC addnK.
   have triangle x1 y1 : Triangle cpos x1 y1 (3 ^ k); first exact: TCTP_suf.
-  have -> : cpos x n = red; first by exact: (longdd_bottom _ k).
+  have -> : cpos x n = red; first by exact: (longodd_bottom _ k).
   have -> : cpos x 0 = blu by rewrite -(addn0 x) -topcoloring// BYB_blu_left.
   have ->// : cpos (x + n) 0 = blu.
   rewrite -topcoloring// BYB_blu_right// -ltn_subCl// ?subnn ?expn_gt0//.
