@@ -1,0 +1,1681 @@
+DIGEST 08af88685b98d557d1fc886c678982e0
+FMyRewrite
+R34:42 mathcomp.ssreflect.ssreflect <> <> lib
+R44:50 mathcomp.ssreflect.ssrbool <> <> lib
+R52:57 mathcomp.ssreflect.ssrnat <> <> lib
+R59:64 mathcomp.ssreflect.ssrfun <> <> lib
+R66:71 mathcomp.ssreflect.eqtype <> <> lib
+prf 259:270 <> conv_iff_eql
+R287:290 Coq.Init.Datatypes <> bool ind
+binder 280:281 <> b1:1
+binder 283:284 <> b2:2
+R293:293 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R303:308 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R296:300 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R294:295 MyRewrite <> b1:1 var
+R301:302 MyRewrite <> b2:2 var
+R311:311 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R309:310 MyRewrite <> b1:1 var
+R312:313 MyRewrite <> b2:2 var
+R371:393 Coq.Bool.Bool <> eq_bool_prop_intro thm
+R371:393 Coq.Bool.Bool <> eq_bool_prop_intro thm
+R422:441 Coq.Bool.Bool <> Is_true_eq_left thm
+R422:441 Coq.Bool.Bool <> Is_true_eq_left thm
+R450:469 Coq.Bool.Bool <> Is_true_eq_true thm
+R450:469 Coq.Bool.Bool <> Is_true_eq_true thm
+R509:528 Coq.Bool.Bool <> Is_true_eq_left thm
+R509:528 Coq.Bool.Bool <> Is_true_eq_left thm
+R537:556 Coq.Bool.Bool <> Is_true_eq_true thm
+R537:556 Coq.Bool.Bool <> Is_true_eq_true thm
+prf 619:630 <> le_bool_true
+R642:645 Coq.Init.Datatypes <> bool ind
+binder 640:640 <> b:3
+R649:652 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R648:648 MyRewrite <> b:3 var
+R653:656 Coq.Init.Datatypes <> true constr
+R691:694 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R695:696 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R706:709 Coq.ssr.ssrbool <> orbN thm
+R706:709 Coq.ssr.ssrbool <> orbN thm
+R728:730 Coq.ssr.ssrbool <> orP thm
+R770:777 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R770:777 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R770:777 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R791:793 mathcomp.ssreflect.eqtype <> eqP thm
+prf 830:842 <> le_bool_false
+R854:857 Coq.Init.Datatypes <> bool ind
+binder 852:852 <> b:4
+R865:868 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R860:864 Coq.Init.Datatypes <> false constr
+R869:869 MyRewrite <> b:4 var
+R904:907 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R908:909 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R919:922 Coq.ssr.ssrbool <> orbN thm
+R919:922 Coq.ssr.ssrbool <> orbN thm
+R941:943 Coq.ssr.ssrbool <> orP thm
+R982:989 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R982:989 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R982:989 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1003:1005 mathcomp.ssreflect.eqtype <> eqP thm
+prf 1042:1053 <> conv_bool_eq
+R1069:1072 Coq.Init.Datatypes <> bool ind
+binder 1063:1064 <> b1:5
+binder 1066:1067 <> b2:6
+R1075:1075 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R1083:1089 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R1098:1098 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R1078:1080 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1076:1077 MyRewrite <> b1:5 var
+R1081:1082 MyRewrite <> b2:6 var
+R1092:1095 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R1090:1091 MyRewrite <> b1:5 var
+R1096:1097 MyRewrite <> b2:6 var
+R1170:1173 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R1174:1175 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R1186:1189 Coq.ssr.ssrbool <> orbN thm
+R1186:1189 Coq.ssr.ssrbool <> orbN thm
+R1206:1209 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R1210:1211 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R1222:1225 Coq.ssr.ssrbool <> orbN thm
+R1222:1225 Coq.ssr.ssrbool <> orbN thm
+R1235:1237 Coq.ssr.ssrbool <> orP thm
+R1254:1256 Coq.ssr.ssrbool <> orP thm
+R1357:1364 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1357:1364 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1357:1364 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1379:1381 mathcomp.ssreflect.eqtype <> eqP thm
+R1419:1426 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1419:1426 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1419:1426 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1441:1443 mathcomp.ssreflect.eqtype <> eqP thm
+R1518:1525 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1518:1525 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1518:1525 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1540:1542 mathcomp.ssreflect.eqtype <> eqP thm
+prf 1583:1594 <> eq_contrapos
+R1610:1613 Coq.Init.Datatypes <> bool ind
+binder 1604:1605 <> b1:7
+binder 1607:1608 <> b2:8
+R1616:1616 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1625:1629 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1642:1642 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1619:1622 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R1617:1618 MyRewrite <> b1:7 var
+R1623:1624 MyRewrite <> b2:8 var
+R1634:1637 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R1630:1631 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R1632:1633 MyRewrite <> b1:7 var
+R1638:1639 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R1640:1641 MyRewrite <> b2:8 var
+R1685:1688 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R1689:1690 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R1701:1704 Coq.ssr.ssrbool <> orbN thm
+R1701:1704 Coq.ssr.ssrbool <> orbN thm
+R1721:1724 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R1725:1726 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R1737:1740 Coq.ssr.ssrbool <> orbN thm
+R1737:1740 Coq.ssr.ssrbool <> orbN thm
+R1750:1752 Coq.ssr.ssrbool <> orP thm
+R1769:1771 Coq.ssr.ssrbool <> orP thm
+R1872:1879 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1872:1879 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1872:1879 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1894:1896 mathcomp.ssreflect.eqtype <> eqP thm
+R1934:1941 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1934:1941 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1934:1941 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R1956:1958 mathcomp.ssreflect.eqtype <> eqP thm
+R2033:2040 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R2033:2040 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R2033:2040 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R2055:2057 mathcomp.ssreflect.eqtype <> eqP thm
+def 2103:2112 <> eq_dual_or
+R2117:2129 Coq.Bool.Bool <> negb_orb thm
+def 2144:2154 <> eq_dual_and
+R2159:2172 Coq.Bool.Bool <> negb_andb thm
+def 2187:2196 <> eq_dual_le
+R2201:2206 mathcomp.ssreflect.ssrnat <> ltnNge thm
+def 2221:2232 <> eq_comm_plus
+R2237:2241 mathcomp.ssreflect.ssrnat <> addnC thm
+def 2255:2267 <> eq_assoc_plus
+R2272:2276 mathcomp.ssreflect.ssrnat <> addnA thm
+def 2291:2301 <> eq_le_eq_lt
+R2306:2314 mathcomp.ssreflect.ssrnat <> leq_eqVlt thm
+def 2328:2347 <> eq_mono_plus_lt_plus
+R2352:2360 mathcomp.ssreflect.ssrnat <> ltn_add2r thm
+def 2374:2393 <> eq_mono_plus_le_plus
+R2398:2406 mathcomp.ssreflect.ssrnat <> leq_add2r thm
+prf 2417:2426 <> iff_not_eq
+R2443:2446 Coq.Init.Datatypes <> bool ind
+binder 2436:2437 <> b1:9
+binder 2439:2440 <> b2:10
+R2449:2449 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R2460:2466 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R2477:2477 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R2454:2457 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R2450:2451 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R2452:2453 MyRewrite <> b1:9 var
+R2458:2459 MyRewrite <> b2:10 var
+R2469:2472 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R2467:2468 MyRewrite <> b1:9 var
+R2473:2474 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R2475:2476 MyRewrite <> b2:10 var
+R2530:2532 mathcomp.ssreflect.eqtype <> eqP thm
+R2563:2582 Coq.Bool.Bool <> negb_involutive thm
+R2563:2582 Coq.Bool.Bool <> negb_involutive thm
+R2563:2582 Coq.Bool.Bool <> negb_involutive thm
+R2604:2606 mathcomp.ssreflect.eqtype <> eqP thm
+R2636:2655 Coq.Bool.Bool <> negb_involutive thm
+R2636:2655 Coq.Bool.Bool <> negb_involutive thm
+R2636:2655 Coq.Bool.Bool <> negb_involutive thm
+prf 2671:2679 <> eq_not_eq
+R2696:2699 Coq.Init.Datatypes <> bool ind
+binder 2689:2690 <> b1:11
+binder 2692:2693 <> b2:12
+R2702:2702 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2713:2717 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2728:2728 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2707:2710 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R2703:2704 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R2705:2706 MyRewrite <> b1:11 var
+R2711:2712 MyRewrite <> b2:12 var
+R2720:2723 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R2718:2719 MyRewrite <> b1:11 var
+R2724:2725 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R2726:2727 MyRewrite <> b2:12 var
+R2760:2771 MyRewrite <> conv_iff_eql thm
+R2760:2771 MyRewrite <> conv_iff_eql thm
+R2780:2789 MyRewrite <> iff_not_eq thm
+R2780:2789 MyRewrite <> iff_not_eq thm
+prf 2805:2814 <> eq_dual_lt
+R2830:2832 Coq.Init.Datatypes <> nat ind
+binder 2824:2824 <> m:13
+binder 2826:2826 <> n:14
+R2845:2848 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2855:2855 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R2835:2838 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R2844:2844 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R2840:2842 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R2839:2839 MyRewrite <> m:13 var
+R2843:2843 MyRewrite <> n:14 var
+R2850:2853 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R2849:2849 MyRewrite <> n:14 var
+R2854:2854 MyRewrite <> m:13 var
+R2889:2898 MyRewrite <> eq_dual_le def
+R2889:2898 MyRewrite <> eq_dual_le def
+R2889:2898 MyRewrite <> eq_dual_le def
+R2912:2931 Coq.Bool.Bool <> negb_involutive thm
+R2912:2931 Coq.Bool.Bool <> negb_involutive thm
+R2912:2931 Coq.Bool.Bool <> negb_involutive thm
+prf 2987:3000 <> eq_zero_plus_r
+R3016:3018 Coq.Init.Datatypes <> nat ind
+binder 3010:3010 <> m:15
+binder 3012:3012 <> n:16
+R3021:3021 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3028:3032 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3041:3041 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3023:3026 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R3022:3022 MyRewrite <> m:15 var
+R3036:3039 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R3034:3034 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R3033:3033 MyRewrite <> m:15 var
+R3035:3035 MyRewrite <> n:16 var
+R3040:3040 MyRewrite <> n:16 var
+R3080:3084 mathcomp.ssreflect.ssrnat <> add0n thm
+R3080:3084 mathcomp.ssreflect.ssrnat <> add0n thm
+R3080:3084 mathcomp.ssreflect.ssrnat <> add0n thm
+R3107:3115 mathcomp.ssreflect.ssrnat <> eqn_add2r thm
+R3107:3115 mathcomp.ssreflect.ssrnat <> eqn_add2r thm
+prf 3139:3152 <> eq_zero_plus_l
+R3168:3170 Coq.Init.Datatypes <> nat ind
+binder 3162:3162 <> m:17
+binder 3164:3164 <> n:18
+R3173:3173 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3180:3184 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3193:3193 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3175:3178 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R3174:3174 MyRewrite <> m:17 var
+R3188:3191 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R3186:3186 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R3185:3185 MyRewrite <> n:18 var
+R3187:3187 MyRewrite <> m:17 var
+R3192:3192 MyRewrite <> n:18 var
+R3232:3236 mathcomp.ssreflect.ssrnat <> addn0 thm
+R3232:3236 mathcomp.ssreflect.ssrnat <> addn0 thm
+R3232:3236 mathcomp.ssreflect.ssrnat <> addn0 thm
+R3259:3267 mathcomp.ssreflect.ssrnat <> eqn_add2l thm
+R3259:3267 mathcomp.ssreflect.ssrnat <> eqn_add2l thm
+prf 3291:3305 <> eq_mono_succ_eq
+R3321:3323 Coq.Init.Datatypes <> nat ind
+binder 3315:3315 <> m:19
+binder 3317:3317 <> n:20
+R3326:3326 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3333:3337 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3350:3350 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3328:3331 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R3327:3327 MyRewrite <> m:19 var
+R3332:3332 MyRewrite <> n:20 var
+R3342:3345 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R3339:3341 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R3338:3338 MyRewrite <> m:19 var
+R3347:3349 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R3346:3346 MyRewrite <> n:20 var
+R3385:3389 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3385:3389 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3385:3389 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3405:3409 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3405:3409 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3405:3409 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3431:3439 mathcomp.ssreflect.ssrnat <> eqn_add2r thm
+R3431:3439 mathcomp.ssreflect.ssrnat <> eqn_add2r thm
+prf 3499:3516 <> eq_le_pred_eq_zero
+R3530:3532 Coq.Init.Datatypes <> nat ind
+binder 3526:3526 <> n:21
+R3535:3535 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3545:3549 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3554:3554 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3537:3540 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R3536:3536 MyRewrite <> n:21 var
+R3542:3544 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R3541:3541 MyRewrite <> n:21 var
+R3551:3552 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R3550:3550 MyRewrite <> n:21 var
+R3583:3594 MyRewrite <> conv_bool_eq thm
+R3583:3594 MyRewrite <> conv_bool_eq thm
+R3605:3616 MyRewrite <> eq_contrapos thm
+R3605:3616 MyRewrite <> eq_contrapos thm
+R3605:3616 MyRewrite <> eq_contrapos thm
+R3628:3633 mathcomp.ssreflect.ssrnat <> ltnNge thm
+R3628:3633 mathcomp.ssreflect.ssrnat <> ltnNge thm
+R3628:3633 mathcomp.ssreflect.ssrnat <> ltnNge thm
+R3646:3654 mathcomp.ssreflect.ssrnat <> ltn_predL thm
+R3646:3654 mathcomp.ssreflect.ssrnat <> ltn_predL thm
+R3646:3654 mathcomp.ssreflect.ssrnat <> ltn_predL thm
+R3663:3665 mathcomp.ssreflect.eqtype <> eqP thm
+R3663:3665 mathcomp.ssreflect.eqtype <> eqP thm
+R3679:3682 mathcomp.ssreflect.ssrnat <> lt0n thm
+R3679:3682 mathcomp.ssreflect.ssrnat <> lt0n thm
+R3679:3682 mathcomp.ssreflect.ssrnat <> lt0n thm
+prf 3702:3716 <> eq_mono_succ_le
+R3732:3734 Coq.Init.Datatypes <> nat ind
+binder 3726:3726 <> m:22
+binder 3728:3728 <> n:23
+R3737:3737 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3744:3748 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3761:3761 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3739:3742 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R3738:3738 MyRewrite <> m:22 var
+R3743:3743 MyRewrite <> n:23 var
+R3753:3756 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R3750:3752 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R3749:3749 MyRewrite <> m:22 var
+R3758:3760 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R3757:3757 MyRewrite <> n:23 var
+R3796:3800 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3796:3800 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3796:3800 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3816:3820 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3816:3820 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3816:3820 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3842:3861 MyRewrite <> eq_mono_plus_le_plus def
+R3842:3861 MyRewrite <> eq_mono_plus_le_plus def
+prf 3877:3891 <> eq_mono_succ_lt
+R3907:3909 Coq.Init.Datatypes <> nat ind
+binder 3901:3901 <> m:24
+binder 3903:3903 <> n:25
+R3912:3912 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3918:3922 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3934:3934 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3914:3916 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R3913:3913 MyRewrite <> m:24 var
+R3917:3917 MyRewrite <> n:25 var
+R3927:3929 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R3924:3926 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R3923:3923 MyRewrite <> m:24 var
+R3931:3933 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R3930:3930 MyRewrite <> n:25 var
+R3973:3977 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3973:3977 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3973:3977 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3993:3997 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3993:3997 mathcomp.ssreflect.ssrnat <> addn1 thm
+R3993:3997 mathcomp.ssreflect.ssrnat <> addn1 thm
+R4019:4038 MyRewrite <> eq_mono_plus_lt_plus def
+R4019:4038 MyRewrite <> eq_mono_plus_lt_plus def
+prf 4055:4066 <> eq_lt_plus_r
+R4082:4084 Coq.Init.Datatypes <> nat ind
+binder 4076:4076 <> m:26
+binder 4078:4078 <> n:27
+R4087:4087 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4093:4097 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4105:4105 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4089:4091 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R4092:4092 MyRewrite <> n:27 var
+R4099:4101 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R4098:4098 MyRewrite <> m:26 var
+R4103:4103 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R4102:4102 MyRewrite <> n:27 var
+R4104:4104 MyRewrite <> m:26 var
+R4143:4147 mathcomp.ssreflect.ssrnat <> add0n thm
+R4143:4147 mathcomp.ssreflect.ssrnat <> add0n thm
+R4143:4147 mathcomp.ssreflect.ssrnat <> add0n thm
+R4164:4172 mathcomp.ssreflect.ssrnat <> ltn_add2r thm
+R4164:4172 mathcomp.ssreflect.ssrnat <> ltn_add2r thm
+R4164:4172 mathcomp.ssreflect.ssrnat <> ltn_add2r thm
+prf 4188:4199 <> eq_lt_plus_l
+R4215:4217 Coq.Init.Datatypes <> nat ind
+binder 4209:4209 <> m:28
+binder 4211:4211 <> n:29
+R4220:4220 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4226:4230 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4238:4238 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4222:4224 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R4225:4225 MyRewrite <> n:29 var
+R4232:4234 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R4231:4231 MyRewrite <> m:28 var
+R4236:4236 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R4235:4235 MyRewrite <> m:28 var
+R4237:4237 MyRewrite <> n:29 var
+R4271:4275 mathcomp.ssreflect.ssrnat <> addnC thm
+R4271:4275 mathcomp.ssreflect.ssrnat <> addnC thm
+R4271:4275 mathcomp.ssreflect.ssrnat <> addnC thm
+R4287:4298 MyRewrite <> eq_lt_plus_r thm
+R4287:4298 MyRewrite <> eq_lt_plus_r thm
+prf 4314:4325 <> eq_le_plus_r
+R4341:4343 Coq.Init.Datatypes <> nat ind
+binder 4335:4335 <> m:30
+binder 4337:4337 <> n:31
+R4346:4346 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4353:4357 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4366:4366 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4348:4351 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R4352:4352 MyRewrite <> n:31 var
+R4359:4362 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R4358:4358 MyRewrite <> m:30 var
+R4364:4364 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R4363:4363 MyRewrite <> n:31 var
+R4365:4365 MyRewrite <> m:30 var
+R4405:4409 mathcomp.ssreflect.ssrnat <> add0n thm
+R4405:4409 mathcomp.ssreflect.ssrnat <> add0n thm
+R4405:4409 mathcomp.ssreflect.ssrnat <> add0n thm
+R4426:4434 mathcomp.ssreflect.ssrnat <> leq_add2r thm
+R4426:4434 mathcomp.ssreflect.ssrnat <> leq_add2r thm
+R4426:4434 mathcomp.ssreflect.ssrnat <> leq_add2r thm
+prf 4450:4461 <> eq_le_plus_l
+R4478:4480 Coq.Init.Datatypes <> nat ind
+binder 4472:4472 <> m:32
+binder 4474:4474 <> n:33
+R4483:4483 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4490:4494 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4503:4503 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4485:4488 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R4489:4489 MyRewrite <> n:33 var
+R4496:4499 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R4495:4495 MyRewrite <> m:32 var
+R4501:4501 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R4500:4500 MyRewrite <> m:32 var
+R4502:4502 MyRewrite <> n:33 var
+R4536:4540 mathcomp.ssreflect.ssrnat <> addnC thm
+R4536:4540 mathcomp.ssreflect.ssrnat <> addnC thm
+R4536:4540 mathcomp.ssreflect.ssrnat <> addnC thm
+R4552:4563 MyRewrite <> eq_le_plus_r thm
+R4552:4563 MyRewrite <> eq_le_plus_r thm
+prf 4581:4593 <> eq_S_le_add_r
+R4609:4611 Coq.Init.Datatypes <> nat ind
+binder 4603:4603 <> m:34
+binder 4605:4605 <> n:35
+R4614:4614 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4620:4624 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4636:4636 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4616:4618 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R4619:4619 MyRewrite <> n:35 var
+R4629:4632 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R4626:4628 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R4625:4625 MyRewrite <> m:34 var
+R4634:4634 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R4633:4633 MyRewrite <> n:35 var
+R4635:4635 MyRewrite <> m:34 var
+R4675:4679 mathcomp.ssreflect.ssrnat <> add0n thm
+R4675:4679 mathcomp.ssreflect.ssrnat <> add0n thm
+R4675:4679 mathcomp.ssreflect.ssrnat <> add0n thm
+R4696:4704 mathcomp.ssreflect.ssrnat <> ltn_add2r thm
+R4696:4704 mathcomp.ssreflect.ssrnat <> ltn_add2r thm
+R4696:4704 mathcomp.ssreflect.ssrnat <> ltn_add2r thm
+def 4743:4754 <> trans_lelele
+R4759:4767 mathcomp.ssreflect.ssrnat <> leq_trans thm
+def 4781:4792 <> trans_ltltlt
+R4797:4805 mathcomp.ssreflect.ssrnat <> ltn_trans thm
+def 4819:4830 <> trans_leltlt
+R4835:4847 mathcomp.ssreflect.ssrnat <> leq_ltn_trans thm
+prf 4857:4868 <> trans_ltlelt
+R4886:4888 Coq.Init.Datatypes <> nat ind
+binder 4878:4878 <> p:36
+binder 4880:4880 <> m:37
+binder 4882:4882 <> n:38
+R4896:4899 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4892:4894 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R4891:4891 MyRewrite <> m:37 var
+R4895:4895 MyRewrite <> p:36 var
+R4906:4909 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4901:4904 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R4900:4900 MyRewrite <> p:36 var
+R4905:4905 MyRewrite <> n:38 var
+R4911:4913 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R4910:4910 MyRewrite <> m:37 var
+R4914:4914 MyRewrite <> n:38 var
+R4955:4965 MyRewrite <> eq_le_eq_lt def
+R4955:4965 MyRewrite <> eq_le_eq_lt def
+R4955:4965 MyRewrite <> eq_le_eq_lt def
+R4979:4981 Coq.ssr.ssrbool <> orP thm
+R5027:5029 mathcomp.ssreflect.eqtype <> eqP thm
+R5063:5074 MyRewrite <> trans_ltltlt def
+R5063:5074 MyRewrite <> trans_ltltlt def
+def 5138:5162 <> eq_adjoint_minus_plus_lt'
+R5167:5175 mathcomp.ssreflect.ssrnat <> ltn_subLR thm
+prf 5186:5209 <> eq_adjoint_minus_plus_lt
+R5226:5228 Coq.Init.Datatypes <> nat ind
+binder 5219:5219 <> p:39
+binder 5221:5221 <> m:40
+binder 5223:5223 <> n:41
+R5237:5240 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5232:5235 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R5231:5231 MyRewrite <> p:39 var
+R5236:5236 MyRewrite <> m:40 var
+R5241:5241 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5249:5253 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5261:5261 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5245:5247 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R5243:5243 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R5242:5242 MyRewrite <> m:40 var
+R5244:5244 MyRewrite <> p:39 var
+R5248:5248 MyRewrite <> n:41 var
+R5255:5257 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R5254:5254 MyRewrite <> m:40 var
+R5259:5259 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R5258:5258 MyRewrite <> n:41 var
+R5260:5260 MyRewrite <> p:39 var
+R5296:5300 mathcomp.ssreflect.ssrnat <> addnC thm
+R5296:5300 mathcomp.ssreflect.ssrnat <> addnC thm
+R5296:5300 mathcomp.ssreflect.ssrnat <> addnC thm
+R5317:5341 MyRewrite <> eq_adjoint_minus_plus_lt' def
+R5317:5341 MyRewrite <> eq_adjoint_minus_plus_lt' def
+prf 5357:5380 <> eq_adjoint_plus_minus_lt
+R5397:5399 Coq.Init.Datatypes <> nat ind
+binder 5390:5390 <> p:42
+binder 5392:5392 <> m:43
+binder 5394:5394 <> n:44
+R5402:5402 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5410:5414 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5422:5422 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5406:5408 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R5404:5404 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R5403:5403 MyRewrite <> m:43 var
+R5405:5405 MyRewrite <> p:42 var
+R5409:5409 MyRewrite <> n:44 var
+R5416:5418 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R5415:5415 MyRewrite <> m:43 var
+R5420:5420 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R5419:5419 MyRewrite <> n:44 var
+R5421:5421 MyRewrite <> p:42 var
+R5456:5464 mathcomp.ssreflect.ssrnat <> ltn_subRL thm
+R5456:5464 mathcomp.ssreflect.ssrnat <> ltn_subRL thm
+R5456:5464 mathcomp.ssreflect.ssrnat <> ltn_subRL thm
+R5478:5482 mathcomp.ssreflect.ssrnat <> addnC thm
+R5478:5482 mathcomp.ssreflect.ssrnat <> addnC thm
+R5478:5482 mathcomp.ssreflect.ssrnat <> addnC thm
+prf 5501:5525 <> eq_adjoint_plus_minus_lt'
+R5542:5544 Coq.Init.Datatypes <> nat ind
+binder 5535:5535 <> p:45
+binder 5537:5537 <> m:46
+binder 5539:5539 <> n:47
+R5547:5547 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5555:5559 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5567:5567 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5551:5553 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R5549:5549 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R5548:5548 MyRewrite <> p:45 var
+R5550:5550 MyRewrite <> m:46 var
+R5554:5554 MyRewrite <> n:47 var
+R5561:5563 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R5560:5560 MyRewrite <> m:46 var
+R5565:5565 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R5564:5564 MyRewrite <> n:47 var
+R5566:5566 MyRewrite <> p:45 var
+R5602:5606 mathcomp.ssreflect.ssrnat <> addnC thm
+R5602:5606 mathcomp.ssreflect.ssrnat <> addnC thm
+R5602:5606 mathcomp.ssreflect.ssrnat <> addnC thm
+R5623:5646 MyRewrite <> eq_adjoint_plus_minus_lt thm
+R5623:5646 MyRewrite <> eq_adjoint_plus_minus_lt thm
+prf 5662:5685 <> eq_adjoint_plus_minus_le
+R5702:5704 Coq.Init.Datatypes <> nat ind
+binder 5695:5695 <> p:48
+binder 5697:5697 <> m:49
+binder 5699:5699 <> n:50
+R5713:5716 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5708:5711 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R5707:5707 MyRewrite <> p:48 var
+R5712:5712 MyRewrite <> n:50 var
+R5717:5717 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5726:5730 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5739:5739 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5721:5724 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R5719:5719 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R5718:5718 MyRewrite <> m:49 var
+R5720:5720 MyRewrite <> p:48 var
+R5725:5725 MyRewrite <> n:50 var
+R5732:5735 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R5731:5731 MyRewrite <> m:49 var
+R5737:5737 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R5736:5736 MyRewrite <> n:50 var
+R5738:5738 MyRewrite <> p:48 var
+R5777:5796 Coq.Bool.Bool <> negb_involutive thm
+R5804:5807 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R5800:5802 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R5777:5796 Coq.Bool.Bool <> negb_involutive thm
+R5804:5807 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R5800:5802 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R5777:5796 Coq.Bool.Bool <> negb_involutive thm
+R5804:5807 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R5800:5802 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R5823:5842 Coq.Bool.Bool <> negb_involutive thm
+R5846:5849 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R5851:5851 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R5823:5842 Coq.Bool.Bool <> negb_involutive thm
+R5846:5849 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R5851:5851 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R5823:5842 Coq.Bool.Bool <> negb_involutive thm
+R5846:5849 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R5851:5851 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R5870:5879 MyRewrite <> eq_dual_le def
+R5870:5879 MyRewrite <> eq_dual_le def
+R5870:5879 MyRewrite <> eq_dual_le def
+R5870:5879 MyRewrite <> eq_dual_le def
+R5870:5879 MyRewrite <> eq_dual_le def
+R5870:5879 MyRewrite <> eq_dual_le def
+R5870:5879 MyRewrite <> eq_dual_le def
+R5892:5896 mathcomp.ssreflect.ssrnat <> subSn thm
+R5892:5896 mathcomp.ssreflect.ssrnat <> subSn thm
+R5892:5896 mathcomp.ssreflect.ssrnat <> subSn thm
+R5914:5937 MyRewrite <> eq_adjoint_plus_minus_lt thm
+R5914:5937 MyRewrite <> eq_adjoint_plus_minus_lt thm
+R5914:5937 MyRewrite <> eq_adjoint_plus_minus_lt thm
+prf 5954:5978 <> eq_adjoint_plus_minus_le'
+R5995:5997 Coq.Init.Datatypes <> nat ind
+binder 5988:5988 <> p:51
+binder 5990:5990 <> m:52
+binder 5992:5992 <> n:53
+R6006:6009 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6001:6004 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6000:6000 MyRewrite <> p:51 var
+R6005:6005 MyRewrite <> n:53 var
+R6010:6010 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6019:6023 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6032:6032 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6014:6017 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6012:6012 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R6011:6011 MyRewrite <> p:51 var
+R6013:6013 MyRewrite <> m:52 var
+R6018:6018 MyRewrite <> n:53 var
+R6025:6028 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6024:6024 MyRewrite <> m:52 var
+R6030:6030 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R6029:6029 MyRewrite <> n:53 var
+R6031:6031 MyRewrite <> p:51 var
+R6067:6071 mathcomp.ssreflect.ssrnat <> addnC thm
+R6067:6071 mathcomp.ssreflect.ssrnat <> addnC thm
+R6067:6071 mathcomp.ssreflect.ssrnat <> addnC thm
+R6088:6111 MyRewrite <> eq_adjoint_plus_minus_le thm
+R6088:6111 MyRewrite <> eq_adjoint_plus_minus_le thm
+prf 6126:6149 <> eq_adjoint_minus_plus_le
+R6166:6168 Coq.Init.Datatypes <> nat ind
+binder 6159:6159 <> p:54
+binder 6161:6161 <> m:55
+binder 6163:6163 <> n:56
+R6171:6171 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6180:6184 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6193:6193 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6175:6178 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6173:6173 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R6172:6172 MyRewrite <> m:55 var
+R6174:6174 MyRewrite <> p:54 var
+R6179:6179 MyRewrite <> n:56 var
+R6186:6189 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6185:6185 MyRewrite <> m:55 var
+R6191:6191 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R6190:6190 MyRewrite <> n:56 var
+R6192:6192 MyRewrite <> p:54 var
+R6229:6248 Coq.Bool.Bool <> negb_involutive thm
+R6256:6259 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6252:6254 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R6229:6248 Coq.Bool.Bool <> negb_involutive thm
+R6256:6259 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6252:6254 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R6229:6248 Coq.Bool.Bool <> negb_involutive thm
+R6256:6259 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6252:6254 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R6275:6294 Coq.Bool.Bool <> negb_involutive thm
+R6298:6301 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6303:6303 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R6275:6294 Coq.Bool.Bool <> negb_involutive thm
+R6298:6301 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6303:6303 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R6275:6294 Coq.Bool.Bool <> negb_involutive thm
+R6298:6301 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6303:6303 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R6320:6329 MyRewrite <> eq_dual_le def
+R6320:6329 MyRewrite <> eq_dual_le def
+R6320:6329 MyRewrite <> eq_dual_le def
+R6341:6364 MyRewrite <> eq_adjoint_plus_minus_lt thm
+R6341:6364 MyRewrite <> eq_adjoint_plus_minus_lt thm
+R6341:6364 MyRewrite <> eq_adjoint_plus_minus_lt thm
+R6378:6387 MyRewrite <> eq_dual_le def
+R6378:6387 MyRewrite <> eq_dual_le def
+R6378:6387 MyRewrite <> eq_dual_le def
+prf 6402:6426 <> eq_adjoint_minus_plus_le'
+R6443:6445 Coq.Init.Datatypes <> nat ind
+binder 6436:6436 <> p:57
+binder 6438:6438 <> m:58
+binder 6440:6440 <> n:59
+R6448:6448 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6457:6461 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6470:6470 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6452:6455 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6450:6450 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R6449:6449 MyRewrite <> m:58 var
+R6451:6451 MyRewrite <> p:57 var
+R6456:6456 MyRewrite <> n:59 var
+R6463:6466 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6462:6462 MyRewrite <> m:58 var
+R6468:6468 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R6467:6467 MyRewrite <> p:57 var
+R6469:6469 MyRewrite <> n:59 var
+R6505:6509 mathcomp.ssreflect.ssrnat <> addnC thm
+R6505:6509 mathcomp.ssreflect.ssrnat <> addnC thm
+R6505:6509 mathcomp.ssreflect.ssrnat <> addnC thm
+R6526:6549 MyRewrite <> eq_adjoint_minus_plus_le thm
+R6526:6549 MyRewrite <> eq_adjoint_minus_plus_le thm
+prf 6564:6580 <> eq_adjoint_P_S_lt
+R6595:6597 Coq.Init.Datatypes <> nat ind
+binder 6590:6590 <> m:60
+binder 6592:6592 <> n:61
+R6605:6608 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6601:6603 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R6604:6604 MyRewrite <> m:60 var
+R6609:6609 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6618:6622 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6631:6631 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6614:6616 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R6611:6613 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R6610:6610 MyRewrite <> m:60 var
+R6617:6617 MyRewrite <> n:61 var
+R6624:6626 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R6623:6623 MyRewrite <> m:60 var
+R6628:6630 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R6627:6627 MyRewrite <> n:61 var
+R6665:6669 mathcomp.ssreflect.ssrnat <> addn1 thm
+R6665:6669 mathcomp.ssreflect.ssrnat <> addn1 thm
+R6665:6669 mathcomp.ssreflect.ssrnat <> addn1 thm
+R6684:6688 mathcomp.ssreflect.ssrnat <> subn1 thm
+R6684:6688 mathcomp.ssreflect.ssrnat <> subn1 thm
+R6684:6688 mathcomp.ssreflect.ssrnat <> subn1 thm
+R6697:6720 MyRewrite <> eq_adjoint_minus_plus_lt thm
+R6697:6720 MyRewrite <> eq_adjoint_minus_plus_lt thm
+prf 6736:6752 <> eq_adjoint_P_S_le
+R6767:6769 Coq.Init.Datatypes <> nat ind
+binder 6762:6762 <> m:62
+binder 6764:6764 <> n:63
+R6772:6772 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6782:6786 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6796:6796 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6777:6780 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6774:6776 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R6773:6773 MyRewrite <> m:62 var
+R6781:6781 MyRewrite <> n:63 var
+R6788:6791 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6787:6787 MyRewrite <> m:62 var
+R6793:6795 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R6792:6792 MyRewrite <> n:63 var
+R6830:6834 mathcomp.ssreflect.ssrnat <> addn1 thm
+R6830:6834 mathcomp.ssreflect.ssrnat <> addn1 thm
+R6830:6834 mathcomp.ssreflect.ssrnat <> addn1 thm
+R6849:6853 mathcomp.ssreflect.ssrnat <> subn1 thm
+R6849:6853 mathcomp.ssreflect.ssrnat <> subn1 thm
+R6849:6853 mathcomp.ssreflect.ssrnat <> subn1 thm
+R6862:6885 MyRewrite <> eq_adjoint_minus_plus_le thm
+R6862:6885 MyRewrite <> eq_adjoint_minus_plus_le thm
+prf 6901:6917 <> eq_adjoint_S_P_le
+R6932:6934 Coq.Init.Datatypes <> nat ind
+binder 6927:6927 <> m:64
+binder 6929:6929 <> n:65
+R6942:6945 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6938:6940 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R6941:6941 MyRewrite <> n:65 var
+R6946:6946 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6956:6960 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6970:6970 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6951:6954 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6948:6950 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R6947:6947 MyRewrite <> m:64 var
+R6955:6955 MyRewrite <> n:65 var
+R6962:6965 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R6961:6961 MyRewrite <> m:64 var
+R6967:6969 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R6966:6966 MyRewrite <> n:65 var
+R7003:7007 mathcomp.ssreflect.ssrnat <> subn1 thm
+R7003:7007 mathcomp.ssreflect.ssrnat <> subn1 thm
+R7003:7007 mathcomp.ssreflect.ssrnat <> subn1 thm
+R7016:7040 MyRewrite <> eq_adjoint_plus_minus_le' thm
+R7016:7040 MyRewrite <> eq_adjoint_plus_minus_le' thm
+prf 7055:7071 <> eq_adjoint_S_P_lt
+R7086:7088 Coq.Init.Datatypes <> nat ind
+binder 7081:7081 <> m:66
+binder 7083:7083 <> n:67
+R7091:7091 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7100:7104 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7113:7113 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7096:7098 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R7093:7095 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R7092:7092 MyRewrite <> m:66 var
+R7099:7099 MyRewrite <> n:67 var
+R7106:7108 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R7105:7105 MyRewrite <> m:66 var
+R7110:7112 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R7109:7109 MyRewrite <> n:67 var
+R7146:7150 mathcomp.ssreflect.ssrnat <> subn1 thm
+R7146:7150 mathcomp.ssreflect.ssrnat <> subn1 thm
+R7146:7150 mathcomp.ssreflect.ssrnat <> subn1 thm
+R7167:7171 mathcomp.ssreflect.ssrnat <> addn1 thm
+R7167:7171 mathcomp.ssreflect.ssrnat <> addn1 thm
+R7167:7171 mathcomp.ssreflect.ssrnat <> addn1 thm
+R7183:7206 MyRewrite <> eq_adjoint_plus_minus_lt thm
+R7183:7206 MyRewrite <> eq_adjoint_plus_minus_lt thm
+prf 7221:7244 <> eq_adjoint_plus_minus_eq
+R7261:7263 Coq.Init.Datatypes <> nat ind
+binder 7254:7254 <> p:68
+binder 7256:7256 <> m:69
+binder 7258:7258 <> n:70
+R7272:7275 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7267:7270 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R7266:7266 MyRewrite <> p:68 var
+R7271:7271 MyRewrite <> n:70 var
+R7276:7276 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7285:7289 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7298:7298 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7280:7283 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R7278:7278 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R7277:7277 MyRewrite <> m:69 var
+R7279:7279 MyRewrite <> p:68 var
+R7284:7284 MyRewrite <> n:70 var
+R7291:7294 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R7290:7290 MyRewrite <> m:69 var
+R7296:7296 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R7295:7295 MyRewrite <> n:70 var
+R7297:7297 MyRewrite <> p:68 var
+R7337:7337 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7348:7352 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7363:7363 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7343:7346 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R7339:7341 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R7354:7357 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R7359:7361 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R7377:7400 MyRewrite <> eq_adjoint_plus_minus_le thm
+R7377:7400 MyRewrite <> eq_adjoint_plus_minus_le thm
+R7377:7400 MyRewrite <> eq_adjoint_plus_minus_le thm
+R7414:7414 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7425:7429 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7440:7440 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7416:7419 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R7421:7423 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R7435:7438 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R7431:7433 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R7454:7477 MyRewrite <> eq_adjoint_minus_plus_le thm
+R7454:7477 MyRewrite <> eq_adjoint_minus_plus_le thm
+R7454:7477 MyRewrite <> eq_adjoint_minus_plus_le thm
+R7491:7497 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R7491:7497 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R7491:7497 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R7491:7497 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R7491:7497 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+prf 7541:7564 <> eq_adjoint_minus_plus_eq
+R7581:7583 Coq.Init.Datatypes <> nat ind
+binder 7574:7574 <> p:71
+binder 7576:7576 <> m:72
+binder 7578:7578 <> n:73
+R7592:7595 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7587:7590 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R7586:7586 MyRewrite <> p:71 var
+R7591:7591 MyRewrite <> m:72 var
+R7596:7596 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7605:7609 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7618:7618 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7600:7603 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R7598:7598 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R7597:7597 MyRewrite <> m:72 var
+R7599:7599 MyRewrite <> p:71 var
+R7604:7604 MyRewrite <> n:73 var
+R7611:7614 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R7610:7610 MyRewrite <> m:72 var
+R7616:7616 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R7615:7615 MyRewrite <> n:73 var
+R7617:7617 MyRewrite <> p:71 var
+R7664:7669 mathcomp.ssreflect.eqtype <> eq_sym thm
+R7664:7669 mathcomp.ssreflect.eqtype <> eq_sym thm
+R7664:7669 mathcomp.ssreflect.eqtype <> eq_sym thm
+R7681:7686 mathcomp.ssreflect.eqtype <> eq_sym thm
+R7690:7690 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R7681:7686 mathcomp.ssreflect.eqtype <> eq_sym thm
+R7690:7690 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R7681:7686 mathcomp.ssreflect.eqtype <> eq_sym thm
+R7690:7690 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R7707:7730 MyRewrite <> eq_adjoint_plus_minus_eq thm
+R7707:7730 MyRewrite <> eq_adjoint_plus_minus_eq thm
+prf 7748:7764 <> eq_adjoint_S_P_eq
+R7779:7781 Coq.Init.Datatypes <> nat ind
+binder 7774:7774 <> m:74
+binder 7776:7776 <> n:75
+R7789:7792 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7785:7787 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R7788:7788 MyRewrite <> n:75 var
+R7793:7793 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7803:7807 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7817:7817 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7798:7801 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R7795:7797 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R7794:7794 MyRewrite <> m:74 var
+R7802:7802 MyRewrite <> n:75 var
+R7809:7812 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R7808:7808 MyRewrite <> m:74 var
+R7814:7816 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R7813:7813 MyRewrite <> n:75 var
+R7854:7854 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7864:7868 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7878:7878 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7859:7862 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R7856:7858 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R7870:7873 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R7875:7877 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R7892:7908 MyRewrite <> eq_adjoint_S_P_le thm
+R7892:7908 MyRewrite <> eq_adjoint_S_P_le thm
+R7892:7908 MyRewrite <> eq_adjoint_S_P_le thm
+R7922:7922 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7932:7936 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7946:7946 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7924:7927 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R7929:7931 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R7941:7944 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R7938:7940 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R7960:7976 MyRewrite <> eq_adjoint_P_S_le thm
+R7960:7976 MyRewrite <> eq_adjoint_P_S_le thm
+R7960:7976 MyRewrite <> eq_adjoint_P_S_le thm
+R7990:7996 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R7990:7996 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R7990:7996 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R7990:7996 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R7990:7996 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+prf 8040:8056 <> eq_adjoint_P_S_eq
+R8071:8073 Coq.Init.Datatypes <> nat ind
+binder 8066:8066 <> m:76
+binder 8068:8068 <> n:77
+R8081:8084 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R8077:8079 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R8080:8080 MyRewrite <> m:76 var
+R8085:8085 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8095:8099 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8109:8109 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R8090:8093 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R8087:8089 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R8086:8086 MyRewrite <> m:76 var
+R8094:8094 MyRewrite <> n:77 var
+R8101:8104 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R8100:8100 MyRewrite <> m:76 var
+R8106:8108 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R8105:8105 MyRewrite <> n:77 var
+R8153:8158 mathcomp.ssreflect.eqtype <> eq_sym thm
+R8153:8158 mathcomp.ssreflect.eqtype <> eq_sym thm
+R8153:8158 mathcomp.ssreflect.eqtype <> eq_sym thm
+R8170:8175 mathcomp.ssreflect.eqtype <> eq_sym thm
+R8179:8181 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R8170:8175 mathcomp.ssreflect.eqtype <> eq_sym thm
+R8179:8181 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R8170:8175 mathcomp.ssreflect.eqtype <> eq_sym thm
+R8179:8181 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.-1' not
+R8197:8213 MyRewrite <> eq_adjoint_S_P_eq thm
+R8197:8213 MyRewrite <> eq_adjoint_S_P_eq thm
+prf 9875:9886 <> eq_even_plus
+R9901:9903 Coq.Init.Datatypes <> nat ind
+binder 9896:9896 <> m:78
+binder 9898:9898 <> n:79
+R9920:9923 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9906:9907 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R9908:9917 mathcomp.ssreflect.ssrnat <> odd def
+R9919:9919 MyRewrite <> m:78 var
+R9940:9942 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R9924:9933 mathcomp.ssreflect.ssrnat <> odd def
+R9937:9937 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R9936:9936 MyRewrite <> m:78 var
+R9938:9938 MyRewrite <> n:79 var
+R9943:9952 mathcomp.ssreflect.ssrnat <> odd def
+R9954:9954 MyRewrite <> n:79 var
+R9988:9991 mathcomp.ssreflect.ssrnat <> oddD thm
+R9988:9991 mathcomp.ssreflect.ssrnat <> oddD thm
+R9988:9991 mathcomp.ssreflect.ssrnat <> oddD thm
+R10000:10005 Coq.ssr.ssrbool <> negbTE thm
+R10000:10005 Coq.ssr.ssrbool <> negbTE thm
+prf 10046:10056 <> eq_odd_plus
+R10071:10073 Coq.Init.Datatypes <> nat ind
+binder 10066:10066 <> m:80
+binder 10068:10068 <> n:81
+R10088:10091 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10076:10085 mathcomp.ssreflect.ssrnat <> odd def
+R10087:10087 MyRewrite <> m:80 var
+R10108:10110 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10092:10101 mathcomp.ssreflect.ssrnat <> odd def
+R10105:10105 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R10104:10104 MyRewrite <> m:80 var
+R10106:10106 MyRewrite <> n:81 var
+R10111:10112 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R10113:10122 mathcomp.ssreflect.ssrnat <> odd def
+R10124:10124 MyRewrite <> n:81 var
+R10158:10161 mathcomp.ssreflect.ssrnat <> oddD thm
+R10158:10161 mathcomp.ssreflect.ssrnat <> oddD thm
+R10158:10161 mathcomp.ssreflect.ssrnat <> oddD thm
+prf 10233:10251 <> eq_half_double_even
+R10264:10266 Coq.Init.Datatypes <> nat ind
+binder 10261:10261 <> m:82
+R10283:10287 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10301:10301 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10269:10270 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R10271:10280 mathcomp.ssreflect.ssrnat <> odd def
+R10282:10282 MyRewrite <> m:82 var
+R10297:10299 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10288:10288 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R10293:10296 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R10290:10292 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R10289:10289 MyRewrite <> m:82 var
+R10300:10300 MyRewrite <> m:82 var
+R10343:10357 mathcomp.ssreflect.ssrnat <> odd_double_half thm
+R10343:10357 mathcomp.ssreflect.ssrnat <> odd_double_half thm
+R10343:10357 mathcomp.ssreflect.ssrnat <> odd_double_half thm
+R10385:10387 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10373:10382 mathcomp.ssreflect.ssrnat <> odd def
+R10388:10392 Coq.Init.Datatypes <> false constr
+R10404:10409 Coq.ssr.ssrbool <> negbTE thm
+R10404:10409 Coq.ssr.ssrbool <> negbTE thm
+R10441:10445 mathcomp.ssreflect.ssrnat <> add0n thm
+R10441:10445 mathcomp.ssreflect.ssrnat <> add0n thm
+R10441:10445 mathcomp.ssreflect.ssrnat <> add0n thm
+prf 10460:10477 <> eq_half_double_odd
+R10490:10492 Coq.Init.Datatypes <> nat ind
+binder 10487:10487 <> m:83
+R10507:10511 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10530:10530 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10495:10504 mathcomp.ssreflect.ssrnat <> odd def
+R10506:10506 MyRewrite <> m:83 var
+R10526:10528 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10512:10512 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R10522:10525 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.+1' not
+R10513:10513 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R10518:10521 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R10515:10517 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R10514:10514 MyRewrite <> m:83 var
+R10529:10529 MyRewrite <> m:83 var
+R10594:10596 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10568:10568 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R10578:10580 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R10593:10593 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R10569:10569 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R10574:10577 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R10571:10573 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R10581:10590 mathcomp.ssreflect.ssrnat <> odd def
+R10609:10613 mathcomp.ssreflect.ssrnat <> addnC thm
+R10609:10613 mathcomp.ssreflect.ssrnat <> addnC thm
+R10609:10613 mathcomp.ssreflect.ssrnat <> addnC thm
+R10622:10636 mathcomp.ssreflect.ssrnat <> odd_double_half thm
+R10622:10636 mathcomp.ssreflect.ssrnat <> odd_double_half thm
+R10666:10670 mathcomp.ssreflect.ssrnat <> addn1 thm
+R10666:10670 mathcomp.ssreflect.ssrnat <> addn1 thm
+R10666:10670 mathcomp.ssreflect.ssrnat <> addn1 thm
+R10679:10681 mathcomp.ssreflect.eqtype <> eqP thm
+R10679:10681 mathcomp.ssreflect.eqtype <> eqP thm
+R10692:10700 mathcomp.ssreflect.ssrnat <> eqn_add2l thm
+R10692:10700 mathcomp.ssreflect.ssrnat <> eqn_add2l thm
+R10692:10700 mathcomp.ssreflect.ssrnat <> eqn_add2l thm
+prf 10731:10744 <> eq_double_half
+R10757:10759 Coq.Init.Datatypes <> nat ind
+binder 10754:10754 <> m:84
+R10771:10773 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10762:10762 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R10767:10770 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R10764:10766 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R10763:10763 MyRewrite <> m:84 var
+R10774:10774 MyRewrite <> m:84 var
+R10813:10815 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10804:10804 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R10809:10812 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R10806:10808 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R10817:10817 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R10828:10842 mathcomp.ssreflect.ssrnat <> half_bit_double thm
+R10846:10850 Coq.Init.Datatypes <> false constr
+R10828:10842 mathcomp.ssreflect.ssrnat <> half_bit_double thm
+R10846:10850 Coq.Init.Datatypes <> false constr
+R10865:10869 mathcomp.ssreflect.ssrnat <> add0n thm
+R10865:10869 mathcomp.ssreflect.ssrnat <> add0n thm
+R10865:10869 mathcomp.ssreflect.ssrnat <> add0n thm
+prf 10890:10906 <> eq_mono_double_le
+R10921:10923 Coq.Init.Datatypes <> nat ind
+binder 10916:10916 <> m:85
+binder 10918:10918 <> n:86
+R10926:10926 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10933:10937 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10950:10950 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10928:10931 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R10927:10927 MyRewrite <> m:85 var
+R10932:10932 MyRewrite <> n:86 var
+R10942:10945 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R10939:10941 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R10938:10938 MyRewrite <> m:85 var
+R10947:10949 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R10946:10946 MyRewrite <> n:86 var
+R10990:10999 mathcomp.ssreflect.ssrnat <> leq_double thm
+R10990:10999 mathcomp.ssreflect.ssrnat <> leq_double thm
+prf 11015:11031 <> eq_mono_double_eq
+R11046:11048 Coq.Init.Datatypes <> nat ind
+binder 11041:11041 <> m:87
+binder 11043:11043 <> n:88
+R11051:11051 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11058:11062 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11075:11075 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11053:11056 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R11052:11052 MyRewrite <> m:87 var
+R11057:11057 MyRewrite <> n:88 var
+R11067:11070 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R11064:11066 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11063:11063 MyRewrite <> m:87 var
+R11072:11074 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11071:11071 MyRewrite <> n:88 var
+R11109:11109 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11114:11118 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11131:11131 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11111:11112 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R11123:11126 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R11120:11122 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11128:11130 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11143:11159 MyRewrite <> eq_mono_double_le thm
+R11143:11159 MyRewrite <> eq_mono_double_le thm
+R11173:11173 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11178:11182 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11195:11195 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11175:11176 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R11187:11190 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R11184:11186 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11192:11194 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11207:11223 MyRewrite <> eq_mono_double_le thm
+R11207:11223 MyRewrite <> eq_mono_double_le thm
+R11238:11238 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11246:11250 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11271:11271 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11240:11241 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x_'<='_x not
+R11243:11244 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x_'<='_x not
+R11255:11258 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x_'<='_x not
+R11263:11266 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x_'<='_x not
+R11252:11254 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11260:11262 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11260:11262 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11268:11270 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11316:11322 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R11316:11322 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R11316:11322 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R11316:11322 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R11316:11322 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+prf 11338:11354 <> eq_mono_double_lt
+R11369:11371 Coq.Init.Datatypes <> nat ind
+binder 11364:11364 <> m:89
+binder 11366:11366 <> n:90
+R11374:11374 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11380:11384 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11396:11396 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11376:11378 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R11375:11375 MyRewrite <> m:89 var
+R11379:11379 MyRewrite <> n:90 var
+R11389:11391 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R11386:11388 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11385:11385 MyRewrite <> m:89 var
+R11393:11395 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R11392:11392 MyRewrite <> n:90 var
+R11429:11438 MyRewrite <> eq_dual_le def
+R11429:11438 MyRewrite <> eq_dual_le def
+R11429:11438 MyRewrite <> eq_dual_le def
+R11429:11438 MyRewrite <> eq_dual_le def
+R11429:11438 MyRewrite <> eq_dual_le def
+R11452:11468 MyRewrite <> eq_mono_double_le thm
+R11452:11468 MyRewrite <> eq_mono_double_le thm
+R11452:11468 MyRewrite <> eq_mono_double_le thm
+prf 11483:11498 <> imp_mono_half_le
+R11513:11515 Coq.Init.Datatypes <> nat ind
+binder 11508:11508 <> m:91
+binder 11510:11510 <> n:92
+R11518:11518 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11525:11530 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11543:11543 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11520:11523 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R11519:11519 MyRewrite <> m:91 var
+R11524:11524 MyRewrite <> n:92 var
+R11535:11538 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R11532:11534 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R11531:11531 MyRewrite <> m:91 var
+R11540:11542 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R11539:11539 MyRewrite <> n:92 var
+R11578:11585 mathcomp.ssreflect.ssrnat <> half_leq thm
+R11578:11585 mathcomp.ssreflect.ssrnat <> half_leq thm
+prf 11601:11616 <> rev_mono_half_le
+R11631:11633 Coq.Init.Datatypes <> nat ind
+binder 11626:11626 <> m:93
+binder 11628:11628 <> n:94
+R11636:11636 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11665:11669 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11649:11652 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R11637:11646 mathcomp.ssreflect.ssrnat <> odd def
+R11648:11648 MyRewrite <> m:93 var
+R11653:11662 mathcomp.ssreflect.ssrnat <> odd def
+R11664:11664 MyRewrite <> n:94 var
+R11670:11670 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11683:11688 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11695:11695 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11675:11678 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R11672:11674 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R11671:11671 MyRewrite <> m:93 var
+R11680:11682 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R11679:11679 MyRewrite <> n:94 var
+R11690:11693 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R11689:11689 MyRewrite <> m:93 var
+R11694:11694 MyRewrite <> n:94 var
+R11749:11752 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R11737:11746 mathcomp.ssreflect.ssrnat <> odd def
+R11753:11754 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R11755:11764 mathcomp.ssreflect.ssrnat <> odd def
+R11775:11778 Coq.ssr.ssrbool <> orbN thm
+R11775:11778 Coq.ssr.ssrbool <> orbN thm
+R11798:11800 Coq.ssr.ssrbool <> orP thm
+R11844:11847 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R11832:11841 mathcomp.ssreflect.ssrnat <> odd def
+R11848:11849 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R11850:11859 mathcomp.ssreflect.ssrnat <> odd def
+R11870:11873 Coq.ssr.ssrbool <> orbN thm
+R11870:11873 Coq.ssr.ssrbool <> orbN thm
+R11893:11895 Coq.ssr.ssrbool <> orP thm
+R11927:11944 MyRewrite <> eq_half_double_odd thm
+R11927:11944 MyRewrite <> eq_half_double_odd thm
+R11927:11944 MyRewrite <> eq_half_double_odd thm
+R11963:11980 MyRewrite <> eq_half_double_odd thm
+R11963:11980 MyRewrite <> eq_half_double_odd thm
+R11963:11980 MyRewrite <> eq_half_double_odd thm
+R12003:12017 MyRewrite <> eq_mono_succ_le thm
+R12003:12017 MyRewrite <> eq_mono_succ_le thm
+R12003:12017 MyRewrite <> eq_mono_succ_le thm
+R12032:12048 MyRewrite <> eq_mono_double_le thm
+R12032:12048 MyRewrite <> eq_mono_double_le thm
+R12032:12048 MyRewrite <> eq_mono_double_le thm
+R12065:12082 MyRewrite <> eq_half_double_odd thm
+R12065:12082 MyRewrite <> eq_half_double_odd thm
+R12065:12082 MyRewrite <> eq_half_double_odd thm
+R12101:12119 MyRewrite <> eq_half_double_even thm
+R12101:12119 MyRewrite <> eq_half_double_even thm
+R12101:12119 MyRewrite <> eq_half_double_even thm
+R12150:12153 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R12141:12141 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R12146:12149 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R12143:12145 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R12154:12154 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R12159:12162 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R12156:12158 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R12177:12193 MyRewrite <> eq_mono_double_le thm
+R12177:12193 MyRewrite <> eq_mono_double_le thm
+R12177:12193 MyRewrite <> eq_mono_double_le thm
+R12207:12218 MyRewrite <> trans_lelele def
+R12207:12218 MyRewrite <> trans_lelele def
+R12230:12235 mathcomp.ssreflect.ssrnat <> leqnSn thm
+R12230:12235 mathcomp.ssreflect.ssrnat <> leqnSn thm
+R12254:12255 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R12256:12265 mathcomp.ssreflect.ssrnat <> odd def
+R12279:12286 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R12279:12286 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R12279:12286 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R12303:12305 mathcomp.ssreflect.eqtype <> eqP thm
+R12347:12350 Coq.ssr.ssrbool <> negP thm
+R12347:12350 Coq.ssr.ssrbool <> negP thm
+R12399:12417 MyRewrite <> eq_half_double_even thm
+R12399:12417 MyRewrite <> eq_half_double_even thm
+R12399:12417 MyRewrite <> eq_half_double_even thm
+R12437:12455 MyRewrite <> eq_half_double_even thm
+R12437:12455 MyRewrite <> eq_half_double_even thm
+R12437:12455 MyRewrite <> eq_half_double_even thm
+R12477:12493 MyRewrite <> eq_mono_double_le thm
+R12477:12493 MyRewrite <> eq_mono_double_le thm
+R12477:12493 MyRewrite <> eq_mono_double_le thm
+prf 12508:12522 <> eq_mono_half_le
+R12537:12539 Coq.Init.Datatypes <> nat ind
+binder 12532:12532 <> m:95
+binder 12534:12534 <> n:96
+R12542:12542 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12571:12575 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12555:12558 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R12543:12552 mathcomp.ssreflect.ssrnat <> odd def
+R12554:12554 MyRewrite <> m:95 var
+R12559:12568 mathcomp.ssreflect.ssrnat <> odd def
+R12570:12570 MyRewrite <> n:96 var
+R12576:12576 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12583:12587 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12600:12600 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12578:12581 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R12577:12577 MyRewrite <> m:95 var
+R12582:12582 MyRewrite <> n:96 var
+R12592:12595 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R12589:12591 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R12588:12588 MyRewrite <> m:95 var
+R12597:12599 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R12596:12596 MyRewrite <> n:96 var
+R12644:12644 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R12657:12663 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R12670:12670 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R12649:12652 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R12646:12648 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R12654:12656 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R12665:12668 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R12689:12704 MyRewrite <> rev_mono_half_le thm
+R12689:12704 MyRewrite <> rev_mono_half_le thm
+R12715:12730 MyRewrite <> imp_mono_half_le thm
+R12715:12730 MyRewrite <> imp_mono_half_le thm
+R12742:12753 MyRewrite <> conv_iff_eql thm
+R12742:12753 MyRewrite <> conv_iff_eql thm
+prf 12770:12784 <> eq_mono_half_eq
+R12799:12801 Coq.Init.Datatypes <> nat ind
+binder 12794:12794 <> m:97
+binder 12796:12796 <> n:98
+R12804:12804 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12833:12837 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12817:12820 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R12805:12814 mathcomp.ssreflect.ssrnat <> odd def
+R12816:12816 MyRewrite <> m:97 var
+R12821:12830 mathcomp.ssreflect.ssrnat <> odd def
+R12832:12832 MyRewrite <> n:98 var
+R12838:12838 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12845:12849 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12862:12862 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12840:12843 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R12839:12839 MyRewrite <> m:97 var
+R12844:12844 MyRewrite <> n:98 var
+R12854:12857 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R12851:12853 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R12850:12850 MyRewrite <> m:97 var
+R12859:12861 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R12858:12858 MyRewrite <> n:98 var
+R12893:12895 mathcomp.ssreflect.eqtype <> eqP thm
+R12913:12913 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12920:12924 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12937:12937 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12915:12918 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R12929:12932 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R12926:12928 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R12934:12936 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R12946:12960 MyRewrite <> eq_mono_half_le thm
+R12946:12960 MyRewrite <> eq_mono_half_le thm
+R12987:12987 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12994:12998 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R13011:13011 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12989:12992 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R13003:13006 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R13000:13002 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R13008:13010 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R13020:13034 MyRewrite <> eq_mono_half_le thm
+R13020:13034 MyRewrite <> eq_mono_half_le thm
+R13061:13067 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R13061:13067 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R13061:13067 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R13103:13109 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R13103:13109 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R13103:13109 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+prf 13124:13139 <> imp_mono_half_lt
+R13154:13156 Coq.Init.Datatypes <> nat ind
+binder 13149:13149 <> m:99
+binder 13151:13151 <> n:100
+R13159:13159 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R13188:13192 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R13172:13175 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R13160:13169 mathcomp.ssreflect.ssrnat <> odd def
+R13171:13171 MyRewrite <> n:100 var
+R13176:13185 mathcomp.ssreflect.ssrnat <> odd def
+R13187:13187 MyRewrite <> m:99 var
+R13193:13193 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R13199:13203 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R13215:13215 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R13195:13197 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R13194:13194 MyRewrite <> m:99 var
+R13198:13198 MyRewrite <> n:100 var
+R13208:13210 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R13205:13207 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R13204:13204 MyRewrite <> m:99 var
+R13212:13214 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R13211:13211 MyRewrite <> n:100 var
+R13250:13259 MyRewrite <> eq_dual_le def
+R13250:13259 MyRewrite <> eq_dual_le def
+R13250:13259 MyRewrite <> eq_dual_le def
+R13250:13259 MyRewrite <> eq_dual_le def
+R13250:13259 MyRewrite <> eq_dual_le def
+R13273:13287 MyRewrite <> eq_mono_half_le thm
+R13273:13287 MyRewrite <> eq_mono_half_le thm
+R13273:13287 MyRewrite <> eq_mono_half_le thm
+prf 13342:13366 <> eq_adjoint_double_half_le
+R13381:13383 Coq.Init.Datatypes <> nat ind
+binder 13376:13376 <> m:101
+binder 13378:13378 <> n:102
+R13386:13386 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R13396:13400 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R13410:13410 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R13391:13394 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R13388:13390 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R13387:13387 MyRewrite <> m:101 var
+R13395:13395 MyRewrite <> n:102 var
+R13402:13405 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R13401:13401 MyRewrite <> m:101 var
+R13407:13409 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R13406:13406 MyRewrite <> n:102 var
+R13460:13463 Coq.Init.Datatypes <> ::bool_scope:x_'||'_x not
+R13448:13457 mathcomp.ssreflect.ssrnat <> odd def
+R13464:13465 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R13466:13475 mathcomp.ssreflect.ssrnat <> odd def
+R13486:13489 Coq.ssr.ssrbool <> orbN thm
+R13486:13489 Coq.ssr.ssrbool <> orbN thm
+R13509:13511 Coq.ssr.ssrbool <> orP thm
+R13539:13553 MyRewrite <> eq_mono_half_le thm
+R13539:13553 MyRewrite <> eq_mono_half_le thm
+R13539:13553 MyRewrite <> eq_mono_half_le thm
+R13567:13580 MyRewrite <> eq_double_half thm
+R13567:13580 MyRewrite <> eq_double_half thm
+R13567:13580 MyRewrite <> eq_double_half thm
+R13603:13614 MyRewrite <> le_bool_true thm
+R13603:13614 MyRewrite <> le_bool_true thm
+R13628:13642 MyRewrite <> eq_mono_half_le thm
+R13628:13642 MyRewrite <> eq_mono_half_le thm
+R13628:13642 MyRewrite <> eq_mono_half_le thm
+R13656:13669 MyRewrite <> eq_double_half thm
+R13656:13669 MyRewrite <> eq_double_half thm
+R13656:13669 MyRewrite <> eq_double_half thm
+R13681:13688 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R13681:13688 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R13681:13688 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R13707:13709 mathcomp.ssreflect.eqtype <> eqP thm
+R13747:13756 mathcomp.ssreflect.ssrnat <> odd_double thm
+R13747:13756 mathcomp.ssreflect.ssrnat <> odd_double thm
+R13747:13756 mathcomp.ssreflect.ssrnat <> odd_double thm
+prf 13772:13796 <> eq_adjoint_half_double_le
+R13811:13813 Coq.Init.Datatypes <> nat ind
+binder 13806:13806 <> m:103
+binder 13808:13808 <> n:104
+R13832:13835 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R13816:13818 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R13831:13831 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R13819:13828 mathcomp.ssreflect.ssrnat <> odd def
+R13830:13830 MyRewrite <> m:103 var
+R13836:13836 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R13846:13850 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R13860:13860 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R13841:13844 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R13838:13840 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R13837:13837 MyRewrite <> m:103 var
+R13845:13845 MyRewrite <> n:104 var
+R13852:13855 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R13851:13851 MyRewrite <> m:103 var
+R13857:13859 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R13856:13856 MyRewrite <> n:104 var
+R13905:13906 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R13907:13916 mathcomp.ssreflect.ssrnat <> odd def
+R13920:13922 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R13937:13946 mathcomp.ssreflect.ssrnat <> odd_double thm
+R13937:13946 mathcomp.ssreflect.ssrnat <> odd_double thm
+R13937:13946 mathcomp.ssreflect.ssrnat <> odd_double thm
+R13974:13977 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R13962:13971 mathcomp.ssreflect.ssrnat <> odd def
+R13978:13987 mathcomp.ssreflect.ssrnat <> odd def
+R13991:13993 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14008:14015 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R14008:14015 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R14008:14015 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R14032:14034 mathcomp.ssreflect.eqtype <> eqP thm
+R14072:14079 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R14072:14079 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R14072:14079 mathcomp.ssreflect.eqtype <> eqbF_neg thm
+R14097:14099 mathcomp.ssreflect.eqtype <> eqP thm
+R14146:14160 MyRewrite <> eq_mono_half_le thm
+R14146:14160 MyRewrite <> eq_mono_half_le thm
+R14146:14160 MyRewrite <> eq_mono_half_le thm
+R14180:14193 MyRewrite <> eq_double_half thm
+R14180:14193 MyRewrite <> eq_double_half thm
+R14180:14193 MyRewrite <> eq_double_half thm
+prf 14213:14237 <> eq_adjoint_double_half_lt
+R14252:14254 Coq.Init.Datatypes <> nat ind
+binder 14247:14247 <> m:105
+binder 14249:14249 <> n:106
+R14273:14276 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14257:14259 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14272:14272 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14260:14269 mathcomp.ssreflect.ssrnat <> odd def
+R14271:14271 MyRewrite <> n:106 var
+R14277:14277 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14286:14290 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14299:14299 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14282:14284 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14279:14281 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14278:14278 MyRewrite <> m:105 var
+R14285:14285 MyRewrite <> n:106 var
+R14292:14294 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14291:14291 MyRewrite <> m:105 var
+R14296:14298 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R14295:14295 MyRewrite <> n:106 var
+R14342:14344 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14330:14332 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14341:14341 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14334:14336 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14338:14340 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R14345:14347 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14356:14356 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14352:14354 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14349:14351 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14370:14379 MyRewrite <> eq_dual_lt thm
+R14370:14379 MyRewrite <> eq_dual_lt thm
+R14370:14379 MyRewrite <> eq_dual_lt thm
+R14370:14379 MyRewrite <> eq_dual_lt thm
+R14370:14379 MyRewrite <> eq_dual_lt thm
+R14393:14417 MyRewrite <> eq_adjoint_half_double_le thm
+R14393:14417 MyRewrite <> eq_adjoint_half_double_le thm
+R14393:14417 MyRewrite <> eq_adjoint_half_double_le thm
+R14433:14452 Coq.Bool.Bool <> negb_involutive thm
+R14459:14461 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14456:14458 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14433:14452 Coq.Bool.Bool <> negb_involutive thm
+R14459:14461 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14456:14458 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14433:14452 Coq.Bool.Bool <> negb_involutive thm
+R14459:14461 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14456:14458 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14477:14496 Coq.Bool.Bool <> negb_involutive thm
+R14500:14502 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14504:14506 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R14477:14496 Coq.Bool.Bool <> negb_involutive thm
+R14500:14502 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14504:14506 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R14477:14496 Coq.Bool.Bool <> negb_involutive thm
+R14500:14502 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14504:14506 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+prf 14540:14564 <> eq_adjoint_half_double_lt
+R14579:14581 Coq.Init.Datatypes <> nat ind
+binder 14574:14574 <> m:107
+binder 14576:14576 <> n:108
+R14584:14584 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14593:14597 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14606:14606 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14589:14591 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14586:14588 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R14585:14585 MyRewrite <> m:107 var
+R14592:14592 MyRewrite <> n:108 var
+R14599:14601 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14598:14598 MyRewrite <> m:107 var
+R14603:14605 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14602:14602 MyRewrite <> n:108 var
+R14650:14652 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14638:14640 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14649:14649 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14642:14644 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14646:14648 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14653:14655 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14664:14664 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14660:14662 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14657:14659 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R14678:14687 MyRewrite <> eq_dual_lt thm
+R14678:14687 MyRewrite <> eq_dual_lt thm
+R14678:14687 MyRewrite <> eq_dual_lt thm
+R14678:14687 MyRewrite <> eq_dual_lt thm
+R14678:14687 MyRewrite <> eq_dual_lt thm
+R14701:14725 MyRewrite <> eq_adjoint_double_half_le thm
+R14701:14725 MyRewrite <> eq_adjoint_double_half_le thm
+R14701:14725 MyRewrite <> eq_adjoint_double_half_le thm
+R14741:14760 Coq.Bool.Bool <> negb_involutive thm
+R14767:14769 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14764:14766 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R14741:14760 Coq.Bool.Bool <> negb_involutive thm
+R14767:14769 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14764:14766 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R14741:14760 Coq.Bool.Bool <> negb_involutive thm
+R14767:14769 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14764:14766 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R14785:14804 Coq.Bool.Bool <> negb_involutive thm
+R14808:14810 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14812:14814 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14785:14804 Coq.Bool.Bool <> negb_involutive thm
+R14808:14810 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14812:14814 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14785:14804 Coq.Bool.Bool <> negb_involutive thm
+R14808:14810 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R14812:14814 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+prf 14848:14872 <> eq_adjoint_double_half_eq
+R14887:14889 Coq.Init.Datatypes <> nat ind
+binder 14882:14882 <> m:109
+binder 14884:14884 <> n:110
+R14908:14911 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R14892:14894 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14907:14907 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R14895:14904 mathcomp.ssreflect.ssrnat <> odd def
+R14906:14906 MyRewrite <> n:110 var
+R14912:14912 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14922:14926 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14936:14936 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14917:14920 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R14914:14916 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14913:14913 MyRewrite <> m:109 var
+R14921:14921 MyRewrite <> n:110 var
+R14928:14931 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R14927:14927 MyRewrite <> m:109 var
+R14933:14935 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R14932:14932 MyRewrite <> n:110 var
+R14966:14966 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14976:14980 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14990:14990 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R14971:14974 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R14968:14970 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R14982:14985 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R14987:14989 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R15004:15028 MyRewrite <> eq_adjoint_double_half_le thm
+R15004:15028 MyRewrite <> eq_adjoint_double_half_le thm
+R15004:15028 MyRewrite <> eq_adjoint_double_half_le thm
+R15042:15042 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15052:15056 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15066:15066 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15044:15047 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R15049:15051 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R15061:15064 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R15058:15060 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R15080:15104 MyRewrite <> eq_adjoint_half_double_le thm
+R15080:15104 MyRewrite <> eq_adjoint_half_double_le thm
+R15080:15104 MyRewrite <> eq_adjoint_half_double_le thm
+R15118:15124 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R15118:15124 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R15118:15124 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R15118:15124 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R15118:15124 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+prf 15164:15188 <> eq_adjoint_half_double_eq
+R15203:15205 Coq.Init.Datatypes <> nat ind
+binder 15198:15198 <> m:111
+binder 15200:15200 <> n:112
+R15224:15227 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R15208:15210 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R15223:15223 Coq.ssr.ssrbool <> ::bool_scope:'~~'_x not
+R15211:15220 mathcomp.ssreflect.ssrnat <> odd def
+R15222:15222 MyRewrite <> m:111 var
+R15228:15228 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15238:15242 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15252:15252 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15233:15236 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R15230:15232 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R15229:15229 MyRewrite <> m:111 var
+R15237:15237 MyRewrite <> n:112 var
+R15244:15247 mathcomp.ssreflect.eqtype <> ::bool_scope:x_'=='_x not
+R15243:15243 MyRewrite <> m:111 var
+R15249:15251 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R15248:15248 MyRewrite <> n:112 var
+R15289:15289 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15299:15303 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15313:15313 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15294:15297 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R15291:15293 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R15305:15308 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R15310:15312 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R15327:15351 MyRewrite <> eq_adjoint_half_double_le thm
+R15327:15351 MyRewrite <> eq_adjoint_half_double_le thm
+R15327:15351 MyRewrite <> eq_adjoint_half_double_le thm
+R15365:15365 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15375:15379 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15389:15389 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R15367:15370 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R15372:15374 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R15384:15387 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R15381:15383 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R15403:15427 MyRewrite <> eq_adjoint_double_half_le thm
+R15403:15427 MyRewrite <> eq_adjoint_double_half_le thm
+R15403:15427 MyRewrite <> eq_adjoint_double_half_le thm
+R15441:15447 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R15441:15447 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R15441:15447 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R15441:15447 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+R15441:15447 mathcomp.ssreflect.ssrnat <> eqn_leq thm
+prf 15487:15497 <> self_double
+R15509:15511 Coq.Init.Datatypes <> nat ind
+binder 15507:15507 <> n:113
+R15515:15518 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R15514:15514 MyRewrite <> n:113 var
+R15520:15522 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'.*2' not
+R15519:15519 MyRewrite <> n:113 var
+R15552:15556 mathcomp.ssreflect.ssrnat <> addnn thm
+R15552:15556 mathcomp.ssreflect.ssrnat <> addnn thm
+R15552:15556 mathcomp.ssreflect.ssrnat <> addnn thm
+R15572:15583 MyRewrite <> eq_le_plus_r thm
+R15572:15583 MyRewrite <> eq_le_plus_r thm
+R15572:15583 MyRewrite <> eq_le_plus_r thm
+prf 15598:15606 <> self_half
+R15618:15620 Coq.Init.Datatypes <> nat ind
+binder 15616:15616 <> n:114
+R15627:15630 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R15624:15626 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'./2' not
+R15623:15623 MyRewrite <> n:114 var
+R15631:15631 MyRewrite <> n:114 var
+R15666:15680 mathcomp.ssreflect.ssrnat <> half_bit_double thm
+R15684:15688 Coq.Init.Datatypes <> false constr
+R15666:15680 mathcomp.ssreflect.ssrnat <> half_bit_double thm
+R15684:15688 Coq.Init.Datatypes <> false constr
+R15666:15680 mathcomp.ssreflect.ssrnat <> half_bit_double thm
+R15684:15688 Coq.Init.Datatypes <> false constr
+R15707:15711 mathcomp.ssreflect.ssrnat <> add0n thm
+R15707:15711 mathcomp.ssreflect.ssrnat <> add0n thm
+R15707:15711 mathcomp.ssreflect.ssrnat <> add0n thm
+R15723:15738 MyRewrite <> imp_mono_half_le thm
+R15723:15738 MyRewrite <> imp_mono_half_le thm
+R15747:15757 MyRewrite <> self_double thm
+R15747:15757 MyRewrite <> self_double thm

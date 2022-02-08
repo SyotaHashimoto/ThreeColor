@@ -1,0 +1,14 @@
+# Fdb version 3
+["dvipdf"] 1628265933 "ind_steps.dvi" "ind_steps.pdf" "ind_steps" 1628266054
+  "ind_steps.dvi" 1628265932 636 af411c86ae190f54c1c4358bdac76f37 "latex"
+  (generated)
+  "ind_steps.pdf"
+["latex"] 1628266054 "ind_steps.tex" "ind_steps.dvi" "ind_steps" 1628266054
+  "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1557092114 35484 cb1661360667bf4db662a8895053b554 ""
+  "/usr/local/texlive/2019/texmf-var/web2c/eptex/platex.fmt" 1585995541 4524394 fc10479e4830ae23218d5834ba1eef86 ""
+  "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
+  "ind_steps.aux" 0 -1 0 "latex"
+  "ind_steps.tex" 1628266052 47 b82aff373e4b51ed679fd9dc2fda0f9c ""
+  (generated)
+  "ind_steps.log"
+  "ind_steps.dvi"

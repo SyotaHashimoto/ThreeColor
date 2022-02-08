@@ -1,0 +1,72 @@
+% 以下の3行は変更しないこと．
+\documentclass[T]{compsoft}
+\taikai{2021}
+\pagestyle {empty}
+
+\usepackage [dvipdfmx] {graphicx}
+\usepackage [dvipdfmx] {color}
+
+% ここに，使用するパッケージを列挙する．
+\usepackage{amsthm,amsmath,amssymb}
+\usepackage{url}
+\usepackage{enumerate,mathdots} % 箇条書き・左下向きの3点リーダー
+\usepackage{tikz,here} % 図・コード
+\usetikzlibrary{intersections,calc,arrows.meta,positioning}
+
+% ユーザが定義したマクロなどはここに置く．
+% ただし学会誌のスタイルの再定義は原則として避けること．
+\usepackage{mymacro}
+\usepackage{mystyle}
+
+% コマンド一覧
+\def\Color{\textit{Color}}
+\def\mix{\textit{mix}}
+\def\red{\textit{red}}
+\def\blu{\textit{blu}}
+\def\yel{\textit{yel}}
+\def\mix{\textit{mix}}
+\def\colorYB{\textit{colorYB}}
+\def\colorBYB{\textit{colorBYB}}
+\def\colorYBBY{\textit{colorYBBY}}
+\def\cposYB{\textit{cposYB}}
+\def\cposBYB{\textit{cposBYB}}
+\def\cposYBBY{\textit{cposYBBY}}
+\def\lift{\textit{liftpaint}}
+\def\cpos{\textit{cpos}}
+\def\Cpos{\textit{Cpos}}
+\def\WCTF{\textit{Triangle}}
+\def\TF{\textit{TriangleF}}
+\def\WCT{\textit{WellColoredTriangle}}
+\def\WCTF{\textit{WellColoredTriangleF}}
+\def\mixCut{\textit{mixCut}}
+\def\AllRed{\textit{AllRed}}
+\def\falseColor{\textit{falseColor}}
+\def\Cexists{\textit{C\_exists}}
+\def\Cuniq{\textit{C\_uniq}}
+\def\Cmix{\textit{C\_mix}}
+\def\Cpaint{\textit{C\_paint}}
+\def\Fmix{\textit{Fmix}}
+\def\EvenA{\textit{EvenA}}
+\def\EvenB{\textit{EvenB}}
+\def\Even{\textit{Even}}
+\def\ShortOddA{\textit{ShortOddA}}
+\def\ShortOddB{\textit{ShortOddB}}
+\def\ShortOddC{\textit{ShortOddC}}
+\def\ShortOdd{\textit{ShortOdd}}
+\def\LongOddA{\textit{LongOddA}}
+\def\LongOddB{\textit{LongOddB}}
+\def\LongOddC{\textit{LongOddC}}
+\def\LongOdd{\textit{LongOdd}}
+
+\begin{document}
+
+\input{title}
+\input{1}
+\input{2}
+\input{3}
+\input{4}
+\input{5}
+\input{bib}
+%\input{authors}
+
+\end{document}
