@@ -1,32 +1,22 @@
-\definecolor{grayR}{rgb}{0.50, 0.50, 0.50}
-\definecolor{grayB}{rgb}{0.10, 0.10, 0.10}
-\definecolor{grayY}{rgb}{1.00, 1.00, 1.00}
-%\def\myRed{red}
-%\def\myBlue{blue}
-%\def\myYellow{yellow}
-\def\myRed{grayR}
-\def\myBlue{grayB}
-\def\myYellow{grayY}
-
 % even_steps
 \begin{tikzpicture}[scale=0.25]
   %3^(k'+1)段目
-  \filldraw[fill=\myRed,yshift={25*sqrt(3)*3}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexR{0}{0}
   %2 〜 3^(K'+1)-1段目
-  \node[xshift={-25*1},yshift={25*sqrt(3)*1.3}](0,0){$\ddots$};
-  \node[xshift={25*1},yshift={25*sqrt(3)*1.3}](0,0){$\iddots$};
+  \node[xshift={-25*1},yshift={25*sqrt(3)*0.6}](0,0){$\ddots$};
+  \node[xshift={25*1},yshift={25*sqrt(3)*0.6}](0,0){$\iddots$};
   %1段目
-  \filldraw[fill=\myRed,xshift={-25*7},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={-25*5},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \node[yshift={25*sqrt(3)*1.6}](0,0){$\cdots$};
-  \filldraw[fill=\myRed,xshift={25*5},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={25*7},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexR{-7}{3}
+  \myHexR{-5}{3}  
+  \node[yshift={25*sqrt(3)*0.9}](0,0){$\cdots$};
+  \myHexR{5}{3}
+  \myHexR{7}{3}
   %0段目
-  \filldraw[fill=\myYellow,xshift={-25*8},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={-25*6},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={-25*4},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \node[yshift={25*sqrt(3)*1.9}](0,0){$\cdots$};
-  \filldraw[fill=\myYellow,xshift={25*4},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={25*6},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={25*8},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexY{-8}{4}
+  \myHexB{-6}{4}
+  \myHexY{-4}{4}  
+  \node[yshift={25*sqrt(3)*1.2}](0,0){$\cdots$};
+  \myHexY{4}{4}
+  \myHexB{6}{4}
+  \myHexY{8}{4}  
 \end{tikzpicture}

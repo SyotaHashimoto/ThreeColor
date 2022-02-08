@@ -1,78 +1,68 @@
-\definecolor{grayR}{rgb}{0.50, 0.50, 0.50}
-\definecolor{grayB}{rgb}{0.10, 0.10, 0.10}
-\definecolor{grayY}{rgb}{1.00, 1.00, 1.00}
-%\def\myRed{red}
-%\def\myBlue{blue}
-%\def\myYellow{yellow}
-\def\myRed{grayR}
-\def\myBlue{grayB}
-\def\myYellow{grayY}
-
 % 9steps
 \begin{tikzpicture}[scale=0.25]
   %9段目
-  \filldraw[fill=\myRed] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexR{0}{0};
   %8段目
-  \filldraw[fill=\myYellow,xshift={-25},yshift={25*sqrt(3)}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={25},yshift={25*sqrt(3)}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexY{-1}{1}
+  \myHexB{1}{1}
   %7段目
-  \filldraw[fill=\myYellow,xshift={-25*2},yshift={25*sqrt(3)*2}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,yshift={25*sqrt(3)*2}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={25*2},yshift={25*sqrt(3)*2}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexY{-2}{2}
+  \myHexY{0}{2}
+  \myHexR{2}{2}
   %6段目
-  \filldraw[fill=\myBlue,xshift={-25*3},yshift={25*sqrt(3)*3}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={-25},yshift={25*sqrt(3)*3}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={25},yshift={25*sqrt(3)*3}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={25*3},yshift={25*sqrt(3)*3}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexB{-3}{3}
+  \myHexR{-1}{3}
+  \myHexB{1}{3}
+  \myHexY{3}{3}
   %5段目
-  \filldraw[fill=\myYellow,xshift={-25*4},yshift={25*sqrt(3)*4}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={-25*2},yshift={25*sqrt(3)*4}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,yshift={25*sqrt(3)*4}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={25*2},yshift={25*sqrt(3)*4}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={25*4},yshift={25*sqrt(3)*4}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexY{-4}{4}
+  \myHexR{-2}{4}
+  \myHexR{0}{4}
+  \myHexY{2}{4}
+  \myHexY{4}{4}
   %4段目
-  \filldraw[fill=\myRed,xshift={-25*5},yshift={25*sqrt(3)*5}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={-25*3},yshift={25*sqrt(3)*5}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={-25*1},yshift={25*sqrt(3)*5}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={25*1},yshift={25*sqrt(3)*5}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={25*3},yshift={25*sqrt(3)*5}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={25*5},yshift={25*sqrt(3)*5}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexR{-5}{5}
+  \myHexB{-3}{5}
+  \myHexY{-1}{5}
+  \myHexB{1}{5}
+  \myHexR{3}{5}
+  \myHexB{5}{5}
   %3段目
-  \filldraw[fill=\myRed,xshift={-25*6},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={-25*4},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={-25*2},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={25*2},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={25*4},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={25*6},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexR{-6}{6}
+  \myHexR{-4}{6}
+  \myHexY{-2}{6}
+  \myHexY{0}{6}
+  \myHexR{2}{6}
+  \myHexR{4}{6}
+  \myHexY{6}{6}
   %2段目
-  \filldraw[fill=\myBlue,xshift={-25*7},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={-25*5},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={-25*3},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={-25*1},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={25*1},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={25*3},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={25*5},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={25*7},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexB{-7}{7}
+  \myHexY{-5}{7}
+  \myHexB{-3}{7}
+  \myHexR{-1}{7}
+  \myHexB{1}{7}
+  \myHexY{3}{7}
+  \myHexB{5}{7}
+  \myHexR{7}{7}
   %1段目
-  \filldraw[fill=\myRed,xshift={-25*8},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={-25*6},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={-25*4},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={-25*2},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={25*2},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={25*4},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={25*6},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={25*8},yshift={25*sqrt(3)*8}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexR{-8}{8}
+  \myHexY{-6}{8}
+  \myHexY{-4}{8}
+  \myHexR{-2}{8}
+  \myHexR{0}{8}
+  \myHexY{2}{8}
+  \myHexY{4}{8}
+  \myHexR{6}{8}
+  \myHexR{8}{8}
   %0段目
-  \filldraw[fill=\myYellow,xshift={-25*9},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={-25*7},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={-25*5},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={-25*3},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={-25*1},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={25*1},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myRed,xshift={25*3},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={25*5},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myYellow,xshift={25*7},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
-  \filldraw[fill=\myBlue,xshift={25*9},yshift={25*sqrt(3)*9}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \myHexY{-9}{9}
+  \myHexB{-7}{9}
+  \myHexR{-5}{9}
+  \myHexB{-3}{9}
+  \myHexY{-1}{9}
+  \myHexB{1}{9}
+  \myHexR{3}{9}
+  \myHexB{5}{9}
+  \myHexY{7}{9}
+  \myHexB{9}{9}
 \end{tikzpicture}
