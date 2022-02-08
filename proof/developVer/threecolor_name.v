@@ -287,7 +287,7 @@ Proof.
     by rewrite -leq_subRL// inequality //.
 Qed.
 
-Lemma longdd_bottom : cpos x n = red.
+Lemma longodd_bottom : cpos x n = red.
 Proof.
   have shortodd_redline i : i <= n - (3 ^ k).*2 -> cpos (x + i) (3 ^ k).*2 = red.
   move=> i_range; rewrite -addnn.
