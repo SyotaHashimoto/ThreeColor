@@ -1,8 +1,12 @@
 \usepackage{xcolor}
 \usepackage{listings}
+\definecolor{ltblue}{rgb}{0.1,0.3,0.7}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{ltblue}{rgb}{0,0.4,0.4}
-\definecolor{dkviolet}{rgb}{0.3,0,0.5}
+\definecolor{dkred}{rgb}{0.8,0.1,0.2}
+% \definecolor{dkblue}{rgb}{0.4,0.5,0.8}
+\definecolor{dkviolet}{rgb}{0.3,0.2,0.5}
+\definecolor{dkpink}{rgb}{0.9,0.3,0.6}
+
 
 \lstdefinelanguage{Coq}{ 
     % Anything betweeen $ becomes LaTeX math mode
@@ -64,24 +68,26 @@
     % Style for (listings') identifiers
     identifierstyle={\ttfamily\color{black}},
     % Style for declaration keywords
-    keywordstyle=[1]{\ttfamily\color{dkviolet}},
+    keywordstyle=[1]{\ttfamily\color{ltblue}},
     % Style for gallina keywords
     keywordstyle=[2]{\ttfamily\color{dkgreen}},
     % Style for sorts keywords
-    keywordstyle=[3]{\ttfamily\color{ltblue}},
+    % keywordstyle=[3]{\ttfamily\color{dkblue}},
     % Style for tactics keywords
-    keywordstyle=[4]{\ttfamily\color{dkblue}},
+    keywordstyle=[4]{\ttfamily\color{dkviolet}},
     % Style for terminators keywords
     keywordstyle=[5]{\ttfamily\color{dkred}},
     %Style for iterators
-    %keywordstyle=[6]{\ttfamily\color{dkpink}},
+    keywordstyle=[6]{\ttfamily\color{dkpink}},
     % Style for strings
     stringstyle=\ttfamily,
     % Style for comments
     commentstyle={\ttfamily\color{dkgreen}},
     %moredelim=**[is][\ttfamily\color{red}]{/&}{&/},
     literate=
+    {forall}{{\color{dkgreen}{$\forall\;$}}}1
     {\\forall}{{\color{dkgreen}{$\forall\;$}}}1
+    {exists}{{\color{dkviolet}{$\exists\;$}}}1
     {\\exists}{{$\exists\;$}}1
     {<-}{{$\leftarrow\;$}}1
     {=>}{{$\Rightarrow\;$}}1
@@ -90,15 +96,34 @@
     %    {:>}{{\code{:>}\;}}1
     {->}{{$\rightarrow\;$}}1
     {<->}{{$\leftrightarrow\;$}}1
-    {<==}{{$\leq\;$}}1
-    {\#}{{$^\star$}}1 
+    {<=}{{$\leq\;$}}1
+    {\#}{{$^\star$}}1
     {\\o}{{$\circ\;$}}1 
     {\@}{{$\cdot$}}1 
     {\/\\}{{$\wedge\;$}}1
     {\\\/}{{$\vee\;$}}1
-    {++}{{\code{++}}}1
-    {~}{{\ }}1
+    {0}{{\ttfamily0}}1
+    {1}{{\ttfamily1}}1
+    {2}{{\ttfamily2}}1
+    {3}{{\ttfamily3}}1
+    {4}{{\ttfamily4}}1
+    {5}{{\ttfamily5}}1
+    {6}{{\ttfamily6}}1
+    {7}{{\ttfamily7}}1
+    {8}{{\ttfamily8}}1
+    {9}{{\ttfamily9}}1
+    {+}{{\ttfamily+}}1
+    {?}{{\ttfamily?}}1
+    {!}{{\ttfamily!}}1
+    {[}{{\ttfamily[}}1
+    {]}{{\ttfamily]}}1
+    {|}{{\ttfamily|}}1
+    {//}{{\ttfamily//\;}}1
+    {\&\&}{{\ttfamily\&\&\;}}1
+    {\~\~}{{\ttfamily\textasciitilde\textasciitilde\;}}1
     {\@\@}{{$@$}}1
+    {nat}{{$\N\;$}}1
+    {Prop}{{$\P\;$}}1
     {\\mapsto}{{$\mapsto\;$}}1
     {\\hline}{{\rule{\linewidth}{0.5pt}}}1
     %
