@@ -57,7 +57,8 @@ Section TCTP.
 (* Proof of the sufficient conditions ------------------------------------*)
   Lemma TCTP_suf (cpos : coloring) (k x y : nat) : next cpos -> Triangle cpos x y (3 ^ k).
   Proof.
-    move=> rule; elim: k x y => [|k IHk] x y; first by rewrite expn0 /Triangle !addn1; exact /rule.
+    move=> rule.
+    elim: k x y => [|k IHk] x y; first by rewrite expn0 /Triangle !addn1; exact /rule.
     rewrite /Triangle -(mixcut _ (cpos (x + 3 ^ k) y) (cpos (x + (3 ^ k).*2) y)).
     have <- : Triangle cpos x y (3 ^ k) by exact: IHk.
     rewrite -addnn addnA.
