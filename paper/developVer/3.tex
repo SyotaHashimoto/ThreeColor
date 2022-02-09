@@ -1,5 +1,5 @@
 % 三角形三色問題の証明の Coq の実装の準備
-\section{調和彩色三角形の形式化}
+\section{調和彩色三角形の形式化} \label{sec:dfn}
 % 3.1 定義
 % 関数 \mix・記号の説明
 % WellColoredTriangle x y n c0 c1 c2 :=
@@ -87,16 +87,16 @@
 
 \subsection{ここからは4節に含める}
 
+%% liftcoloring について ------------------------------
 
+%% また，この問題では最上段の色を指定すれば色塗り規則に従えばその下の色も帰納的に求められるので，最上段の色塗りを与える関数から全体の色塗りを与える関数へ拡張できる．これらの観察結果が今回のCoq上での形式化のアイデアである．
 
-また，この問題では最上段の色を指定すれば色塗り規則に従えばその下の色も帰納的に求められるので，最上段の色塗りを与える関数から全体の色塗りを与える関数へ拡張できる．これらの観察結果が今回のCoq上での形式化のアイデアである．
+%% \begin{lstlisting}[language=Coq]
+%%   Fixpoint liftcoloring (topcoloring : nat -> Color) x y :=
+%%     if y is y'.+1 then mix (liftcoloring topcoloring x y') (liftcoloring topcoloring x.+1 y') else topcoloring x.
+%% \end{lstlisting}
 
-\begin{lstlisting}[language=Coq]
-  Fixpoint liftcoloring (topcoloring : nat -> Color) x y :=
-    if y is y'.+1 then mix (liftcoloring topcoloring x y') (liftcoloring topcoloring x.+1 y') else topcoloring x.
-\end{lstlisting}
-
-
+%% ------------------------------
 
 %% まず，実装する際に用いた定義や関数，論理式について述べる．
 %% 以下，$f:A\to B\to C$のような型をもつ項と$a:A$と$b:B$について説明のために$f(a,b)$と記述することがあるが，
@@ -171,102 +171,102 @@
 %%     よって，三角形三色問題におけるマスの塗り方に従っていれば，彩色三角形の端点の$3$つのマス$(x,0), (x+n,0), (x,n)$に塗られている色は調和性を満たしていることを表している．
 
 % 3.2 証明のための準備
-\subsection{彩色条件} \label{sec:paint}
-ここからはマスに塗る色の塗り方を表す関数について述べていく．
-まず，最初に必要条件で用いる最上段のマスの塗り方を$3$つ紹介する．
-\begin{dfn}[$\coloringYB$]\rm
-  $\coloringYB$ $:$ $\N \to \N$ $\to$ $\Color$ を以下で定義する．
+%% \subsection{彩色条件} \label{sec:paint}
+%% ここからはマスに塗る色の塗り方を表す関数について述べていく．
+%% まず，最初に必要条件で用いる最上段のマスの塗り方を$3$つ紹介する．
+%% \begin{dfn}[$\coloringYB$]\rm
+%%   $\coloringYB$ $:$ $\N \to \N$ $\to$ $\Color$ を以下で定義する．
 
-  $\coloringYB (n,x) \eqDef$
-  \[
-  \begin{cases}
-    \yel & (x \leq n \land x\text{が奇数}) \\
-    \blu & (\text{otherwise})
-  \end{cases}
-  \]
-\end{dfn}
-$\coloringYB$は補題$\ref{lem:tri_nec}$の証明において
-$n$が偶数のときの最上段のマスの塗り方を表した関数である．
-左端のマスから偶数番目のときは$\yel$，奇数番目のときは$\blu$を塗る．
-すなわち，$\coloringYB$は最上段のマスを黄色と青で交互に塗る塗り方である．
-\begin{dfn}[$\coloringYBBY$]\rm
-  $\coloringYBBY :$ $\N \to \N$ $\to$ $\Color$ を以下で定義する．
+%%   $\coloringYB (n,x) \eqDef$
+%%   \[
+%%   \begin{cases}
+%%     \yel & (x \leq n \land x\text{が奇数}) \\
+%%     \blu & (\text{otherwise})
+%%   \end{cases}
+%%   \]
+%% \end{dfn}
+%% $\coloringYB$は補題$\ref{lem:tri_nec}$の証明において
+%% $n$が偶数のときの最上段のマスの塗り方を表した関数である．
+%% 左端のマスから偶数番目のときは$\yel$，奇数番目のときは$\blu$を塗る．
+%% すなわち，$\coloringYB$は最上段のマスを黄色と青で交互に塗る塗り方である．
+%% \begin{dfn}[$\coloringYBBY$]\rm
+%%   $\coloringYBBY :$ $\N \to \N$ $\to$ $\Color$ を以下で定義する．
 
-  $\coloringYBBY(n,x) \eqDef$
-  \[
-  \begin{cases}
-    \yel & (0 \leq x \leq n/2 \land x\text{が偶数}) \\
-    \yel & (n/2+1 \leq x \leq n \land x\text{が奇数}) \\
-    \blu & (\text{otherwise})
-  \end{cases}
-  \]
-  ただし，$n/2$は分数ではなく商を表している．
-\end{dfn}
-$\coloringYBBY$は補題$\ref{lem:tri_nec}$の証明において$n$が奇数 かつ $3^{k} < n \leq 2 \cdot 3^{k}$のときの最上段のマスの塗り方を表した関数である．
-$x \leq n/2$の範囲では左端のマスから偶数番目のときは$\yel$，奇数番目のときは$\blu$を塗り，$n/2+1 \leq x \leq n$の範囲では偶奇によって塗る色が入れ替わる．
-すなわち，$\coloringYBBY$は外側から内側に向かって対称的に最上段のマスを
-黄色と青で交互に塗る塗り方である．
-\begin{dfn}[$\coloringBYB$]\rm
-  $\coloringBYB$ $:$ $\N \to \N \to \N$ $\to$ $\Color$ を以下で定義する．
+%%   $\coloringYBBY(n,x) \eqDef$
+%%   \[
+%%   \begin{cases}
+%%     \yel & (0 \leq x \leq n/2 \land x\text{が偶数}) \\
+%%     \yel & (n/2+1 \leq x \leq n \land x\text{が奇数}) \\
+%%     \blu & (\text{otherwise})
+%%   \end{cases}
+%%   \]
+%%   ただし，$n/2$は分数ではなく商を表している．
+%% \end{dfn}
+%% $\coloringYBBY$は補題$\ref{lem:tri_nec}$の証明において$n$が奇数 かつ $3^{k} < n \leq 2 \cdot 3^{k}$のときの最上段のマスの塗り方を表した関数である．
+%% $x \leq n/2$の範囲では左端のマスから偶数番目のときは$\yel$，奇数番目のときは$\blu$を塗り，$n/2+1 \leq x \leq n$の範囲では偶奇によって塗る色が入れ替わる．
+%% すなわち，$\coloringYBBY$は外側から内側に向かって対称的に最上段のマスを
+%% 黄色と青で交互に塗る塗り方である．
+%% \begin{dfn}[$\coloringBYB$]\rm
+%%   $\coloringBYB$ $:$ $\N \to \N \to \N$ $\to$ $\Color$ を以下で定義する．
 
-  $\coloringBYB(n,k,x) \eqDef$
-  \[
-  \begin{cases}
-    \yel & (3^k \leq x \leq n-3^k) \\
-    \blu & (\text{otherwise})
-  \end{cases}
-  \]
-\end{dfn}
-  $\coloringBYB$は補題$\ref{lem:tri_nec}$の証明において$n$が奇数かつ$2 \cdot 3^{k'} + 1 \leq n < 3^{k'+1}$のときの最上段のマスの塗り方を表した関数である．
-  $\coloringBYB$は左端のマスから右の$3^k$番目のマスから$n-3^k$番目のマスまでの色を黄色で塗り，その他を青で塗っている．
-すなわち，両端から$3^k$マスを青で塗り，その間を黄色で塗る塗り方である．
+%%   $\coloringBYB(n,k,x) \eqDef$
+%%   \[
+%%   \begin{cases}
+%%     \yel & (3^k \leq x \leq n-3^k) \\
+%%     \blu & (\text{otherwise})
+%%   \end{cases}
+%%   \]
+%% \end{dfn}
+%%   $\coloringBYB$は補題$\ref{lem:tri_nec}$の証明において$n$が奇数かつ$2 \cdot 3^{k'} + 1 \leq n < 3^{k'+1}$のときの最上段のマスの塗り方を表した関数である．
+%%   $\coloringBYB$は左端のマスから右の$3^k$番目のマスから$n-3^k$番目のマスまでの色を黄色で塗り，その他を青で塗っている．
+%% すなわち，両端から$3^k$マスを青で塗り，その間を黄色で塗る塗り方である．
 
-ここまで，最上段の色の塗り方を関数で表すことができた．
-次は最上段のマスの塗り方 (関数) を
-全体の色を決める彩色関数に拡張する関数を定義する．
-\begin{dfn}[$\lift$]\rm
-  $\lift : (\N\to\Color) \to \N \to \N \to \Color$ を以下で再帰的関数として定義する．
+%% ここまで，最上段の色の塗り方を関数で表すことができた．
+%% 次は最上段のマスの塗り方 (関数) を
+%% 全体の色を決める彩色関数に拡張する関数を定義する．
+%% \begin{dfn}[$\lift$]\rm
+%%   $\lift : (\N\to\Color) \to \N \to \N \to \Color$ を以下で再帰的関数として定義する．
   
-  $\lift(\topcolor,x,y) \eqDef$
-  \[
-  \begin{cases}
-    \topcolor(x)
-    \hfill (y = 0 \text{のとき}) \\
-    \mix(\lift(\topcolor,x,y'),\lift(\topcolor,x+1,y')) & \\
-    \hfill (y = y'+1 \text{のとき})
-  \end{cases}
-  \]
-\end{dfn}
-演算 $\lift$ は最上段の色塗りを与える関数$\topcolor$から全体の色塗りを与える彩色関数へ拡張する．
-$y=0$ のときは最上段のマスは最上段の色塗り関数 $\topcolor$ に従って塗っていることを表している．
-また，$y=y'+1$の形をしているときは，最上段から$y'$段目にある隣り合う$2$マスの色に対して，$\mix$を適用することでその間にある$y$段目のマスの色が得られることを表している．
+%%   $\lift(\topcolor,x,y) \eqDef$
+%%   \[
+%%   \begin{cases}
+%%     \topcolor(x)
+%%     \hfill (y = 0 \text{のとき}) \\
+%%     \mix(\lift(\topcolor,x,y'),\lift(\topcolor,x+1,y')) & \\
+%%     \hfill (y = y'+1 \text{のとき})
+%%   \end{cases}
+%%   \]
+%% \end{dfn}
+%% 演算 $\lift$ は最上段の色塗りを与える関数$\topcolor$から全体の色塗りを与える彩色関数へ拡張する．
+%% $y=0$ のときは最上段のマスは最上段の色塗り関数 $\topcolor$ に従って塗っていることを表している．
+%% また，$y=y'+1$の形をしているときは，最上段から$y'$段目にある隣り合う$2$マスの色に対して，$\mix$を適用することでその間にある$y$段目のマスの色が得られることを表している．
 
-% 3.3 補題
-% mixcut, AllRed, rule
-次に証明を円滑に進めていくために用いた関数の性質に関する補題について述べる．
-%% \begin{lem}[$\mixcut$] \label{lem:mixcut}
-%%   $\forall c_0, c_1, c_2, c_3 \in \Color$に対して，
-%%   $\mix( \mix ( \mix(c_0,c_1) , \mix(c_1,c_2) ), \mix( \mix(c_1,c_2),$ $\mix(c_2,c_3) ) ) = \mix(c_0,c_3)$.
+%% % 3.3 補題
+%% % mixcut, AllRed, rule
+%% 次に証明を円滑に進めていくために用いた関数の性質に関する補題について述べる．
+%% %% \begin{lem}[$\mixcut$] \label{lem:mixcut}
+%% %%   $\forall c_0, c_1, c_2, c_3 \in \Color$に対して，
+%% %%   $\mix( \mix ( \mix(c_0,c_1) , \mix(c_1,c_2) ), \mix( \mix(c_1,c_2),$ $\mix(c_2,c_3) ) ) = \mix(c_0,c_3)$.
+%% %% \end{lem}
+%% %% $\mixcut$は演算$\mix$のもつ性質を論理式にしたものであり，$\mix$と$4$色を用いて表された色は$2$色のみを用いて書き換えることができることを表している．
+%% %% 証明する際には各色が$3$通りずつ取り得るので合計$3^4=81$通りの場合分けをおこなって$\mix$の計算をすれば証明することができる．
+%% %% 三角形三色問題の十分条件$(\text{補題}\ref{lem:tri_suf})$を証明する際に用いる補題である．
+
+%% \begin{lem}[$\AllRed$] \label{lem:allred}
+%%   $\forall \cpos : \N \to \N \to \Color$，$x, y, n\in \N$ に対して，
+%%   $\next(cpos)$ $\Imp$
+%%   $(\forall i. \in \N,$ $(0 \leq i \leq n$ $\Imp$ $\cpos(x+i,y) = \red))$ $\Imp$
+%%   $\cpos(x,y+n) = \red$.
 %% \end{lem}
-%% $\mixcut$は演算$\mix$のもつ性質を論理式にしたものであり，$\mix$と$4$色を用いて表された色は$2$色のみを用いて書き換えることができることを表している．
-%% 証明する際には各色が$3$通りずつ取り得るので合計$3^4=81$通りの場合分けをおこなって$\mix$の計算をすれば証明することができる．
-%% 三角形三色問題の十分条件$(\text{補題}\ref{lem:tri_suf})$を証明する際に用いる補題である．
+%% 三角形三色問題の必要条件$(\text{補題}\ref{thm:tri_nec})$の証明において，$n$がどの場合でもすべてのマスが赤に塗られている段があることに帰着させて矛盾を導いている．
+%% AllRedにより，すべてのマスが赤で塗られている段があるときは最下段のマスは赤であることがいえる．
 
-\begin{lem}[$\AllRed$] \label{lem:AllRed}
-  $\forall \cpos : \N \to \N \to \Color$，$x, y, n\in \N$ に対して，
-  $\next(cpos)$ $\Imp$
-  $(\forall i. \in \N,$ $(0 \leq i \leq n$ $\Imp$ $\cpos(x+i,y) = \red))$ $\Imp$
-  $\cpos(x,y+n) = \red$.
-\end{lem}
-三角形三色問題の必要条件$(\text{補題}\ref{lem:tri_nec})$の証明において，$n$がどの場合でもすべてのマスが赤に塗られている段があることに帰着させて矛盾を導いている．
-AllRedにより，すべてのマスが赤で塗られている段があるときは最下段のマスは赤であることがいえる．
-
-\begin{lem}[$\cposF$] \label{lem:paint}
-  $\forall \topcolor : \N \to \Color$ に対して，
-  $\next(\lift(\topcolor)).$
-\end{lem}
-$\cposF$は$\lift(\topcolor)$に従ってマスの色を塗ると，常に$\next$を満たすことを表している．
-すなわち，最上段のマスの塗り方を表す関数$\topcolor$が何であっても
-これを拡張した彩色関数$\lift(\topcolor)$は互いに隣接する任意の$3$マスは調和性を
-満たすこと表している．
+%% \begin{lem}[$\cposF$] \label{lem:paint}
+%%   $\forall \topcolor : \N \to \Color$ に対して，
+%%   $\next(\lift(\topcolor)).$
+%% \end{lem}
+%% $\cposF$は$\lift(\topcolor)$に従ってマスの色を塗ると，常に$\next$を満たすことを表している．
+%% すなわち，最上段のマスの塗り方を表す関数$\topcolor$が何であっても
+%% これを拡張した彩色関数$\lift(\topcolor)$は互いに隣接する任意の$3$マスは調和性を
+%% 満たすこと表している．
 

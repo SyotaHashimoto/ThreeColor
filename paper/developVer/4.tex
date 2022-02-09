@@ -1,46 +1,155 @@
 % 三角形三色問題の概要（数学）
 \section{Coqにおける三角形三色問題}
+本節においても前節と同様に三角形三色問題の Coq 上での
+形式化の方法について，実装したコードの一部を挙げながら述べる
+\footnote
+    {
+      前節と同様に，実際とは異なる改行をおこなったり，
+      {\tt{nat}}は$\N$，{\tt{forall}}は$\forall$，
+      {\tt{exists}}は$\exists$，{\tt{nat}}は$\leq$で表示している．
+    }．
 
+ここ以降の補題や定理を証明する際には，
+次のライブラリや\ref{sec:dfn}章で説明した定義や補題を必要に応じて用いる．
+\begin{lstlisting}[language=Coq]
+  From mathcomp Require Import
+    ssreflect ssrbool ssrnat ssrfun eqtype.
+\end{lstlisting}
+
+最初に，想定している三角形が彩色三角形であることを意味する論理式を準備する．
+この論理式を次のように定義する．
+\begin{lstlisting}[language=Coq]
+ Definition next cpos :=
+  forall x y, cpos x y.+1 = mix (cpos x y) (cpos x.+1 y).
+\end{lstlisting}
+{{\tt{next cpos}}は任意の隣接する同じ段の 2 マスの塗り方{\tt{cpos}}（彩色関数） で得られた$2$色を関数{{\tt{mix}} に与えると，
+それらのマスの間にある 1 段下のマスの色が得られることを表している．
+すなわち，任意の互いに隣接する 3 マスは調和性を満たしていることを意味する．
+  
 % 4.1 三角形三色問題の証明の Coq の実装(=>)
 \subsection{十分条件}
-補題\ref{lem:tri_suf}をCoqに実装するために論理式の形にしたものが次の定理\ref{thm:tri_suf}である．
-\begin{thm}[十分条件] \label{thm:tri_suf}
-  $\forall x, n \in \N, (\exists k \in \N, n = 3 ^ k \Imp \WCT(x,n))$.
-\end{thm}
-\begin{proof}
-  補題\ref{lem:tri_suf} (pp.\pageref{lem:tri_suf}) でも述べたように
-  次を証明することで，定理\ref{thm:tri_suf}を示す．\\
-  $\forall \cpos, \forall k, n, x, y \in \N,$ $n = 3^k \Imp (\next(\cpos) \Imp$ $\T(cpos,x,y)).$ \\
-  これを$k$に関する数学的帰納法を用いて証明する．
-  $k=0$のときは$n=1$となるので明らかに成立する．
-  次に$k$のとき成立すると仮定して$k+1$のときも成立することを示す．\\
-  $3^k$マスずつ離れたマスの色を図\ref{fig:suf_steps}のように表すことにする．
-  \begin{figure}[h]
-    \centering
-    \input{suf_steps}
-    \caption{彩色三角形（$n=3^{k+1}$のとき）}
-    \label{fig:suf_steps}
-  \end{figure}
-  このとき，$3$つの端点のマスの色が$c_0=cpos(x,y^k)$，$c_3=cpos(x,y)$，
-  $c_5=cpos(x+3^k,y^k)$である$3^k$段の彩色三角形が調和彩色三角形であることは，
-  帰納法の仮定からすぐに示せる．
-  同様にして，この彩色三角形以外にも$5$つの彩色三角形は調和彩色三角形である．
-  すなわち，次の$6$つが成立する．
-  \begin{itemize}
-    \item $\T(cpos,x,y,3^k)$
-    \item $\T(cpos,x+3^k,y,3^k)$
-    \item $\T(cpos,x+2\cdot3^k,y,3^k)$
-    \item $\T(cpos,x,y+3^k,3^k)$
-    \item $\T(cpos,x+3^k,y+3^k,3^k)$
-    \item $\T(cpos,x,y+2\cdot3^k,3^k)$
-  \end{itemize}
-  これらと補題\ref{lem:mixcut} $(\mixcut)$ を用いて式変形をすると，
-  \[
-  \cpos(x,y+3^k)=\mix(\cpos(x,y),\cpos(x+3^{k+1},y))
-  \]
-  が得られる．すなわち，$\T(cpos,x,y,3^{k+1})$．\\
-  したがって，$\T(cpos,x,y,n)$である．
-\end{proof}
+定理\ref{thm:tri_suf}で述べた論理同値の命題は以下のように記述される：
+\begin{lstlisting}[language=Coq]
+  Theorem TCTP_suf (cpos : coloring) (k x y : nat) :
+    next cpos -> Triangle cpos x y (3 ^ k).
+\end{lstlisting}
+この定理は，{\tt{next cpos}}を{\tt{rule}}として仮定してから，
+{\tt{k}}に関する数学的帰納法を用いて証明する．
+また，最上段の一番左端のマスの位置を $({\tt{x}},{\tt{y}})$ としている．
+
+{\tt{k}} = 0}}のときは{\tt{n = 1}}となるので，{\tt{rule}}よりすぐに成立することがわかる．
+\begin{lstlisting}[language=Coq]
+  Proof.
+    move=> rule.
+    elim: k x y => [|k IHk] x y;
+    first by rewrite expn0 /Triangle !addn1;
+    exact /rule.
+\end{lstlisting}
+
+次に，{\tt{k}}のときに成立すると仮定して，{\tt{k.+1}}のときも成立することを示す．
+\begin{lstlisting}[language=Coq]
+  cpos : coloring
+  rule : next cpos
+  k : nat
+  IHk : forall x y : nat, Triangle cpos x y (3 ^ k)
+  x, y : nat
+  ============================
+  Triangle cpos x y (3 ^ k.+1)
+\end{lstlisting}
+サブゴールの{\tt{Triangle}}の定義は等式であるから，
+この等式の右辺を変形していくことで証明を進めていく．
+まず，関数{\tt{mix}}のもつ性質である補題{\tt{mixcut}}を用いて変形する．
+\begin{lstlisting}[language=Coq]
+  rewrite /Triangle -(mixcut _ (cpos (x + 3 ^ k) y)
+    (cpos (x + (3 ^ k).*2) y)).
+\end{lstlisting}
+次に，定理\ref{thm:tri_suf}の図\ref{fig:ind_steps}を用いた証明で
+注目した6つの彩色三角形
+\begin{center}
+  \begin{tabular}{rl}
+    $\left(\C{0}{0},\C{3^{k}}{0},\C{0}{3^{k}}\right)$,
+    &
+    $\left(\C{3^{k}}{0},\C{2\cdot3^{k}}{0},\C{3^{k}}{3^{k}}\right)$,
+    \\
+    $\left(\C{2\cdot3^{k}}{0},\C{3^{k+1}}{0},\C{2\cdot3^{k}}{3^{k}}\right)$,
+    &
+    $\left(\C{0}{3^{k}},\C{3^{k}}{3^{k}},\C{0}{2\cdot3^{k}}\right)$,
+    \\
+    $\left(\C{3^{k}}{3^{k}},\C{2\cdot3^{k}}{3^{k}},\C{3^{k}}{2\cdot3^{k}}\right)$,
+    &
+    $\left(\C{0}{2\cdot3^{k}},\C{3^{k}}{2\cdot3^{k}},\C{0}{3^{k+1}}\right)$
+  \end{tabular}
+\end{center}
+が$3^{\tt{k}}$段の調和彩色三角形であることは，
+帰納法の仮定（{\tt{IHk}}）よりすぐに示すことができる．
+これら6つを用いてさらにサブゴールの右辺を変形する．
+\begin{lstlisting}[language=Coq]
+  have <- : Triangle cpos x y (3^k)
+  by exact: IHk.
+  have <- : Triangle cpos (x + 3^k) y (3^k)
+  by exact: IHk.
+  have <- : Triangle cpos x (y + 3^k) (3^k)
+  by exact: IHk.
+  have <- : Triangle cpos (x + (3^k).*2) y (3^k)
+  by exact: IHk.
+  have <- : Triangle cpos (x + 3^k) (y + 3^k) (3^k)
+  by exact: IHk. 
+  have <- : Triangle cpos x (y + (3^k).*2) (3 ^k)
+  by exact: IHk.
+\end{lstlisting}
+\begin{lstlisting}[language=Coq]
+  cpos : coloring
+  rule : next cpos
+  k : nat
+  IHk : forall x y : nat, Triangle cpos x y (3 ^ k)
+  x, y : nat
+  ============================
+  cpos x (y + 3 ^ k + (3 ^ k).*2) =
+  cpos x (y + (3 ^ k).*2 + 3 ^ k)
+\end{lstlisting}
+最後に，ライブラリにある補題で等式を変形をして証明を終える．
+\begin{lstlisting}[language=Coq]
+    by rewrite addnAC.
+  Qed.
+\end{lstlisting}
+%% 補題\ref{lem:tri_suf}をCoqに実装するために論理式の形にしたものが次の定理\ref{thm:tri_suf}である．
+%% \begin{thm}[十分条件] \label{thm:tri_suf}
+%%   $\forall x, n \in \N, (\exists k \in \N, n = 3 ^ k \Imp \WCT(x,n))$.
+%% \end{thm}
+%% \begin{proof}
+%%   定理\ref{thm:tri_suf}でも述べたようにこの定理と論理同値である
+%%   次を証明することで，定理\ref{thm:tri_suf}を示す．\\
+%%   $\forall \cpos, \forall k, n, x, y \in \N,$ $n = 3^k \Imp (\next(\cpos) \Imp$ $\T(cpos,x,y)).$ \\
+%%   これを$k$に関する数学的帰納法を用いて証明する．
+%%   $k=0$のときは$n=1$となるので明らかに成立する．
+%%   次に$k$のとき成立すると仮定して$k+1$のときも成立することを示す．\\
+%%   $3^k$マスずつ離れたマスの色を図\ref{fig:suf_steps}のように表すことにする．
+%%   \begin{figure}[h]
+%%     \centering
+%%     \input{suf_steps}
+%%     \caption{彩色三角形（$n=3^{k+1}$のとき）}
+%%     \label{fig:suf_steps}
+%%   \end{figure}
+%%   このとき，$3$つの端点のマスの色が$c_0=cpos(x,y^k)$，$c_3=cpos(x,y)$，
+%%   $c_5=cpos(x+3^k,y^k)$である$3^k$段の彩色三角形が調和彩色三角形であることは，
+%%   帰納法の仮定からすぐに示せる．
+%%   同様にして，この彩色三角形以外にも$5$つの彩色三角形は調和彩色三角形である．
+%%   すなわち，次の$6$つが成立する．
+%%   \begin{itemize}
+%%     \item $\T(cpos,x,y,3^k)$
+%%     \item $\T(cpos,x+3^k,y,3^k)$
+%%     \item $\T(cpos,x+2\cdot3^k,y,3^k)$
+%%     \item $\T(cpos,x,y+3^k,3^k)$
+%%     \item $\T(cpos,x+3^k,y+3^k,3^k)$
+%%     \item $\T(cpos,x,y+2\cdot3^k,3^k)$
+%%   \end{itemize}
+%%   これらと補題\ref{lem:mixcut} $(\mixcut)$ を用いて式変形をすると，
+%%   \[
+%%   \cpos(x,y+3^k)=\mix(\cpos(x,y),\cpos(x+3^{k+1},y))
+%%   \]
+%%   が得られる．すなわち，$\T(cpos,x,y,3^{k+1})$．\\
+%%   したがって，$\T(cpos,x,y,n)$である．
+%% \end{proof}
 
 % 4.2 三角形三色問題の証明の Coq の実装(<=)
 % n が偶数の場合，n が奇数で短い場合，n が奇数で長い場合
@@ -50,7 +159,7 @@
 
 \subsection{必要条件} \label{sec:nec}
 補題\ref{lem:tri_nec}をCoqに実装するために論理式の形にしたものが次の定理\ref{thm:tri_nec}である．
-\begin{thm}[必要条件] \label{thm:tri_nec}
+\begin{thm}[必要条件] %% \label{thm:tri_nec}
   $\forall x, n \in \N, n > 0 \Imp$ \\
   $(\WCT(x,n) \Imp \exists k \in , n = 3^k)$ 
 \end{thm}
