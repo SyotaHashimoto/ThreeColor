@@ -1,21 +1,21 @@
 % 三角形三色問題の証明の Coq の実装の準備
-\section{Coq 上で実装するための準備}
+\section{調和彩色三角形の形式化}
 % 3.1 定義
 % 関数 \mix・記号の説明
 % WellColoredTriangle x y n c0 c1 c2 :=
 % Cpos x y c0 /\ Cpos (x+n) y c1 /\ Cpos x (y+n) c2 -> c2 = \mix c0 c1
-\subsection{調和彩色三角形の形式化}
+
 本節では三角形三色問題の Coq 上での形式化の方法について，実装したコードの一部を挙げながら述べる
 \footnote{紙面の都合上，実際とは異なる場所で改行されることがある．また，挙げているコードは可読性のため，{\tt forall} は$\forall$，{\tt exists} は$\exists$，{\tt nat} は$\mathbb{N}$，{\tt <=} は$\leq$で表示している．}．
 使用する色の型 {\tt Color} の定義を以下で与える．
 \begin{lstlisting}[language=Coq]
-  Inductive Color : Set := red | yel | blu.
+ Inductive Color : Set := red | yel | blu.
 \end{lstlisting}
 
 次に調和性を満たす3マスの色について，1つのマスの色は残りの2マスの色から決定される性質がある．
 この性質を次の関数 {\tt mix} で表現する．
 \begin{lstlisting}[language=Coq]
-  Definition mix c0 c1 :=
+ Definition mix c0 c1 :=
   match c0, c1 with
   | red, red => red
   | red, yel => blu
@@ -26,16 +26,16 @@
   | blu, red => yel
   | blu, yel => red
   | blu, blu => blu
-  end.
+ end.
 \end{lstlisting}
 
 前節での必要条件の証明 (定理~\ref{thm:tri_suf}) では，
 {\tt mix}に関する性質を用いることで主張を示していた．
 この性質は次の補題として記述される：
 \begin{lstlisting}[language=Coq]
-  Lemma mixcut c0 c1 c2 c3:
+ Lemma mixcut c0 c1 c2 c3:
   mix (mix (mix c0 c1) (mix c1 c2)) (mix (mix c1 c2) (mix c2 c3)) = mix c0 c3.
-Proof. by move: c0 c1 c2 c3 => [] [] [] []. Qed.
+ Proof. by move: c0 c1 c2 c3 => [] [] [] []. Qed.
 \end{lstlisting}
 前節の脚注で述べた通り，この補題は (それぞれの場合は自明なものの) 81通りの場合分けを考慮する必要があるが，
 最後のたった1行の記述で Coq は全ての場合分けの処理を完了している．
@@ -44,27 +44,52 @@ Proof. by move: c0 c1 c2 c3 => [] [] [] []. Qed.
 このような問題を形式化するには，暗黙の仮定を洗い出して観察し，適切な形式化の方法を選択する必要がある．
 今回は「各場所には必ず1色のみが塗られること」が仮定されている．
 そのため，彩色三角形全体の色塗りはマスの位置からそのマスの色を返す{\bf 彩色関数}として形式化する．
+また，簡単のためにマスは上下左右が決まった平面全体に敷き詰められているとし，
+考えている逆三角形はその一部であると思うことにする．
 \begin{lstlisting}[language=Coq]
-  Definition coloring := nat -> nat -> Color.
-  Definition next cpos := forall x y,
-       cpos x y.+1 = mix (cpos x y) (cpos x.+1 y).
+ Definition coloring := nat -> nat -> Color.
 \end{lstlisting}
 上記の {\tt coloring} は彩色関数の型である．
-以下，{\tt cpos} は彩色関数とし，{\tt cpos x y} は「左から{\tt x}段目，上から{\tt y}段目の色」を意味する．
-また，{\tt next cpos}は「隣接するどの3つのマスも{\tt cpos}によって調和性を満たすように塗られている」を意味する．
+以下，{\tt cpos} は彩色関数とし，{\tt cpos x y} は「位置$(\xx,\yy)$のマスの色」を意味する．
+ただし，この「位置」は各マスに対して決められているものとし，
+位置$(m,n)$のマスから見て左下，右下に隣接するマスの位置はそれぞれ$(m-1,n+1)$と$(m,n+1)$であるとする．
 
-次に彩色三角形の性質の定義を以下で与える：
+次に彩色三角形を形式化するために
 \begin{lstlisting}[language=Coq]
-  Definition Triangle cpos x y n :=
-    cpos x (y + n) = mix (cpos x y) (cpos (x + n) y).
+ Definition next cpos := forall x y,
+       cpos x y.+1 = mix (cpos x y) (cpos x.+1 y).
 \end{lstlisting}
-この {\tt Triangle cpos x y n} は
+を定義する．
+これは「隣接するどの3つのマスも{\tt cpos}によって調和性を満たすように塗られている」を意味する．
+すなわち，この条件の下の任意の逆三角形は彩色三角形である．
 
-
+1つの逆三角形は3つの自然数$\xx$，$\yy$，$\nn$で与える．
+これらは位置$(\xx,\yy)$，$(\xx+\nn,\yy)$，$(\xx,\yy+\nn)$の3つのマスを頂点とする逆三角形を意味する．
+ここまでの準備の下で「$n$段の逆三角形は常に調和彩色三角形」を以下により形式化する：
 \begin{lstlisting}[language=Coq]
-  Definition WellColoredTriangle x n := forall cpos,
-    next cpos -> Triangle cpos x 0 n.
+ Definition Triangle cpos x y n :=
+   cpos x (y + n) = mix (cpos x y) (cpos (x + n) y).
+ Definition WellColoredTriangle x n := forall cpos,
+   next cpos -> Triangle cpos x 0 n.
 \end{lstlisting}
+最初の {\tt Triangle cpos x y n} は補助的な論理式であり，
+「$\xx$，$\yy$，$\nn$で与えられる逆三角形の3つの頂点は{\tt cpos}による色塗りで調和性を満たす」
+を意味する (この三角形自身が彩色三角形とは保証されない)．
+次の{\tt WellColoredTriangle x n} は
+「$(\xx,\yy)$を左上の頂点とする$\nn$段の逆三角形は常に調和彩色三角形である」を意味する．
+
+
+
+
+
+
+
+
+\subsection{ここからは4節に含める}
+
+
+
+また，この問題では最上段の色を指定すれば色塗り規則に従えばその下の色も帰納的に求められるので，最上段の色塗りを与える関数から全体の色塗りを与える関数へ拡張できる．これらの観察結果が今回のCoq上での形式化のアイデアである．
 
 \begin{lstlisting}[language=Coq]
   Fixpoint liftcoloring (topcoloring : nat -> Color) x y :=
@@ -72,79 +97,78 @@ Proof. by move: c0 c1 c2 c3 => [] [] [] []. Qed.
 \end{lstlisting}
 
 
-また，この問題では最上段の色を指定すれば色塗り規則に従えばその下の色も帰納的に求められるので，最上段の色塗りを与える関数から全体の色塗りを与える関数へ拡張できる．これらの観察結果が今回のCoq上での形式化のアイデアである．
 
-まず，実装する際に用いた定義や関数，論理式について述べる．
-以下，$f:A\to B\to C$のような型をもつ項と$a:A$と$b:B$について説明のために$f(a,b)$と記述することがあるが，
-これは$f a b$と同義である．
-\begin{dfn}[$\Color$]\rm
-  マスに塗る色の集合を次のように定義する．
-  \[
-  \Color \eqDef \{\red, \yel, \blu\}.
-  \]
-  このとき，$\red$は{\rm{red}}，$\yel$は{\rm{yellow}}，$\blu$は{\rm{blue}}を表している．
-  %% 以降，$\red$を$r$，$\yel$は$y$，$\blu$は$b$として略記することもある．
-\end{dfn}
-\begin{dfn}[$\mix$]\rm
-  $\mix$ $:$ $\Color \to \Color \to \Color$ を以下で定義する．
-  \[
-  \begin{tabular}{cc}
-    $(\red,\red) \Pto \red,$ & $(\red,\yel) \Pto \blu,$ \\
-    $(\red,\blu) \Pto \yel,$ & $(\yel,\red) \Pto \blu,$ \\
-    $(\yel,\yel) \Pto \yel,$ & $(\yel,\blu) \Pto \red,$ \\
-    $(\blu,\red) \Pto \yel,$ & $(\blu,\yel) \Pto \red,$ \\
-    $(\blu,\blu) \Pto \blu.$ \\
-  \end{tabular}
-  \]
-\end{dfn}
-演算 $\mix$ は塗り方の規則を再現するための関数の$1$つである．
-引数となる$2$色が同じ場合は同じ色を返し，異なる場合は$2$色とも異なる第三の色を返す関数である．
-\begin{dfn}[彩色関数]\rm
-  マスの場所からそのマスの色を返す型$\N \to \N \to \Color$の関数を{\em 彩色関数}と呼ぶ．
-  本稿では$\cpos$を彩色関数を意味する変数として用いることにし，$\cpos$の型を明記せずに省略することもある．
-  $\cpos(x,y)$は左から $x$ 番目，上から $y$ 段目のマスの色を意味する．
-\end{dfn}
-\begin{exm}
-  図$\ref{fig:nine_steps}$を与える色関数$\cpos$は，逆三角形の$3$つの端点のマスに関して
-  次を満たす：
-  \begin{itemize}
-    \item $\cpos(0,0) = \yel,$
-    \item $\cpos(9,0) = \blu,$
-    \item $\cpos(0,9) = \red.$
-  \end{itemize}
-\end{exm}
-\begin{dfn}[$\next$]\rm
-  $\cpos : \N \to \N \to \Color$ に対して，
-  $\next(\cpos)$を次のように定義する．
+%% まず，実装する際に用いた定義や関数，論理式について述べる．
+%% 以下，$f:A\to B\to C$のような型をもつ項と$a:A$と$b:B$について説明のために$f(a,b)$と記述することがあるが，
+%% これは$f a b$と同義である．
+%% \begin{dfn}[$\Color$]\rm
+%%   マスに塗る色の集合を次のように定義する．
+%%   \[
+%%   \Color \eqDef \{\red, \yel, \blu\}.
+%%   \]
+%%   このとき，$\red$は{\rm{red}}，$\yel$は{\rm{yellow}}，$\blu$は{\rm{blue}}を表している．
+%%   %% 以降，$\red$を$r$，$\yel$は$y$，$\blu$は$b$として略記することもある．
+%% \end{dfn}
+%% \begin{dfn}[$\mix$]\rm
+%%   $\mix$ $:$ $\Color \to \Color \to \Color$ を以下で定義する．
+%%   \[
+%%   \begin{tabular}{cc}
+%%     $(\red,\red) \Pto \red,$ & $(\red,\yel) \Pto \blu,$ \\
+%%     $(\red,\blu) \Pto \yel,$ & $(\yel,\red) \Pto \blu,$ \\
+%%     $(\yel,\yel) \Pto \yel,$ & $(\yel,\blu) \Pto \red,$ \\
+%%     $(\blu,\red) \Pto \yel,$ & $(\blu,\yel) \Pto \red,$ \\
+%%     $(\blu,\blu) \Pto \blu.$ \\
+%%   \end{tabular}
+%%   \]
+%% \end{dfn}
+%% 演算 $\mix$ は塗り方の規則を再現するための関数の$1$つである．
+%% 引数となる$2$色が同じ場合は同じ色を返し，異なる場合は$2$色とも異なる第三の色を返す関数である．
+%% \begin{dfn}[彩色関数]\rm
+%%   マスの場所からそのマスの色を返す型$\N \to \N \to \Color$の関数を{\em 彩色関数}と呼ぶ．
+%%   本稿では$\cpos$を彩色関数を意味する変数として用いることにし，$\cpos$の型を明記せずに省略することもある．
+%%   $\cpos(x,y)$は左から $x$ 番目，上から $y$ 段目のマスの色を意味する．
+%% \end{dfn}
+%% \begin{exm}
+%%   図$\ref{fig:nine_steps}$を与える色関数$\cpos$は，逆三角形の$3$つの端点のマスに関して
+%%   次を満たす：
+%%   \begin{itemize}
+%%     \item $\cpos(0,0) = \yel,$
+%%     \item $\cpos(9,0) = \blu,$
+%%     \item $\cpos(0,9) = \red.$
+%%   \end{itemize}
+%% \end{exm}
+%% \begin{dfn}[$\next$]\rm
+%%   $\cpos : \N \to \N \to \Color$ に対して，
+%%   $\next(\cpos)$を次のように定義する．
 
-  $\next(\cpos)$ $\iffDef$
-  $\forall$ $x,y \in\N,$
-  $(\cpos(x,y+1)$ $=$ $\mix$ $(\cpos(x,y),$ $\cpos(x+1,y)).$
-\end{dfn}
-$\next$は互いに隣接する任意の$3$つのマスは調和性を満たしていることを論理式に書き直したものである．
-すなわち，逆三角形に塗られている色はランダムに塗られているわけではなく，
-$x,y$ を任意にすることで規則に従ってマスの色が塗られた彩色三角形で
-あることを表している．
+%%   $\next(\cpos)$ $\iffDef$
+%%   $\forall$ $x,y \in\N,$
+%%   $(\cpos(x,y+1)$ $=$ $\mix$ $(\cpos(x,y),$ $\cpos(x+1,y)).$
+%% \end{dfn}
+%% $\next$は互いに隣接する任意の$3$つのマスは調和性を満たしていることを論理式に書き直したものである．
+%% すなわち，逆三角形に塗られている色はランダムに塗られているわけではなく，
+%% $x,y$ を任意にすることで規則に従ってマスの色が塗られた彩色三角形で
+%% あることを表している．
 
-\begin{dfn}[$\WCT$]\rm
-  $x, n \in \N$ に対して，
-  $\WCT(x, n)$を次のように定義する：
+%% \begin{dfn}[$\WCT$]\rm
+%%   $x, n \in \N$ に対して，
+%%   $\WCT(x, n)$を次のように定義する：
   
-  $\WCT(x, n)$ $\iffDef$ $(\forall \cpos: \N \to \N \to \Color, (\next(\cpos) \to \T(\cpos,x,0,n))$. \\
-  ただし，$\T(\cpos,x,y,n)$ は以下で定義されている．
+%%   $\WCT(x, n)$ $\iffDef$ $(\forall \cpos: \N \to \N \to \Color, (\next(\cpos) \to \T(\cpos,x,0,n))$. \\
+%%   ただし，$\T(\cpos,x,y,n)$ は以下で定義されている．
 
-  $\T(\cpos,x,y,n) \iffDef
-  \cpos(x,y+n) = \mix(cpos(x,y),cpos(x+n,y))$.
-\end{dfn}
-$\WCT$は定義$\ref{dfn:wc_tri}$で述べた$n$段の調和彩色三角形の定義を最上段の色の塗り方の関数$\cpos$を用いて論理式に書き直したものである．
-$x$は逆三角形の左端のマス$(x,0)$
-\footnote
-    {
-      左から$x$番目，上から$y$段目のマスを座標のように $(x,y)$ と表している．
-      すなわち，$(x,0)$は左から$x$番目，上から$0$段目 (最上段) のマスを表している．
-    }
-    を基準として定めるために用いており，$n$は逆三角形の一辺の長さを表している．
-    よって，三角形三色問題におけるマスの塗り方に従っていれば，彩色三角形の端点の$3$つのマス$(x,0), (x+n,0), (x,n)$に塗られている色は調和性を満たしていることを表している．
+%%   $\T(\cpos,x,y,n) \iffDef
+%%   \cpos(x,y+n) = \mix(cpos(x,y),cpos(x+n,y))$.
+%% \end{dfn}
+%% $\WCT$は定義$\ref{dfn:wc_tri}$で述べた$n$段の調和彩色三角形の定義を最上段の色の塗り方の関数$\cpos$を用いて論理式に書き直したものである．
+%% $x$は逆三角形の左端のマス$(x,0)$
+%% \footnote
+%%     {
+%%       左から$x$番目，上から$y$段目のマスを座標のように $(x,y)$ と表している．
+%%       すなわち，$(x,0)$は左から$x$番目，上から$0$段目 (最上段) のマスを表している．
+%%     }
+%%     を基準として定めるために用いており，$n$は逆三角形の一辺の長さを表している．
+%%     よって，三角形三色問題におけるマスの塗り方に従っていれば，彩色三角形の端点の$3$つのマス$(x,0), (x+n,0), (x,n)$に塗られている色は調和性を満たしていることを表している．
 
 % 3.2 証明のための準備
 \subsection{彩色条件} \label{sec:paint}
@@ -219,15 +243,14 @@ $y=0$ のときは最上段のマスは最上段の色塗り関数 $\topcolor$ �
 
 % 3.3 補題
 % mixcut, AllRed, rule
-\subsection{関数の性質} \label{sec:lem}
 次に証明を円滑に進めていくために用いた関数の性質に関する補題について述べる．
-\begin{lem}[$\mixcut$] \label{lem:mixcut}
-  $\forall c_0, c_1, c_2, c_3 \in \Color$に対して，
-  $\mix( \mix ( \mix(c_0,c_1) , \mix(c_1,c_2) ), \mix( \mix(c_1,c_2),$ $\mix(c_2,c_3) ) ) = \mix(c_0,c_3)$.
-\end{lem}
-$\mixcut$は演算$\mix$のもつ性質を論理式にしたものであり，$\mix$と$4$色を用いて表された色は$2$色のみを用いて書き換えることができることを表している．
-証明する際には各色が$3$通りずつ取り得るので合計$3^4=81$通りの場合分けをおこなって$\mix$の計算をすれば証明することができる．
-三角形三色問題の十分条件$(\text{補題}\ref{lem:tri_suf})$を証明する際に用いる補題である．
+%% \begin{lem}[$\mixcut$] \label{lem:mixcut}
+%%   $\forall c_0, c_1, c_2, c_3 \in \Color$に対して，
+%%   $\mix( \mix ( \mix(c_0,c_1) , \mix(c_1,c_2) ), \mix( \mix(c_1,c_2),$ $\mix(c_2,c_3) ) ) = \mix(c_0,c_3)$.
+%% \end{lem}
+%% $\mixcut$は演算$\mix$のもつ性質を論理式にしたものであり，$\mix$と$4$色を用いて表された色は$2$色のみを用いて書き換えることができることを表している．
+%% 証明する際には各色が$3$通りずつ取り得るので合計$3^4=81$通りの場合分けをおこなって$\mix$の計算をすれば証明することができる．
+%% 三角形三色問題の十分条件$(\text{補題}\ref{lem:tri_suf})$を証明する際に用いる補題である．
 
 \begin{lem}[$\AllRed$] \label{lem:AllRed}
   $\forall \cpos : \N \to \N \to \Color$，$x, y, n\in \N$ に対して，
