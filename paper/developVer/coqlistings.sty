@@ -8,7 +8,8 @@
 \definecolor{dkpink}{rgb}{0.9,0.3,0.6}
 
 
-\lstdefinelanguage{Coq}{ 
+\lstdefinelanguage{Coq}{
+    backgroundcolor={\color[gray]{.95}},
     % Anything betweeen $ becomes LaTeX math mode
     mathescape=true,
     % Comments may or not include Latex commands
@@ -58,7 +59,7 @@
     % Case sensitivity
     sensitive=true,
     % Automatic breaking of long lines
-    breaklines=false,
+    breaklines=true,
     % Default style fors listings
     basicstyle=\small,
     % Position of captions is bottom
