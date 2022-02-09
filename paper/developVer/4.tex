@@ -107,7 +107,8 @@
   cpos x (y + 3 ^ k + (3 ^ k).*2) =
   cpos x (y + (3 ^ k).*2 + 3 ^ k)
 \end{lstlisting}
-最後に，ライブラリにある補題で等式を変形をして証明を終える．
+最後に，ライブラリ{\tt{ssrnat}}にある補題{\tt{addnAC}}で
+等式を変形をして証明を終える．
 \begin{lstlisting}[language=Coq]
     by rewrite addnAC.
   Qed.
