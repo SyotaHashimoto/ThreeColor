@@ -1,11 +1,78 @@
 % 三角形三色問題の証明の Coq の実装の準備
-\section{ Coq に実装するための準備}
+\section{Coq 上で実装するための準備}
 % 3.1 定義
 % 関数 \mix・記号の説明
 % WellColoredTriangle x y n c0 c1 c2 :=
 % Cpos x y c0 /\ Cpos (x+n) y c1 /\ Cpos x (y+n) c2 -> c2 = \mix c0 c1
-\subsection{調和彩色三角形の定義}
-三角形三色問題のような幾何的な直観に基づく問題や前節で述べたような証明をCoqで形式化するには，問題の暗黙の前提や色塗り規則などを観察して適切な形式化の方法を選ぶ必要がある．この問題では各マスにはただ一色だけ塗られることが暗黙の前提としてあるため，マスの場所からそのマスの色を返す関数を用いることにする．また，この問題では最上段の色を指定すれば色塗り規則に従えばその下の色も帰納的に求められるので，最上段の色塗りを与える関数から全体の色塗りを与える関数へ拡張できる．これらの観察結果が今回のCoq上での形式化のアイデアである．
+\subsection{調和彩色三角形の形式化}
+本節では三角形三色問題の Coq 上での形式化の方法について，実装したコードの一部を挙げながら述べる
+\footnote{紙面の都合上，実際とは異なる場所で改行されることがある．また，挙げているコードは可読性のため，{\tt forall} は$\forall$，{\tt exists} は$\exists$，{\tt nat} は$\mathbb{N}$，{\tt <=} は$\leq$で表示している．}．
+使用する色の型 {\tt Color} の定義を以下で与える．
+\begin{lstlisting}[language=Coq]
+  Inductive Color : Set := red | yel | blu.
+\end{lstlisting}
+
+次に調和性を満たす3マスの色について，1つのマスの色は残りの2マスの色から決定される性質がある．
+この性質を次の関数 {\tt mix} で表現する．
+\begin{lstlisting}[language=Coq]
+  Definition mix c0 c1 :=
+  match c0, c1 with
+  | red, red => red
+  | red, yel => blu
+  | red, blu => yel
+  | yel, red => blu
+  | yel, yel => yel
+  | yel, blu => red
+  | blu, red => yel
+  | blu, yel => red
+  | blu, blu => blu
+  end.
+\end{lstlisting}
+
+前節での必要条件の証明 (定理~\ref{thm:tri_suf}) では，
+{\tt mix}に関する性質を用いることで主張を示していた．
+この性質は次の補題として記述される：
+\begin{lstlisting}[language=Coq]
+  Lemma mixcut c0 c1 c2 c3:
+  mix (mix (mix c0 c1) (mix c1 c2)) (mix (mix c1 c2) (mix c2 c3)) = mix c0 c3.
+Proof. by move: c0 c1 c2 c3 => [] [] [] []. Qed.
+\end{lstlisting}
+前節の脚注で述べた通り，この補題は (それぞれの場合は自明なものの) 81通りの場合分けを考慮する必要があるが，
+最後のたった1行の記述で Coq は全ての場合分けの処理を完了している．
+
+一般論として，幾何的な状況に関する問題はいくつかの暗黙の仮定が置かれていることが多い．
+このような問題を形式化するには，暗黙の仮定を洗い出して観察し，適切な形式化の方法を選択する必要がある．
+今回は「各場所には必ず1色のみが塗られること」が仮定されている．
+そのため，彩色三角形全体の色塗りはマスの位置からそのマスの色を返す{\bf 彩色関数}として形式化する．
+\begin{lstlisting}[language=Coq]
+  Definition coloring := nat -> nat -> Color.
+  Definition next cpos := forall x y,
+       cpos x y.+1 = mix (cpos x y) (cpos x.+1 y).
+\end{lstlisting}
+上記の {\tt coloring} は彩色関数の型である．
+以下，{\tt cpos} は彩色関数とし，{\tt cpos x y} は「左から{\tt x}段目，上から{\tt y}段目の色」を意味する．
+また，{\tt next cpos}は「隣接するどの3つのマスも{\tt cpos}によって調和性を満たすように塗られている」を意味する．
+
+次に彩色三角形の性質の定義を以下で与える：
+\begin{lstlisting}[language=Coq]
+  Definition Triangle cpos x y n :=
+    cpos x (y + n) = mix (cpos x y) (cpos (x + n) y).
+\end{lstlisting}
+この {\tt Triangle cpos x y n} は
+
+
+\begin{lstlisting}[language=Coq]
+  Definition WellColoredTriangle x n := forall cpos,
+    next cpos -> Triangle cpos x 0 n.
+\end{lstlisting}
+
+\begin{lstlisting}[language=Coq]
+  Fixpoint liftcoloring (topcoloring : nat -> Color) x y :=
+    if y is y'.+1 then mix (liftcoloring topcoloring x y') (liftcoloring topcoloring x.+1 y') else topcoloring x.
+\end{lstlisting}
+
+
+また，この問題では最上段の色を指定すれば色塗り規則に従えばその下の色も帰納的に求められるので，最上段の色塗りを与える関数から全体の色塗りを与える関数へ拡張できる．これらの観察結果が今回のCoq上での形式化のアイデアである．
 
 まず，実装する際に用いた定義や関数，論理式について述べる．
 以下，$f:A\to B\to C$のような型をもつ項と$a:A$と$b:B$について説明のために$f(a,b)$と記述することがあるが，
