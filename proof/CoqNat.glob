@@ -1,0 +1,107 @@
+DIGEST 2ab520fec282d2f7ac8aa2de8f093ff7
+FCoqNat
+R34:42 mathcomp.ssreflect.ssreflect <> <> lib
+R44:50 mathcomp.ssreflect.ssrbool <> <> lib
+R52:57 mathcomp.ssreflect.ssrnat <> <> lib
+R59:64 mathcomp.ssreflect.ssrfun <> <> lib
+R66:71 mathcomp.ssreflect.eqtype <> <> lib
+R89:92 Coq.Arith.Even <> <> lib
+R94:105 Coq.Arith.Le <> <> lib
+R107:118 Coq.Arith.Lt <> <> lib
+R120:133 Coq.Arith.Plus <> <> lib
+R151:153 Coq.micromega.Lia <> <> lib
+R180:183 mathcomp.ssreflect.ssrnat <> expn def
+not 166:166 <> :::x_'.^'_x
+prf 241:249 <> coqnat_lt
+R265:267 Coq.Init.Datatypes <> nat ind
+R275:279 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R271:273 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<'_x not
+R270:270 CoqNat <> m var
+R274:274 CoqNat <> n var
+R282:284 mathcomp.ssreflect.ssrnat <> ::coq_nat_scope:x_'<'_x not
+R281:281 CoqNat <> m var
+R285:285 CoqNat <> n var
+R335:337 mathcomp.ssreflect.ssrnat <> ltP thm
+R335:337 mathcomp.ssreflect.ssrnat <> ltP thm
+R348:350 mathcomp.ssreflect.ssrnat <> ltP thm
+prf 372:380 <> coqnat_gt
+R396:398 Coq.Init.Datatypes <> nat ind
+R406:410 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R402:404 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'>'_x not
+R405:405 CoqNat <> n var
+R401:401 CoqNat <> m var
+R413:415 mathcomp.ssreflect.ssrnat <> ::coq_nat_scope:x_'>'_x not
+R412:412 CoqNat <> m var
+R416:416 CoqNat <> n var
+R466:468 mathcomp.ssreflect.ssrnat <> ltP thm
+R466:468 mathcomp.ssreflect.ssrnat <> ltP thm
+R479:481 mathcomp.ssreflect.ssrnat <> ltP thm
+prf 503:511 <> coqnat_le
+R527:529 Coq.Init.Datatypes <> nat ind
+R538:542 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R533:536 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'<='_x not
+R532:532 CoqNat <> m var
+R537:537 CoqNat <> n var
+R545:548 mathcomp.ssreflect.ssrnat <> ::coq_nat_scope:x_'<='_x not
+R544:544 CoqNat <> m var
+R549:549 CoqNat <> n var
+R599:601 mathcomp.ssreflect.ssrnat <> leP thm
+R599:601 mathcomp.ssreflect.ssrnat <> leP thm
+R612:614 mathcomp.ssreflect.ssrnat <> leP thm
+prf 636:644 <> coqnat_ge
+R660:662 Coq.Init.Datatypes <> nat ind
+R671:675 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R666:669 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'>='_x not
+R670:670 CoqNat <> n var
+R665:665 CoqNat <> m var
+R678:681 mathcomp.ssreflect.ssrnat <> ::coq_nat_scope:x_'>='_x not
+R677:677 CoqNat <> m var
+R682:682 CoqNat <> n var
+R732:734 mathcomp.ssreflect.ssrnat <> leP thm
+R732:734 mathcomp.ssreflect.ssrnat <> leP thm
+R745:747 mathcomp.ssreflect.ssrnat <> leP thm
+prf 770:778 <> coqnat_eq
+R794:796 Coq.Init.Datatypes <> nat ind
+R804:808 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R800:802 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R799:799 CoqNat <> m var
+R803:803 CoqNat <> n var
+R811:813 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R810:810 CoqNat <> m var
+R814:814 CoqNat <> n var
+prf 865:875 <> coqnat_plus
+R891:893 Coq.Init.Datatypes <> nat ind
+R901:903 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R897:899 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'+'_x not
+R896:896 CoqNat <> m var
+R900:900 CoqNat <> n var
+R906:908 mathcomp.ssreflect.ssrnat <> ::coq_nat_scope:x_'+'_x not
+R905:905 CoqNat <> m var
+R909:909 CoqNat <> n var
+prf 960:971 <> coqnat_minus
+R987:989 Coq.Init.Datatypes <> nat ind
+R997:999 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R993:995 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'-'_x not
+R992:992 CoqNat <> m var
+R996:996 CoqNat <> n var
+R1002:1004 mathcomp.ssreflect.ssrnat <> ::coq_nat_scope:x_'-'_x not
+R1001:1001 CoqNat <> m var
+R1005:1005 CoqNat <> n var
+prf 1056:1066 <> coqnat_mult
+R1082:1084 Coq.Init.Datatypes <> nat ind
+R1092:1094 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1088:1090 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'*'_x not
+R1087:1087 CoqNat <> m var
+R1091:1091 CoqNat <> n var
+R1097:1099 mathcomp.ssreflect.ssrnat <> ::coq_nat_scope:x_'*'_x not
+R1096:1096 CoqNat <> m var
+R1100:1100 CoqNat <> n var
+prf 1187:1197 <> coqnat_expn
+R1213:1215 Coq.Init.Datatypes <> nat ind
+R1223:1225 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1219:1221 mathcomp.ssreflect.ssrnat <> ::nat_scope:x_'^'_x not
+R1218:1218 CoqNat <> m var
+R1222:1222 CoqNat <> n var
+R1228:1231 CoqNat <> :::x_'.^'_x not
+R1227:1227 CoqNat <> m var
+R1232:1232 CoqNat <> n var
