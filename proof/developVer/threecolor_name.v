@@ -5,7 +5,7 @@ Section TCTP_definitions.
   (* Color: the type for the three colors in TCTP *)
   (* red, blu (=blue), and yel (=yellow) *)
   Inductive Color : Set := red | yel | blu.
-
+(*
   Definition eqcol c0 c1 :=
     match c0, c1 with
     | red, red => true
@@ -21,7 +21,7 @@ Section TCTP_definitions.
 
   Canonical Col_eqMixin := EqMixin eqcolP.
   Canonical col_eqType := Eval hnf in EqType Color Col_eqMixin.
-
+*)
   (* The mix operation produces a next color by mixing two given colors *)
   Definition mix c0 c1 :=
     match c0, c1 with
