@@ -82,7 +82,7 @@ $n=9$の場合は最上段の塗り方が図\ref{fig:nine_steps}の塗り方で�
 本節ではこの定理の証明を Coq で実装するにあたり，証明の概要について述べる．
 
 % 2.1 n=3^k => 調和三角形
-\subsection{十分条件}
+\subsection{十分条件} \label{sec:tri_suf}
 定理\ref{thm:tri_iff}を証明するにあたって，十分条件と必要条件に分けて話を進める．
 ここでは定理\ref{thm:tri_iff}の十分条件である定理\ref{thm:tri_suf}の証明の概要について述べる．
 \begin{thm}[十分条件] \label{thm:tri_suf}
@@ -152,7 +152,7 @@ $(\C{0}{0},\C{3^{k+1}}{0},\C{0}{3^{k+1}})$は調和彩色三角形である．
 以上より，$3^{k+1}$段の逆三角形は常に調和彩色三角形である．
 \end{itemize}
 % 2.2 調和 (well-colored) => n=3^k
-\subsection{必要条件}
+\subsection{必要条件} \label{sec:tri_nec}
 次は定理\ref{thm:tri_iff}の必要条件である定理\ref{thm:tri_nec}の証明の概要について述べる．
 \begin{thm}[必要条件] \label{thm:tri_nec}
   $n(>0)$段の逆三角形に配置されたマス対して，
