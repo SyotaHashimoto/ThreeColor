@@ -90,13 +90,13 @@ Section allred.
 End allred.
 
 (* Begin: TCTP_nec_even --------------------*)
-(* coloringYB x n z : 最上段の x から x+n までのマスを黄，青と交互に塗る (範囲外は黄にする) *)
+(* coloringYB x n: 最上段の x から x+n までのマスを黄，青と交互に塗る (範囲外は黄にする) *)
 Definition coloringYB n x := if (x <= n) && ~~ odd x then yel else blu.
 
 Section TCTP_nec_even.
 Variables (cpos : coloring) (x n : nat).
 Hypotheses (n_gt_0 : n > 0) (rule : next cpos).
-Hypothesis topcoloring : forall i, i <= n -> cpos (x + i) 0 = coloringYB n i.
+Hypothesis topcolor : forall i, i <= n -> cpos (x + i) 0 = coloringYB n i.
 
 Lemma even_bottom : cpos x n = red.
 Proof.
@@ -105,8 +105,8 @@ Proof.
   have i_leq_n : i <= n by rewrite (leq_trans i_leq_pn) // leq_pred.
   have i_lt_n : i < n by rewrite -add1n -leq_subRL ?subn1.
   have -> : cpos (x + i) 1 = mix (cpos (x + i) 0) (cpos (x + i).+1 0); first exact/rule.
-  have -> := topcoloring i i_leq_n; rewrite -addnS.
-  have -> := topcoloring i.+1 i_lt_n.
+  have -> := topcolor i i_leq_n; rewrite -addnS.
+  have -> := topcolor i.+1 i_lt_n.
   have YB_yel m j : j <= m -> ~~ odd j  -> coloringYB m j = yel.
   by move=> m_gt_j oj; rewrite /coloringYB m_gt_j oj.
   have YB_blu m j : odd j -> coloringYB m j = blu by move=> oj; rewrite /coloringYB oj andbF.
@@ -160,7 +160,7 @@ Variables (cpos : coloring) (k x n : nat).
 Hypotheses (n_range : 3 ^ k < n <= (3 ^ k).*2) (on : odd n).
 Hypothesis rule : next cpos.
 Hypothesis triangle : forall x1 y1, Triangle cpos x1 y1 (3 ^ k).
-Hypothesis topcoloring : forall i, i <= n -> coloringYBBY n i = cpos (x + i) 0.
+Hypothesis topcolor : forall i, i <= n -> coloringYBBY n i = cpos (x + i) 0.
 
 (* 3^k 段下のマスの色は colorYB で塗られていることを示す *)
 Let shortodd_coloringYB i : i <= n - 3 ^ k -> coloringYB (n - 3 ^ k) i = cpos (x + i) (3 ^ k).
@@ -179,8 +179,8 @@ Proof.
   have hn_geq_i : i <= n./2. apply: (leq_trans i_range).
   by rewrite leq_subCl -{1}(odd_double_half n) on add1n -addnn subSn ?leq_addr// -addnBA// subnn addn0.
   have -> : cpos (x + i) (3 ^ k) = mix (cpos (x + i) 0) (cpos (x +i + 3 ^ k) 0) by rewrite -triangle.
-  have <- : coloringYBBY n i = cpos (x + i) 0 by exact /topcoloring /i_leq_n.
-  have <- : coloringYBBY n (i + 3 ^ k) = cpos (x + i + 3 ^ k) 0 by rewrite -addnA topcoloring.
+  have <- : coloringYBBY n i = cpos (x + i) 0 by exact /topcolor /i_leq_n.
+  have <- : coloringYBBY n (i + 3 ^ k) = cpos (x + i + 3 ^ k) 0 by rewrite -addnA topcolor.
   have [oi|ei] := boolP (odd i).
   - have -> : coloringYBBY n i = blu by exact: YBBY_blu_odd.
     have -> : coloringYBBY n (i + 3 ^ k) = blu.
@@ -248,7 +248,7 @@ Section TCTP_nec_longodd.
 Variables (cpos : coloring) (k x n : nat).
 Hypotheses (n_range : (3 ^ k).*2.+1 <= n < 3 ^ k.+1) (rule : next cpos).
 Hypothesis triangle : forall x1 y1, Triangle cpos x1 y1 (3 ^ k).
-Hypothesis topcoloring : forall i, i <= n -> coloringBYB n k i = cpos (x + i) 0.
+Hypothesis topcolor : forall i, i <= n -> coloringBYB n k i = cpos (x + i) 0.
 
 (* An inequality obtained from the range of n *)
 Let inequality : prod (3 ^ k <= n) (prod ((3 ^ k).*2 <= n) (n - (3 ^ k).*2 <= (3 ^ k).-1)).
@@ -272,19 +272,19 @@ Proof.
     have n_range_geq : 3 ^ k + i <= n by rewrite (leq_trans i_range_right')// leq_subr.
     have -> := triangle (x + i) 0; rewrite /Triangle.
     have -> : cpos (x + i) 0 = blu.
-    rewrite -topcoloring//; apply: BYB_blu_left => //.
+    rewrite -topcolor//; apply: BYB_blu_left => //.
     by rewrite (leq_trans i_range_right) // inequality.
     have ->// : cpos (x + i + (3 ^ k)) 0 = yel.
-    by rewrite -addnA -topcoloring// (addnC i) // BYB_yel_center// leq_addr i_range_right'//.
+    by rewrite -addnA -topcolor// (addnC i) // BYB_yel_center// leq_addr i_range_right'//.
   - have ni_range : n - 3 ^ k < 3 ^ k + i.
     rewrite ltn_subLR// ?(leq_trans i_range_left)// addnA addnn.
     case /andP: n_range => _ /leq_trans ->//.
     by rewrite expnS (mulnDl 1 2) addnC mul2n mul1n leq_add2l.
     have -> := triangle (x + i) 0; rewrite /Triangle.
     have -> : cpos (x + i) 0 = yel
-    by rewrite -topcoloring // ?(BYB_yel_center n k i)// i_range_left i_range_right.
+    by rewrite -topcolor // ?(BYB_yel_center n k i)// i_range_left i_range_right.
     have ->// : cpos (x + i + 3 ^ k) 0 = blu.
-    rewrite addnAC -addnA -topcoloring//; first by apply BYB_blu_right.
+    rewrite addnAC -addnA -topcolor//; first by apply BYB_blu_right.
     by rewrite -leq_subRL// inequality //.
 Qed.
 
