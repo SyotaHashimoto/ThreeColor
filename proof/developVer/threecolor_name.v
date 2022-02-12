@@ -101,7 +101,7 @@ Hypothesis topcolor : forall i, i <= n -> cpos (x + i) 0 = coloringYB n i.
 Lemma even_bottom : cpos x n = red.
 Proof.
   suff even_next i : i <= n.-1 -> cpos (x + i) 1 = red; first by rewrite -(prednK n_gt_0) -add1n allred//.
-  move=> i_leq_pn .
+  move=> i_leq_pn.
   have i_leq_n : i <= n by rewrite (leq_trans i_leq_pn) // leq_pred.
   have i_lt_n : i < n by rewrite -add1n -leq_subRL ?subn1.
   have -> : cpos (x + i) 1 = mix (cpos (x + i) 0) (cpos (x + i).+1 0); first exact/rule.
@@ -121,14 +121,14 @@ End TCTP_nec_even.
 Lemma TCTP_nec_even x n : n > 0 -> ~~ odd n -> ~ WellColoredTriangle x n.
 Proof.
   move=> n_gt_0 en WCT.
-  have [coloring[rule lift]] : exists cpos, next cpos /\ forall x1 y1, cpos x1 y1 = liftcoloring (fun y => coloringYB n (y - x)) x1 y1.
+  have [cpos [rule lift]] : exists cpos, next cpos /\ forall x1 y1, cpos x1 y1 = liftcoloring (fun y => coloringYB n (y - x)) x1 y1. 
   by exists (liftcoloring (fun y => coloringYB n (y - x))).
-  have := WCT coloring rule; rewrite /Triangle addnC addn0.
-  have <- : coloringYB n 0 = coloring x 0 by rewrite lift/= subnn.
-  have <- : coloringYB n n = coloring (x + n) 0 by rewrite lift/= addnC addnK.
+  have := WCT cpos rule; rewrite /Triangle addnC addn0.
+  have <- : coloringYB n 0 = cpos x 0 by rewrite lift/= subnn.
+  have <- : coloringYB n n = cpos (x + n) 0 by rewrite lift/= addnC addnK.
   have -> : coloringYB n 0 = yel by rewrite /=.
   have -> : coloringYB n n = yel by rewrite /coloringYB leqnn en.
-  have -> // : coloring x n = red by apply: even_bottom => // i ni; rewrite lift/= addnC addnK.
+  have -> // : cpos x n = red by apply: even_bottom => // i ni; rewrite lift/= addnC addnK.
 Qed.
 (* End: TCTP_nec_even --------------------*)
 
@@ -216,12 +216,12 @@ End TCTP_nec_shortodd.
 
 Lemma TCTP_nec_shortodd x n k : 3 ^ k < n <= (3 ^ k).*2 -> odd n -> ~ WellColoredTriangle x n.
 Proof.
-  move=> n_range on WCT; rewrite/WellColoredTriangle in WCT.
+  move=> n_range on WCT.
   have [cpos [rule lift]] : exists cpos, next cpos /\ forall x1 y1, cpos x1 y1 = liftcoloring (fun y => coloringYBBY n (y - x)) x1 y1.
   by exists (liftcoloring (fun y => coloringYBBY n (y - x))).
   have := WCT cpos rule; rewrite /Triangle addnC addn0.
-  have topcoloring i : coloringYBBY n i = cpos (x + i) 0 by rewrite lift/= addnC addnK.
-  have <- : cpos x 0 = cpos (x + n) 0; first by rewrite lift -topcoloring -YBBY_both//= subnn.
+  have topcolor i : coloringYBBY n i = cpos (x + i) 0 by rewrite lift/= addnC addnK.
+  have <- : cpos x 0 = cpos (x + n) 0; first by rewrite lift -topcolor -YBBY_both//= subnn.
   have -> : cpos x 0 = yel by rewrite lift/= subnn.
   have -> // : cpos x n = red by apply: (shortodd_bottom _ k) => // ? ?; apply: TCTP_suf.
 Qed.
@@ -310,12 +310,12 @@ Proof.
   have [cpos [rule lift]] : exists cpos, next cpos /\ forall x1 y1, cpos x1 y1 = liftcoloring (fun y => coloringBYB n k (y - x)) x1 y1.
   by exists (liftcoloring (fun y => coloringBYB n k (y - x))).
   have := WCT cpos rule; rewrite /Triangle addnC addn0.
-  have topcoloring i : i <= n -> coloringBYB n k i = cpos (x + i) 0; first by rewrite lift /= addnC addnK.
+  have topcolor i : i <= n -> coloringBYB n k i = cpos (x + i) 0; first by rewrite lift /= addnC addnK.
   have triangle x1 y1 : Triangle cpos x1 y1 (3 ^ k); first exact: TCTP_suf.
   have -> : cpos x n = red; first by exact: (longodd_bottom _ k).
-  have -> : cpos x 0 = blu by rewrite -(addn0 x) -topcoloring// BYB_blu_left.
+  have -> : cpos x 0 = blu by rewrite -(addn0 x) -topcolor// BYB_blu_left.
   have ->// : cpos (x + n) 0 = blu.
-  rewrite -topcoloring// BYB_blu_right// -ltn_subCl// ?subnn ?expn_gt0//.
+  rewrite -topcolor// BYB_blu_right// -ltn_subCl// ?subnn ?expn_gt0//.
   by move /andP : n_range => [+ _]; apply: leq_trans; rewrite leqW// -addnn leq_addl. 
 Qed.
 (* End: TCTP_nec_longodd --------------------*)
