@@ -1,16 +1,18 @@
 
-
-
-Require Import ssreflect.
+  
+From mathcomp Require Import ssreflect ssrbool ssrnat.
  
-Variable X Y : Prop.
-Hypothesis X_is_true : X.
-Hypothesis XtoY_is_true : X -> Y.
 
-Lemma lemma_name : Y.
+
+Variable A X Y Z : Prop.
+Hypothesis Ind : (~A -> False) -> A.
+  
+Lemma syllogism :
+ (X -> Y) /\ (Y -> Z) -> (X -> Z). 
 Proof.
-  move: X_is_true.
-  by apply: XtoY_is_true.
+  move=> [XtoY_is_true YtoZ_is_true X_is_true].
+  apply: YtoZ_is_true.
+  by exact: XtoY_is_true.
 Qed.
 
 
