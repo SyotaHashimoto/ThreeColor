@@ -290,7 +290,7 @@ Qed.
 
 Lemma longodd_bottom : cpos x n = red.
 Proof.
-  have shortodd_redline i : i <= n - (3 ^ k).*2 -> cpos (x + i) (3 ^ k).*2 = red.
+  have longodd_redline i : i <= n - (3 ^ k).*2 -> cpos (x + i) (3 ^ k).*2 = red.
   move=> i_range; rewrite -addnn.
   have in_range : i + 3 ^ k <= n - 3 ^ k.
   by rewrite leq_subRL// ?inequality// addnCA addnn addnC -leq_subRL// inequality.
@@ -306,11 +306,11 @@ End TCTP_nec_longodd.
 Lemma TCTP_nec_longodd x n k :
   (3 ^ k).*2.+1 <= n < 3 ^ k.+1 -> ~ WellColoredTriangle x n.
 Proof.
-  move=> n_range WCT; rewrite/WellColoredTriangle in WCT.
+  move=> n_range WCT.
   have [cpos [rule lift]] : exists cpos, next cpos /\ forall x1 y1, cpos x1 y1 = liftcoloring (fun y => coloringBYB n k (y - x)) x1 y1.
   by exists (liftcoloring (fun y => coloringBYB n k (y - x))).
   have := WCT cpos rule; rewrite /Triangle addnC addn0.
-  have topcolor i : i <= n -> coloringBYB n k i = cpos (x + i) 0; first by rewrite lift /= addnC addnK.
+  have topcolor i : i <= n -> coloringBYB n k i = cpos (x + i) 0; first by rewrite lift /= addnC addnK. rewrite /WellColoredTriangle in WCT.
   have triangle x1 y1 : Triangle cpos x1 y1 (3 ^ k); first exact: TCTP_suf.
   have -> : cpos x n = red; first by exact: (longodd_bottom _ k).
   have -> : cpos x 0 = blu by rewrite -(addn0 x) -topcolor// BYB_blu_left.
