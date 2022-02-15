@@ -1,0 +1,22 @@
+% even_steps
+\begin{tikzpicture}[scale=0.25]
+  %3^(k'+1)段目
+  \filldraw[fill=red,yshift={25*sqrt(3)*3}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  %2 〜 3^(K'+1)-1段目
+  \node[xshift={-25*1},yshift={25*sqrt(3)*1.3}](0,0){$\ddots$};
+  \node[xshift={25*1},yshift={25*sqrt(3)*1.3}](0,0){$\iddots$};
+  %1段目
+  \filldraw[fill=red,xshift={-25*7},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=red,xshift={-25*5},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[yshift={25*sqrt(3)*1.6}](0,0){$\cdots$};
+  \filldraw[fill=red,xshift={25*5},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=red,xshift={25*7},yshift={25*sqrt(3)*6}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  %0段目
+  \filldraw[fill=yellow,xshift={-25*8},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=blue,xshift={-25*6},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=yellow,xshift={-25*4},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \node[yshift={25*sqrt(3)*1.9}](0,0){$\cdots$};
+  \filldraw[fill=yellow,xshift={25*4},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=blue,xshift={25*6},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+  \filldraw[fill=yellow,xshift={25*8},yshift={25*sqrt(3)*7}] (0,0)--++(30:1)--++(90:1)--++(150:1)--++(210:1)--++(270:1)--cycle;
+\end{tikzpicture}
