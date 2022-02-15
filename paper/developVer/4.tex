@@ -36,9 +36,9 @@
 この定理は以下のように記述される：
 \begin{lstlisting}[language=Coq]
   Theorem TCTP_suf (cpos : coloring) (k x y : nat) :
-    next cpos -> Triangle cpos x y (3^k).
+    CFun cpos -> Triangle cpos x y (3^k).
 \end{lstlisting}
-この定理は，{\tt{next cpos}}
+この定理は，{\tt{CFun cpos}}
 （互いに隣接するどの3マスも{\tt{cpos}}によって調和性を満たすように塗られている）
 を{\tt{rule}}として仮定してから，
 {\tt{k}}に関する数学的帰納法を用いて証明する．
@@ -55,7 +55,7 @@
 このとき，{\tt{IHk}}は帰納法の仮定を表している．
 \begin{lstlisting}[language=Coq]
   cpos : coloring
-  rule : next cpos
+  rule : CFun cpos
   k : nat
   IHk : forall x y : nat, Triangle cpos x y (3 ^ k)
   x, y : nat
@@ -106,7 +106,7 @@
 \end{lstlisting}
 \begin{lstlisting}[language=Coq]
   cpos : coloring
-  rule : next cpos
+  rule : CFun cpos
   k : nat
   IHk : forall x y : nat, Triangle cpos x y (3 ^ k)
   x, y : nat
@@ -127,7 +127,7 @@
 %% \begin{proof}
 %%   定理\ref{thm:tri_suf}でも述べたようにこの定理と論理同値である
 %%   次を証明することで，定理\ref{thm:tri_suf}を示す．\\
-%%   $\forall \cpos, \forall k, n, x, y \in \N,$ $n = 3^k \Imp (\next(\cpos) \Imp$ $\T(cpos,x,y)).$ \\
+%%   $\forall \cpos, \forall k, n, x, y \in \N,$ $n = 3^k \Imp (\CFun(\cpos) \Imp$ $\T(cpos,x,y)).$ \\
 %%   これを$k$に関する数学的帰納法を用いて証明する．
 %%   $k=0$のときは$n=1$となるので明らかに成立する．
 %%   次に$k$のとき成立すると仮定して$k+1$のときも成立することを示す．\\
@@ -170,6 +170,37 @@
 
 %% ------------------------------
 \subsection{必要条件}
+
+\newpage
+
+\subsubsection{必要条件の形式化準備(見本)}
+
+本節から必要条件の証明 (定理~\ref{thm:tri_nec}) を形式化する．
+\ref{sec:tri_nec}節での必要条件の証明 (定理~\ref{thm:tri_nec}) では，
+彩色三角形の段数$n$のとる値によっては調和彩色三角形にならないことを示していた．
+このことを説明する際には，マスの色が赤のみで塗られる段をつくり，
+その段よりも下の段はすべて赤で塗られることを利用していた．
+次の Section はそれを主張する：
+\begin{lstlisting}[language=Coq]
+Section allred.
+  Variables (cpos : coloring) (x y n : nat).
+  Hypothesis H : CFun cpos.
+  Hypothesis redline : forall i, i <= n -> cpos (x + i) y = red.
+
+  Lemma allred : cpos x (y + n) = red.
+  Proof. (* 省略 *) Qed.
+End allred.
+\end{lstlisting}  
+
+この Section では，仮定{\tt H} により関数{\tt cpos}は彩色関数であり，
+{\tt{redline}}により「ある1つの段のすべてのマスの色が赤である」ことが
+前提とされる．
+
+補題{\tt allred}は「すべてのマスの色が赤である段から{\tt{n}}段の下にある
+  位置が ({\tt{x}},{\tt{y+n}}) のマスの色も赤である」ことを意味する．
+
+
+
 \subsubsection{必要条件の形式化準備}
 本節から必要条件の証明 (定理~\ref{thm:tri_nec}) を形式化する．
 \ref{sec:tri_nec}節での必要条件の証明 (定理~\ref{thm:tri_nec}) では，
@@ -181,7 +212,7 @@
 \begin{lstlisting}[language=Coq]
   Section allred.
     Variables (cpos : coloring) (x y n : nat).
-    Hypothesis rule : next cpos.
+    Hypothesis rule : CFun cpos.
     Hypothesis redline :
       forall i, i <= n -> cpos (x + i) y = red.
 \end{lstlisting}
@@ -265,7 +296,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
 \begin{lstlisting}[language=Coq]
   Section TCTP_nec_even.
     Variables (cpos : coloring) (x n : nat).
-    Hypotheses (n_gt_0 : n > 0) (rule : next cpos).
+    Hypotheses (n_gt_0 : n > 0) (rule : CFun cpos).
     Hypothesis topcolor :
       forall i, i <= n -> cpos (x + i) 0 = coloringYB n i.
 \end{lstlisting}
@@ -293,7 +324,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
   cpos : coloring
   x, n : nat
   n_gt_0 : 0 < n
-  rule : next cpos
+  rule : CFun cpos
   topcolor :
     forall i : nat,
     i <= n -> cpos (x + i) 0 = coloringYB n i
@@ -319,7 +350,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
   cpos : coloring
   x, n : nat
   n_gt_0 : 0 < n
-  rule : next cpos
+  rule : CFun cpos
   topcolor :
     forall i : nat,
     i <= n -> cpos (x + i) 0 = coloringYB n i
@@ -390,7 +421,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
 \begin{lstlisting}[language=Coq]
   Proof.
     have [cpos [rule lift]] :
-    exists cpos, next cpos /\
+    exists cpos, CFun cpos /\
     forall x1 y1, cpos x1 y1 =
     liftcoloring
       (fun y => coloringYB n (y - x)) x1 y1.
@@ -406,7 +437,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
   en : ~~ odd n
   WCT : WellColoredTriangle x n
   cpos : nat -> nat -> Color
-  rule : next cpos
+  rule : CFun cpos
   lift :
     forall x1 y1 : nat, cpos x1 y1 =
     liftcoloring
@@ -426,7 +457,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
   en : ~~ odd n
   WCT : WellColoredTriangle x n
   cpos : nat -> nat -> Color
-  rule : next coloring
+  rule : CFun coloring
   lift :
     forall x1 y1 : nat, cpos x1 y1 =
     liftcoloring
@@ -456,7 +487,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
   en : ~~ odd n
   WCT : WellColoredTriangle x n
   cpos : nat -> nat -> Color
-  rule : next cpos
+  rule : CFun cpos
   lift :
     forall x1 y1 : nat, cpos x1 y1 =
     liftcoloring
@@ -526,7 +557,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
     Hypotheses
       (n_range : 3 ^ k < n <= (3 ^ k).*2)
       (on : odd n).
-    Hypotheses rule : next cpos.
+    Hypotheses rule : CFun cpos.
     Hypothesis triangle :
       forall x1 y1, Triangle cpos x1 y1 (3 ^ k).
     Hypothesis topcolor :
@@ -566,7 +597,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
   k, x, n : nat
   n_range : 3 ^ k < n <= (3 ^ k).*2
   on : odd n
-  rule : next cpos
+  rule : CFun cpos
   triangle :
     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
   topcolor :
@@ -598,7 +629,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
   k, x, n : nat
   n_range : 3 ^ k < n <= (3 ^ k).*2
   on : odd n
-  rule : next cpos
+  rule : CFun cpos
   triangle :
     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
   topcolor :
@@ -686,7 +717,7 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
   k, x, n : nat
   n_range : 3 ^ k < n <= (3 ^ k).*2
   on : odd n
-  rule : next cpos
+  rule : CFun cpos
   triangle :
     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
   topcolor :
@@ -719,7 +750,7 @@ subgoal 2 (ID 65) is:
   k, x, n : nat
   n_range : 3 ^ k < n <= (3 ^ k).*2
   on : odd n
-  rule : next cpos
+  rule : CFun cpos
   triangle :
     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
   topcolor :
@@ -775,7 +806,7 @@ subgoal 2 (ID 65) is:
   k, x, n : nat
   n_range : 3 ^ k < n <= (3 ^ k).*2
   on : odd n
-  rule : next cpos
+  rule : CFun cpos
   triangle :
     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
   topcolor :
@@ -831,7 +862,7 @@ $n$が奇数かつ$3^{k} < n \leq 2 \cdot 3^{k}$の場合には
 \begin{lstlisting}[language=Coq]
   Proof.
     have [cpos [rule lift]] :
-      exists cpos, next cpos /\
+      exists cpos, CFun cpos /\
       forall x1 y1, cpos x1 y1 =
       liftcoloring
         (fun y => coloringYBBY n (y - x)) x1 y1.
@@ -847,7 +878,7 @@ $n$が奇数かつ$3^{k} < n \leq 2 \cdot 3^{k}$の場合には
   on : odd n
   WCT : WellColoredTriangle x n
   cpos : nat -> nat -> Color
-  rule : next cpos
+  rule : CFun cpos
   lift :
     forall x1 y1 : nat, cpos x1 y1 =
     liftcoloring
@@ -867,7 +898,7 @@ $n$が奇数かつ$3^{k} < n \leq 2 \cdot 3^{k}$の場合には
   on : odd n
   WCT : WellColoredTriangle x n
   cpos : nat -> nat -> Color
-  rule : next cpos
+  rule : CFun cpos
   lift :
     forall x1 y1 : nat, cpos x1 y1 =
     liftcoloring
@@ -896,7 +927,7 @@ $n$が奇数かつ$3^{k} < n \leq 2 \cdot 3^{k}$の場合には
   on : odd n
   WCT : WellColoredTriangle x n
   cpos : nat -> nat -> Color
-  rule : next cpos
+  rule : CFun cpos
   lift :
     forall x1 y1 : nat, cpos x1 y1 =
     liftcoloring (
@@ -953,7 +984,7 @@ $n$が奇数かつ$3^{k} < n \leq 2 \cdot 3^{k}$の場合には
     Variables (cpos : coloring) (k x n : nat).
     Hypotheses
       (n_range : (3 ^ k).*2.+1 <= n < 3 ^ k.+1)
-      (rule : next cpos).
+      (rule : CFun cpos).
     Hypothesis triangle :
       forall x1 y1, Triangle cpos x1 y1 (3 ^ k).
     Hypothesis topcolor :
@@ -1005,7 +1036,7 @@ $n$が奇数かつ$3^{k} < n \leq 2 \cdot 3^{k}$の場合には
   cpos : coloring
   k, x, n : nat
   n_range : (3^k).*2 < n < 3 ^ k.+1
-  rule : next cpos
+  rule : CFun cpos
   triangle :
     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
   topcolor :
@@ -1036,7 +1067,7 @@ subgoal 2 (ID 215) is:
   cpos : coloring
   k, x, n : nat
   n_range : (3^k).*2 < n < 3 ^ k.+1
-  rule : next cpos
+  rule : CFun cpos
   triangle :
     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
   topcolor :
@@ -1141,7 +1172,7 @@ subgoal 2 (ID 215) is:
   cpos : coloring
   k, x, n : nat
   n_range : (3 ^ k).*2 < n < 3 ^ k.+1
-  rule : next cpos
+  rule : CFun cpos
   triangle :
     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
   topcolor :
@@ -1175,7 +1206,7 @@ subgoal 2 (ID 102) is:
   cpos : coloring
   k, x, n : nat
   n_range : (3 ^ k).*2 < n < 3 ^ k.+1
-  rule : next cpos
+  rule : CFun cpos
   triangle :
     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
   topcolor :
@@ -1260,7 +1291,7 @@ $n$が奇数かつ$2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$の場合には
 \begin{lstlisting}[language=Coq]
   Proof.
     have [cpos [rule lift]] :
-      exists cpos, next cpos /\
+      exists cpos, CFun cpos /\
       forall x1 y1, cpos x1 y1 =
       liftcoloring
       (fun y => coloringBYB n k (y - x)) x1 y1.
@@ -1275,7 +1306,7 @@ $n$が奇数かつ$2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$の場合には
   n_range : (3 ^ k).*2 < n < 3 ^ k.+1
   WCT : WellColoredTriangle x n
   cpos : nat -> nat -> Color
-  rule : next cpos
+  rule : CFun cpos
   lift :
     forall x1 y1 : nat, cpos x1 y1 =
     liftcoloring
@@ -1295,7 +1326,7 @@ $n$が奇数かつ$2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$の場合には
 %%   on : odd n
 %%   WCT : WellColoredTriangle x n
 %%   cpos : nat -> nat -> Color
-%%   rule : next cpos
+%%   rule : CFun cpos
 %%   lift :
 %%     forall x1 y1 : nat, cpos x1 y1 =
 %%     liftcoloring
@@ -1324,7 +1355,7 @@ $n$が奇数かつ$2 \cdot 3^{k} + 1 \leq n < 3^{k+1}$の場合には
 %%   on : odd n
 %%   WCT : WellColoredTriangle x n
 %%   cpos : nat -> nat -> Color
-%%   rule : next cpos
+%%   rule : CFun cpos
 %%   lift :
 %%     forall x1 y1 : nat, cpos x1 y1 =
 %%     liftcoloring (

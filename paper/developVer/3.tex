@@ -32,26 +32,24 @@
 一般論として，幾何的な状況に関する問題はいくつかの暗黙の仮定が置かれていることが多い．
 このような問題を形式化するには，暗黙の仮定を洗い出して観察し，適切な形式化の方法を選択する必要がある．
 今回は「各場所には必ず1色のみが塗られること」が仮定されている．
-そのため，彩色三角形全体の色塗りはマスの位置からそのマスの色を返す{\bf 彩色関数}として形式化する．
+そのため，彩色三角形全体の色塗りはマスの位置からそのマスの色を返す関数として形式化する．
 また，簡単のためにマスは上下左右が決まった平面全体に敷き詰められているとし，
 考えている逆三角形はその一部であると思うことにする．
 \begin{lstlisting}[language=Coq]
  Definition coloring := nat -> nat -> Color.
 \end{lstlisting}
-上記の {\tt coloring} は彩色関数の型である．
-以下，{\tt cpos} は彩色関数とし，{\tt cpos x y} は「位置$(\xx,\yy)$のマスの色」を意味する．
+以下，{\tt cpos} は {\tt coloring} 型の関数とし，{\tt cpos x y} は「位置$(\xx,\yy)$のマスの色」を意味する．
 ただし，この「位置」は各マスに対して決められているものとし，
 位置$(m,n)$のマスから見て左下，右下に隣接するマスの位置はそれぞれ$(m-1,n+1)$と$(m,n+1)$であるとする．
 
-次に彩色三角形を形式化するために
+型 {\tt coloring} をもつ関数の中でも隣接するどの3つのマスも調和性を満たすように塗られている，すなわち次の条件を満たすものを {\bf 彩色関数 (coloring function)} と呼ぶ．
 \begin{lstlisting}[language=Coq]
- Definition next cpos := forall x y,
+ Definition CFun cpos := forall x y,
        cpos x y.+1 = mix (cpos x y) (cpos x.+1 y).
 \end{lstlisting}
-を定義する．
-これは「隣接するどの3つのマスも{\tt cpos}によって調和性を満たすように塗られている」を意味する．
-すなわち，この条件の下の任意の逆三角形は彩色三角形である．
+これは「関数{\tt cpos}は彩色関数である」ことを意味する．
 
+次に彩色三角形の形式化を行う．
 1つの逆三角形は3つの自然数$\xx$，$\yy$，$\nn$で与える．
 これらは位置$(\xx,\yy)$，$(\xx+\nn,\yy)$，$(\xx,\yy+\nn)$の3つのマスを頂点とする逆三角形を意味する．
 ここまでの準備の下で「$n$段の逆三角形は常に調和彩色三角形」を以下により形式化する：
@@ -59,7 +57,7 @@
  Definition Triangle cpos x y n :=
    cpos x (y + n) = mix (cpos x y) (cpos (x + n) y).
  Definition WellColoredTriangle x n := forall cpos,
-   next cpos -> Triangle cpos x 0 n.
+   CFun cpos -> Triangle cpos x 0 n.
 \end{lstlisting}
 最初の {\tt Triangle cpos x y n} は補助的な論理式であり，
 「$\xx$，$\yy$，$\nn$で与えられる逆三角形の3つの頂点は{\tt cpos}による色塗りで調和性を満たす」
