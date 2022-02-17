@@ -5,7 +5,7 @@ From mathcomp Require Import ssreflect ssrbool ssrnat.
 
 
 Variable A X Y Z : Prop.
-Hypothesis Ind : (~A -> False) -> A.
+Hypothesis Hypo : (~A -> False) -> A.
   
 Lemma syllogism :
  (X -> Y) /\ (Y -> Z) -> (X -> Z). 

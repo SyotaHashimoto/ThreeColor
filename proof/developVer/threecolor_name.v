@@ -1,6 +1,6 @@
 From mathcomp Require Import ssreflect ssrbool ssrnat ssrfun eqtype.
-(* Three Color Triangle Problem (TCTP) *)
 
+(* Three Color Triangle Problem (TCTP) *)
 Section TCTP_definitions.
   (* Color: the type for the three colors in TCTP *)
   (* red, blu (=blue), and yel (=yellow) *)
