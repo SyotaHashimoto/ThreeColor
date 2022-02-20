@@ -296,8 +296,7 @@ Section Three_Color_Triangle_Problem.
   (* colorYB x n z : 最上段の x から x+n までのマスを黄，青と交互に塗る (範囲外は黄にする) *)
   Definition colorYB (x n z : nat) :=
     if (0 <= z-x <= n) && (odd (z-x) == false) then yel
-    else if (0 <= z-x <= n) && odd (z-x) then blu
-         else blu.
+    else if (0 <= z-x <= n) && odd (z-x) then blu else blu.
   
   (* colorYB の性質1 *)
   Lemma lemYB1: forall x n i : nat, (0 <= i <= n) && (odd i == false) -> colorYB x n (x + i) = yel.
