@@ -1,3 +1,0 @@
-\beamer@sectionintoc {1}{\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex}{3}{0}{1}
-\beamer@sectionintoc {2}{\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex}{6}{0}{2}
-\beamer@sectionintoc {3}{\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex\kern 1ex}{9}{0}{3}
