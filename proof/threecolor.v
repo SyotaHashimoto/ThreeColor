@@ -105,15 +105,15 @@ End TCTP_nec_even.
 Lemma TCTP_nec_even x n : n > 0 -> ~~ odd n -> ~ WellColoredTriangle x n.
 Proof.
   move=> n_gt_0 en WCT.
-  have [colfun [H lift]] : exists colfun, CFun colfun /\ forall x1 y1, colfun x1 y1 = liftcoloring (fun y => coloringYB n (y - x)) x1 y1. 
-  by exists (liftcoloring (fun y => coloringYB n (y - x))).
-  have := WCT colfun H; rewrite /Triangle addnC addn0.
-  have <- : coloringYB n 0 = colfun x 0 by rewrite lift/= subnn.
-  have <- : coloringYB n n = colfun (x + n) 0 by rewrite lift/= addnC addnK.
+  have H: CFun (liftcoloring (fun y => coloringYB n (y - x))). by auto.
+  have := WCT _ H; rewrite /Triangle addnC addn0.
+  have <- : coloringYB n 0 = liftcoloring (fun y => coloringYB n (y - x)) x 0. by rewrite/= subnn.
+  have <- : coloringYB n n = liftcoloring (fun y => coloringYB n (y - x)) (x + n) 0 by rewrite/= addnC addnK.
   have -> : coloringYB n 0 = yel by rewrite /=.
   have -> : coloringYB n n = yel by rewrite /coloringYB leqnn en.
-  have -> // : colfun x n = red by apply: even_bottom => // i ni; rewrite lift/= addnC addnK.
+  have -> // : liftcoloring (fun y => coloringYB n (y - x)) x n = red by apply: even_bottom => // i ni; rewrite /= addnC addnK.
 Qed.
+  
 (* End: TCTP_nec_even --------------------*)
 
 (* Begin: TCTP_nec_shortodd --------------------*)
