@@ -32,7 +32,7 @@ Section TCTP_definitions.
   (* Meaning: The triangle (x,0)-(x+n,0)-(x,n) makes a well-colored triangle for any expected coloring. *)
   Definition WellColoredTriangle x n := forall colfun, CFun colfun -> Triangle colfun x 0 n.
 
-  (* Lifting of top-level coloring functions (This will be applied to colorYBBY and colorBYB defined later) *)
+  (* Lifting of top-level coloring functions (This will be applied to coloringYBBY and coloringBYB defined later) *)
   Fixpoint liftcoloring (topcoloring : nat -> Color) x y :=
     if y is y'.+1 then mix (liftcoloring topcoloring x y') (liftcoloring topcoloring x.+1 y') else topcoloring x.
 End TCTP_definitions.
@@ -75,7 +75,7 @@ End Allred.
 
 (* Begin: TCTP_nec_even --------------------*)
 (* coloringYB x n: 最上段の x から x+n までのマスを黄，青と交互に塗る (範囲外は黄にする) *)
-Definition coloringYB n x := if (x <= n) && ~~ odd x then yel else blu.
+Definition coloringYB n i := if (i <= n) && ~~ odd i then yel else blu.
 
 Section TCTP_nec_even.
 Variables (colfun : coloring) (x n : nat).
@@ -117,7 +117,7 @@ Qed.
 (* End: TCTP_nec_even --------------------*)
 
 (* Begin: TCTP_nec_shortodd --------------------*)
-Definition coloringYBBY n x := if ((x <= n./2) && odd x) || ((n./2.+1 <= x <= n) && ~~ odd x) then blu else yel.
+Definition coloringYBBY n i := if ((i <= n./2) && odd i) || ((n./2.+1 <= i <= n) && ~~ odd i) then blu else yel.
 
 (* Some properties of coloringYBBY *)
 Lemma YBBY_yel_even n i : i <= n./2 -> ~~ odd i -> coloringYBBY n i = yel.
@@ -213,7 +213,7 @@ Qed.
 
 (* Begin: TCTP_nec_longodd --------------------*)
 (* colorBYB x n k z : 最上段の x から x+n までの左端＋右端 3^k 個を青，中央を黄で塗る (範囲外は青にする) *)
-Definition coloringBYB n k x := if 3 ^ k <= x <= n - 3 ^ k then yel else blu.
+Definition coloringBYB n k i := if 3 ^ k <= i <= n - 3 ^ k then yel else blu.
 
 (* Some properties of colorBYB *)
 Lemma BYB_blu_left n k i : i <= (3 ^ k).-1 -> coloringBYB n k i = blu.
