@@ -59,7 +59,7 @@ Section TCTP.
   Qed.
 
 (* Proof of the necessary condition ------------------------------------*)
-Section allred.
+Section Allred.
   (* allred: The lower most cell is red if there is a line whose all cells are red *)    
   Variables (colfun : coloring) (x y n : nat).
   Hypothesis H : CFun colfun.
@@ -71,7 +71,7 @@ Section allred.
     elim: q p => [p|q IHq p pqn]; first by rewrite !addn0; apply redline.
     by rewrite addnS H IHq ?(leq_trans _ pqn)// -?addnS ?IHq// ?addnS// addSnnS.
   Qed.
-End allred.
+End Allred.
 
 (* Begin: TCTP_nec_even --------------------*)
 (* coloringYB x n: 最上段の x から x+n までのマスを黄，青と交互に塗る (範囲外は黄にする) *)

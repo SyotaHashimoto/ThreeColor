@@ -42,16 +42,7 @@
 （互いに隣接するどの3マスも{\tt{colfun}}によって調和性を満たすように塗られている）
 を{\tt{H}}として仮定してから，
 {\tt{k}}に関する数学的帰納法を用いて証明する．
-
 {\tt{k = 0}}のときは{\tt{n = 1}}となるので仮定{\tt{CFun colfun}}よりすぐに成立することがわかる．
-%% \begin{lstlisting}[language=Coq]
-%%   Proof.
-%%     move=> H.
-%%     elim: k x y => [|k IHk] x y;
-%%     first by rewrite expn0 /Triangle !addn1;
-%%     exact /H.
-%% \end{lstlisting}
-
 次に，{\tt{k}}のときに成立すると仮定して{\tt{k.+1}}のときも成立することを示す．
 このとき，{\tt{IHk}}は帰納法の仮定を表している．
 \begin{lstlisting}[language=Coq]
@@ -66,11 +57,6 @@
 サブゴールの{\tt{Triangle colfun x y (3 \verb|^| k.+1)}}は定義は等式であるから，
 この等式の右辺を変形していくことで証明を進めていく．
 まず，関数{\tt{mix}}のもつ性質である補題{\tt{mixcut}}を用いて等式を変形する．
-%% \begin{lstlisting}[language=Coq]
-%%   rewrite /Triangle -(mixcut _ (colfun (x + 3 ^ k) y)
-%%     (colfun (x + (3 ^ k).*2) y)).
-%% \end{lstlisting}
-
 次に，\ref{sec:tri_suf}節での十分条件のの図\ref{fig:ind_steps}を
 用いた証明 (定理~\ref{thm:tri_suf}) で注目した6つの彩色三角形
 \begin{center}
@@ -88,7 +74,7 @@
     $\left(\C{0}{2\cdot3^{k}},\C{3^{k}}{2\cdot3^{k}},\C{0}{3^{k+1}}\right)$
   \end{tabular}
 \end{center}
-が$3^{\tt{k}}$段の調和彩色三角形であることは，
+が{\tt{3\verb|^|k}}段の調和彩色三角形であることは，
 帰納法の仮定（{\tt{IHk}}）よりすぐに示すことができる．
 \begin{lstlisting}[language=Coq]
   have <- : Triangle colfun x y (3^k)
@@ -99,63 +85,6 @@
   have <- : Triangle colfun x (y + (3^k).*2) (3 ^k)
 \end{lstlisting}
 このことを利用してさらにサブゴールの右辺を変形して証明を終える．
-%% \begin{lstlisting}[language=Coq]
-%%   cpos : coloring
-%%   H : CFun cpos
-%%   k : nat
-%%   IHk : forall x y : nat, Triangle cpos x y (3 ^ k)
-%%   x, y : nat
-%%   ============================
-%%   cpos x (y + 3 ^ k + (3 ^ k).*2) =
-%%   cpos x (y + (3 ^ k).*2 + 3 ^ k)
-%% \end{lstlisting}
-%% 最後に，ライブラリ{\tt{ssrnat}}にある補題{\tt{addnAC}}で
-%% 等式を変形をして証明を終える．
-%% \begin{lstlisting}[language=Coq]
-%%     by rewrite addnAC.
-%%   Qed.
-%% \end{lstlisting}
-
-%% --------------------------------------------------
-%% 補題\ref{lem:tri_suf}をCoqに実装するために論理式の形にしたものが次の定理\ref{thm:tri_suf}である．
-%% \begin{thm}[十分条件] \label{thm:tri_suf}
-%%   $\forall x, n \in \N, (\exists k \in \N, n = 3 ^ k \Imp \WCT(x,n))$.
-%% \end{thm}
-%% \begin{proof}
-%%   定理\ref{thm:tri_suf}でも述べたようにこの定理と論理同値である
-%%   次を証明することで，定理\ref{thm:tri_suf}を示す．\\
-%%   $\forall \cpos, \forall k, n, x, y \in \N,$ $n = 3^k \Imp (\CFun(\cpos) \Imp$ $\T(cpos,x,y)).$ \\
-%%   これを$k$に関する数学的帰納法を用いて証明する．
-%%   $k=0$のときは$n=1$となるので明らかに成立する．
-%%   次に$k$のとき成立すると仮定して$k+1$のときも成立することを示す．\\
-%%   $3^k$マスずつ離れたマスの色を図\ref{fig:suf_steps}のように表すことにする．
-%%   \begin{figure}[h]
-%%     \centering
-%%     \input{suf_steps}
-%%     \caption{彩色三角形（$n=3^{k+1}$のとき）}
-%%     \label{fig:suf_steps}
-%%   \end{figure}
-%%   このとき，$3$つの端点のマスの色が$c_0=cpos(x,y^k)$，$c_3=cpos(x,y)$，
-%%   $c_5=cpos(x+3^k,y^k)$である$3^k$段の彩色三角形が調和彩色三角形であることは，
-%%   帰納法の仮定からすぐに示せる．
-%%   同様にして，この彩色三角形以外にも$5$つの彩色三角形は調和彩色三角形である．
-%%   すなわち，次の$6$つが成立する．
-%%   \begin{itemize}
-%%     \item $\T(cpos,x,y,3^k)$
-%%     \item $\T(cpos,x+3^k,y,3^k)$
-%%     \item $\T(cpos,x+2\cdot3^k,y,3^k)$
-%%     \item $\T(cpos,x,y+3^k,3^k)$
-%%     \item $\T(cpos,x+3^k,y+3^k,3^k)$
-%%     \item $\T(cpos,x,y+2\cdot3^k,3^k)$
-%%   \end{itemize}
-%%   これらと補題\ref{lem:mixcut} $(\mixcut)$ を用いて式変形をすると，
-%%   \[
-%%   \cpos(x,y+3^k)=\mix(\cpos(x,y),\cpos(x+3^{k+1},y))
-%%   \]
-%%   が得られる．すなわち，$\T(cpos,x,y,3^{k+1})$．\\
-%%   したがって，$\T(cpos,x,y,n)$である．
-%% \end{proof}
-%% --------------------------------------------------
 
 %% ------------------------------
 
@@ -184,65 +113,17 @@
     Lemma allred : colfun x (y + n) = red.
   End allred.
 \end{lstlisting}  
-この {\tt{Section}} では，仮定{\tt H} により関数{\tt cpos}は彩色関数であり，
-仮定{\tt{redline}}により「ある1つの段のすべてのマスの色が赤である」ことが
-前提とされる．
-補題{\tt allred}は「すべてのマスの色が赤である段から{\tt{n}}段の下にある
-位置が ({\tt{x}},{\tt{y+n}}) のマスの色も赤である」ことを表している．
-すなわち，「ある1つの段のすべてのマスの色が赤であるとき最下段のマスの色が赤になる」ことを意味する．
-%% \subsubsection{必要条件の形式化準備}
-%% 本節から必要条件の証明 (定理~\ref{thm:tri_nec}) を形式化する．
-%% \ref{sec:tri_nec}節での必要条件の証明 (定理~\ref{thm:tri_nec}) では，
-%% 彩色三角形の段数$n$のとる値によっては調和彩色三角形にならないことを示していた．
-%% このことを説明する際には，マスの色が赤のみで塗られる段をつくり，
-%% その段よりも下の段はすべて赤で塗られることを利用していた．
-%% まずは，このことを形式化していく．
-%% 最初に本節のみで有効な変数や仮定を導入する.
-%% \begin{lstlisting}[language=Coq]
-%%   Section allred.
-%%     Variables (cpos : coloring) (x y n : nat).
-%%     Hypothesis H : CFun cpos.
-%%     Hypothesis redline :
-%%       forall i, i <= n -> cpos (x + i) y = red.
-%% \end{lstlisting}
-%% ここでは，すべてのマスの色が赤く塗られている段は{\tt{n}}マスであり，
-%% 左端のマスの位置が ({\tt{x}},{\tt{y}}) であることを想定している．
-%% 仮定{\tt{redline}}は「ある1つの段のすべてのマスの色が赤である」ことを
-%% 意味している．
-%% このような準備のもとで
-%% 「すべてのマスの色が赤である段から{\tt{n}}段の下にある
-%%   位置が ({\tt{x}},{\tt{y+n}}) のマスの色も赤である」
-%% ことは次のような補題として記述される：
-%% \begin{lstlisting}[language=Coq]
-%%   Lemma allred : cpos x (y + n) = red.
-%% \end{lstlisting}
-%% この補題は次の命題{\tt{bottom}}が成立することを利用すればすぐに証明できる．
-%% \begin{lstlisting}[language=Coq]
-%%   suff bottom q p :
-%%     p + q <= n -> cpos (x + p) (y + q) = red
-%%     by rewrite -(addn0 x); exact: bottom.
-%% \end{lstlisting}
-%% すなわち，命題{\tt{bottom}}が成立することを証明すればよい．
-%% 命題{\tt{bottom}}は{\tt{q}}に関する数学的帰納法で証明する．
-%% \begin{lstlisting}[language=Coq]
-%%     elim: q p => [p|q IHq p pqn];
-%%     first by rewrite !addn0; apply redline.
-%%     by rewrite addnS H IHq ?(leq_trans _ pqn)//
-%%          -?addnS ?IHq// ?addnS// addSnnS.
-%%   Qed.
-%% \end{lstlisting}
-
-%% ここからは本節のみで有効であった変数や仮定を用いずに証明する．
-%% すなわち，補題は{\tt{allred}}を用いる際には
-%% 本節のみで有効であった仮定を証明する必要があることに留意して形式化を進める．
-%% \begin{lstlisting}[language=Coq]
-%%   End allred.     
-%% \end{lstlisting}
+この {\tt{Section}} では，仮定{\tt H} により関数{\tt colfun}は彩色関数であり，
+仮定{\tt{redline}}により「ある段のすべてのマスの色が赤である」ことが
+前提とされている．
+補題{\tt{allred}}は「最下段のマスの色が赤である」ことを表している．
+つまり，この{\tt{Section}}の外では
+「ある段のすべてのマスの色が赤であるとき，最下段のマスの色が赤である」ことを意味する．
 
 この問題では最上段の色を指定すれば色塗り規則に従えば
 その下の色も帰納的に求められるので，
 最上段の色塗りを与える関数から全体の色塗りを与える関数へ拡張できる．
-これらの観察結果が今回のCoq上での形式化のアイデアの1つである．
+これらの観察結果が今回の Coq 上での形式化のアイデアの1つである．
 最上段の色塗りを与える関数から全体の色塗りを与える関数へ拡張する
 再帰的関数を次のように定義する：
 \begin{lstlisting}[language=Coq]
@@ -266,6 +147,8 @@
 「関数{\tt{liftcoloring}}によって拡張されたマスと
   拡張する際に用いた2マスは互いに隣接するマスであり調和性を満たす」
 ことがわかる．
+
+
 
 \subsubsection{$n$が偶数の場合} \label{sec:even}
 ここからは$n=3^k$となる$k$が存在しない彩色三角形の段数$n$の場合は，
@@ -297,10 +180,11 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
     
   Lemma TCTP_nec_even x n :
     n > 0 -> ~~ odd n ->
-    ~ WellColoredTriangle x n.  
+    ~ WellColoredTriangle x n.
+  
 \end{lstlisting}
 この {\tt{Section}} では，
-仮定{\tt{H}} により関数{\tt{cpos}}は彩色関数であり，
+仮定{\tt{H}} により関数{\tt{colfun}}は彩色関数であり，
 仮定{\tt{topcolor}}は最上段のマスの色は{\tt{coloringYB}}で決定することを
 意味している．
 
@@ -309,110 +193,21 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
 \begin{lstlisting}[language=Coq]
   Lemma even_bottom : colfun x n = red.
 \end{lstlisting}
-この補題の証明では，
-%% 最上段よりも1段下のマスはすべて赤で塗られているとすると，
-補題{\tt{allred}}を用いて示す．
-そのため，補題{\tt{allred}}の仮定を示す必要があるので，
-%% \begin{lstlisting}[language=Coq]
-%%   Proof.
-%%     suff even_next i :
-%%       i <= n.-1 -> cpos (x + i) 1 = red;
-%%     first by
-%%       rewrite -(prednK n_gt_0) -add1n allred//.
-%% \end{lstlisting}
-%% 次に，
-最上段よりも1段下のマスはすべて赤で塗られていることを意味する
-命題{\tt{even\_next\_red}}を示す．
+この補題の証明では，補題{\tt{allred}}を用いて証明するが，
+補題{\tt{allred}}の仮定が成立することを示す必要がある．
+そこで，最上段よりも1段下のマスはすべて赤で塗られていることを意味する
+命題{\tt{even\_next\_red}}を先に示す．
 \begin{lstlisting}[language=Coq]
   suff even_next_red i :
     i <= n.-1 -> colfun (x + i) 1 = red
 \end{lstlisting}
-%% \begin{lstlisting}[language=Coq]
-%%   cpos : coloring
-%%   x, n : nat
-%%   n_gt_0 : 0 < n
-%%   H : CFun cpos
-%%   topcolor :
-%%     forall i : nat,
-%%     i <= n -> cpos (x + i) 0 = coloringYB n i
-%%   i : nat
-%%   i_leq_pn : i <= n.-1
-%%   ============================
-%%   cpos (x + i) 1 = red
-%% \end{lstlisting}
-%% まず，{\tt{H}}より最上段よりも1段下のマスはそれぞれ
-%% 最上段にある隣接する2つのマスの色から決定することができる．
-%% さらに，仮定{\tt{topcolor}}より最上段のマスの色は
-%% 関数{\tt{coloringYB}}で得られる．
-%% \begin{lstlisting}[language=Coq]
-%%   have -> :
-%%     cpos (x + i) 1 =
-%%     mix (cpos (x + i) 0) (cpos (x + i).+1 0);
-%%   first exact/H.
-%%   have -> := topcolor i i_leq_n;
-%%   rewrite -addnS.
-%%   have -> := topcolor i.+1 i_lt_n.
-%% \end{lstlisting}
-%% \begin{lstlisting}[language=Coq]
-%%   cpos : coloring
-%%   x, n : nat
-%%   n_gt_0 : 0 < n
-%%   H : CFun cpos
-%%   topcolor :
-%%     forall i : nat,
-%%     i <= n -> cpos (x + i) 0 = coloringYB n i
-%%   i : nat
-%%   i_leq_pn : i <= n.-1
-%%   i_leq_n : i <= n
-%%   i_lt_n : i < n
-%%   ============================
-%%   mix (coloringYB n i) (coloringYB n i.+1) = red
-%% \end{lstlisting}
 最上段のマスは関数{\tt{coloringYB}}で塗られてるので
 黄色と青で交互に塗られている．
 このとき，左端のマスから交互に塗る塗り方は
 「黄色，青の順番の場合」と「青，黄色の順番の場合」がある．
 しかし，どちらの場合においても最下段より1段下のマスの色が赤である．
 このことから命題{\tt{even\_next\_red}}は，
-{\tt{i}}の偶奇によって場合分けをおこない，
-それぞれの場合において仮定{\tt{H}}を用いることで示せる．
-
-%% {\tt{i}}の偶奇によって，
-%% {\tt{coloringYB n i}}，{\tt{coloringYB n i.+1}}が決定する色が変わることを
-%% 次の命題{\tt{YB\_yel}}，{\tt{YB\_blu}}として形式化する．
-%% それぞれ{\tt{j}}が偶数のときは{\tt{coloringYB m j = yel}}，
-%% 奇数のときは{\tt{coloringYB m j = blu}}であることを意味する．
-%% また，これらは{\tt{coloringYB}}の定義より等式の変形で証明することができる．
-%% \begin{lstlisting}[language=Coq]
-%%   have YB_yel m j :
-%%     j <= m -> ~~ odd j -> coloringYB m j = yel.
-%%   by move=> m_gt_j oj;
-%%     rewrite /coloringYB m_gt_j oj.
-%%   have YB_blu m j :
-%%     odd j -> coloringYB m j = blu
-%%   by move=> oj; rewrite /coloringYB oj andbF.
-%% \end{lstlisting}
-%% 最後に，{\tt{i}}の偶奇で場合分けをおこなうと
-%% 前述した命題{\tt{YB\_yel}}，{\tt{YB\_blu}}を用いることで証明を終了させる．
-%% \begin{lstlisting}[language=Coq]
-%%   have [oi|ei] := boolP (odd i).
-%%   - have -> : coloringYB n i = blu
-%%     by exact: YB_blu.
-%%     have -> // : coloringYB n i.+1 = yel
-%%     by rewrite YB_yel //= oi.
-%%   - have -> : coloringYB n i = yel
-%%     by exact: YB_yel.
-%%     have -> // : coloringYB n i.+1 = blu
-%%     by exact: YB_blu.
-%%   Qed.
-%% \end{lstlisting}
-
-ここからは本節のみで有効であった変数や仮定を用いずに証明する．
-すなわち，補題は{\tt{even\_bottom}}を用いる際には
-本節のみで有効であった仮定を証明する必要があることに留意して形式化を進める．
-%% \begin{lstlisting}[language=Coq]
-%%   End TCTP_nec_even.
-%% \end{lstlisting}
+{\tt{i}}の偶奇によって場合分けで示せる．
 
 最後に，$n$段の彩色三角形に対して，$n$が偶数の場合には
 調和彩色三角形でないことを形式化する．
@@ -422,21 +217,10 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
     n > 0 -> ~~ odd n ->
     ~ WellColoredTriangle x n.
 \end{lstlisting}
-%% \begin{lstlisting}[language=Coq]
-%%   x, n : nat
-%%   n_gt_0 : 0 < n
-%%   en : ~~ odd n
-%%   WCT : WellColoredTriangle x n
-%%   ============================
-%%   False
-%% \end{lstlisting}
-この補題の証明では，調和彩色三角形であると仮定して矛盾を導く．
-以降，調和彩色三角形であると仮定は{\tt{WCT}}とする．
-
 最上段のマスの塗り方が関数{\tt{coloringYB}}としたとき，
-下の段に対して関数{\tt{liftcoloring}}によって色の塗り方が拡張される．
-このとき，関数{\tt{liftcoloring}}によって拡張されたマスと
-拡張する際に用いた2マスは調和性を満たす．
+下の段に対して関数{\tt{liftcoloring}}によって色の塗り方が拡張され，
+関数{\tt{liftcoloring}}によって拡張されたマスと拡張する際に用いた2マスは
+調和性を満たす．
 このことを形式化すると次のように記述でき，容易に示すことができる：
 \begin{lstlisting}[language=Coq]
   have [colfun [H lift]] :
@@ -445,84 +229,9 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
     liftcoloring
       (fun y => coloringYB n (y - x)) x1 y1.
 \end{lstlisting}
-以降，任意の互いに隣接する 3 マスは調和性を満たしているという仮定を{\tt{H}}，
-最上段の塗りが方が下の段に対して関数{\tt{liftcoloring}}によって色の塗り方が
-拡張されているという仮定を{\tt{lift}}とする．
+この性質と仮定の調和彩色三角形であることを利用するとこの補題の証明できる．
 
-仮定{\tt{WCT}}より{\tt{colfun x n = mix (colfun x 0) (colfun (x + n) 0)}}が成立している．
-%% \begin{lstlisting}[language=Coq]
-%%   x, n : nat
-%%   n_gt_0 : 0 < n
-%%   en : ~~ odd n
-%%   WCT : WellColoredTriangle x n
-%%   colfun : nat -> nat -> Color
-%%   H : CFun colfun
-%%   lift :
-%%     forall x1 y1 : nat, colfun x1 y1 =
-%%     liftcoloring
-%%       (fun y : nat => coloringYB n (y - x)) x1 y1
-%%   ============================
-%%   False
-%% \end{lstlisting}
-%% 仮定{\tt{WCT}}，{\tt{H}}より最下段のマスに塗られている色は
-%% 最上段の両端のマスの2色を関数{\tt{mix}}に与えた色を一致する．
-%% \begin{lstlisting}[language=Coq]
-%%   have := WCT colfun H;
-%%   rewrite /Triangle addnC addn0.
-%% \end{lstlisting}
-\begin{lstlisting}[language=Coq]
-  x, n : nat
-  n_gt_0 : 0 < n
-  en : ~~ odd n
-  WCT : WellColoredTriangle x n
-  colfun : nat -> nat -> Color
-  H : CFun coloring
-  lift :
-    forall x1 y1 : nat, colfun x1 y1 =
-    liftcoloring
-      (fun y : nat => coloringYB n (y - x)) x1 y1
-  ============================
-  colfun x n =
-    mix (colfun x 0) (colfun (x + n) 0)
-  -> False
-\end{lstlisting}
-このとき，最上段の両端のマスの色の塗り方は仮定{\tt{lift}}より
-関数{\tt{coloringYB}}であり，塗られている色は{\tt{yel}}であることがわかる．
-%% \begin{lstlisting}[language=Coq]
-%%   have <- : coloringYB n 0 = colfun x 0
-%%   by rewrite lift/= subnn.
-%%   have <- : coloringYB n n = colfun (x + n) 0
-%%   by rewrite lift/= addnC addnK.
-%%   have -> : coloringYB n 0 = yel
-%%   by rewrite /=.
-%%   have -> : coloringYB n n = yel
-%%   by rewrite /coloringYB leqnn en.
-%% \end{lstlisting}
-%% \begin{lstlisting}[language=Coq]
-%%   x, n : nat
-%%   n_gt_0 : 0 < n
-%%   en : ~~ odd n
-%%   WCT : WellColoredTriangle x n
-%%   colfun : nat -> nat -> Color
-%%   H : CFun colfun
-%%   lift :
-%%     forall x1 y1 : nat, colfun x1 y1 =
-%%     liftcoloring
-%%     (fun y : nat => coloringYB n (y - x)) x1 y1
-%%   ============================
-%%   colfun x n = mix yel yel -> False
-%% \end{lstlisting}
-また，補題{\tt{even\_bottom}}より
-%% 最上段の色の塗り方が関数{\tt{coloringYB}}のときは
-最下段のマスの色{\tt{colfun x n}}は{\tt{red}}であることが分かっているから，
-関数{\tt{mix}}を計算すると{\tt{red = yel}}となり矛盾が起こるので
-証明を終えることができる．
-%% \begin{lstlisting}[language=Coq]
-%%     have -> // : colfun x n = red
-%%     by apply: even_bottom => // i ni;
-%%     rewrite lift/= addnC addnK.
-%%   Qed.
-%% \end{lstlisting}
+
 
 \subsubsection{$n$が奇数かつ$3^{k} < n \leq 3^{k} \cdot 2$の場合}
 本節では$n$が奇数かつ$3^{k} < n \leq 3^{k} \cdot 2$の場合を形式化する．
@@ -541,48 +250,24 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
 奇数マス離れているマスには{\tt{blu}}を塗る．
 一方で，左端から{\tt{n/.2.+1}}マスから{\tt{n}}マス離れているマスまでは
 偶奇によって塗る色が入れ替わる．
-すなわち，関数{\tt{coloringYBBY}}はマスの色が対照的になるように，
+すなわち，関数{\tt{coloringYBBY}}はマスの色が対称的になるように，
 両端のマスから内側に向かって黄色と青で交互に塗る塗り方である．
-次に，関数{\tt{coloringYBBY}}のもつ性質について以下の補題として形式化する：
-\begin{lstlisting}[language=Coq]
-  Lemma YBBY_yel_even n i :
-    i <= n./2 ->
-    ~~ odd i -> coloringYBBY n i = yel.
-  Lemma YBBY_yel_odd n i :
-    n./2.+1 <= i ->
-    odd i -> coloringYBBY n i = yel.
-  Lemma YBBY_blu_odd n i :
-    i <= n./2 ->
-    odd i -> coloringYBBY n i = blu.
-  Lemma YBBY_blu_even n i :
-    n./2.+1 <= i <= n ->
-    ~~ odd i -> coloringYBBY n i = blu.
-  Lemma YBBY_both n :
-    odd n -> coloringYBBY n 0 = coloringYBBY n n.
-\end{lstlisting}
-補題{\tt{YBBY\_yel\_even}}，{\tt{YBBY\_yel\_odd}}，
-{\tt{YBBY\_blu\_odd}}および{\tt{YBBY\_blu\_even}}は，
-{\tt{i}}の満たす条件によって関数{\tt{coloringYBBY}}が
-返す色を表している．
-補題{\tt{YBBY\_both}}は関数{\tt{coloringYBBY}}で塗られているマスから
-右に奇数マス分だけ離れたマスも関数{\tt{coloringYBBY}}で塗られているとき，
-この2マスの色は一致することを表している．
 
 次に$n$が奇数かつ$3^{k} < n \leq 3^{k} \cdot 2$の場合，
 調和彩色三角形にならないことを形式化していく.
 このことは次の{\tt{Section}}を通しておこなう:
 \begin{lstlisting}[language=Coq]
   Section TCTP_nec_shortodd.
-    Variables (cpos : coloring) (k x n : nat).
+    Variables (colfun : coloring) (k x n : nat).
     Hypotheses
       (n_range : 3 ^ k < n <= (3 ^ k).*2)
       (on : odd n).
-    Hypotheses H : CFun cpos.
+    Hypotheses H : CFun colfun.
     Hypothesis triangle :
-      forall x1 y1, Triangle cpos x1 y1 (3 ^ k).
+      forall x1 y1, Triangle colfun x1 y1 (3 ^ k).
     Hypothesis topcolor :
       forall i, i <= n ->
-      coloringYBBY n i = cpos (x + i) 0.
+      coloringYBBY n i = colfun (x + i) 0.
     Let shortodd_coloringYB i :
       i <= n - 3 ^ k ->
       coloringYB (n - 3^k) i = colfun (x + i) (3^k).
@@ -593,7 +278,8 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
     3 ^ k < n <= (3 ^ k).*2 -> odd n ->
     ~ WellColoredTriangle x n.
 \end{lstlisting}
-仮定{\tt{H}}，{\tt{triangle}}より関数{\tt{colfun}}は彩色関数であり，
+仮定{\tt{H}}より関数{\tt{colfun}}は彩色関数であり，
+仮定{\tt{triangle}}より
 \ref{sec_suf_coq}節で形式化した定理{\tt{TCTP\_suf}}が成立していること，
 仮定{\tt{n\_range}}，{\tt{on}}は彩色三角形の段数{\tt{n}}が
 奇数であり，{\tt{3\verb|^|k < n $\leq$ (3\verb|^|k).*2}}を満たすこと，
@@ -611,266 +297,44 @@ $n$に関する3つの場合に分けて調和彩色三角形にならないこ�
 \end{lstlisting}
 最上段から{\tt{3\verb|^|k}}段下にある1マスと
 最上段にある2マスが{\tt{3\verb|^|k}}段の彩色三角形の3つの端点となるとき，
-仮定{\tt{triangle}}よりこの彩色三角形は調和彩色三角形となる．
-すなわち，最上段から{\tt{3\verb|^|k}}段下にある1マスの色を
-最上段にある2マスの色から求められることを利用して証明する．
-%% \begin{lstlisting}[language=Coq]
-%%   Proof.
-%%     have -> :
-%%       cpos (x + i) (3 ^ k) =
-%%       mix (cpos (x + i) 0) (cpos (x +i + 3 ^ k) 0)
-%%     by rewrite -triangle.
-%% \end{lstlisting}
-%% \begin{lstlisting}[language=Coq]
-%%   cpos : coloring
-%%   k, x, n : nat
-%%   n_range : 3 ^ k < n <= (3 ^ k).*2
-%%   on : odd n
-%%   H : CFun cpos
-%%   triangle :
-%%     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
-%%   topcolor :
-%%     forall i : nat, i <= n ->
-%%     coloringYBBY n i = cpos (x + i) 0
-%%   i : nat
-%%   i_range : i <= n - 3 ^ k
-%%   i_range' : i + 3 ^ k <= n
-%%   i_leq_n : i <= n
-%%   n_range_lt : n < (3 ^ k).*2
-%%   hn_range_lt : n./2 < 3 ^ k
-%%   hn_range_lt' : n./2 < i + 3 ^ k
-%%   hn_geq_i : i <= n./2
-%%   ============================
-%%   coloringYB (n - 3^k) i =
-%%   mix (cpos (x + i) 0) (cpos (x + i + 3^k) 0)
-%% \end{lstlisting}
+仮定{\tt{triangle}}よりこの彩色三角形は調和彩色三角形となることを
+利用して証明する．
+%% 仮定{\tt{topcolor}}より最上段のマスの色は関数{\tt{coloringYBBY}}で得られる．
+%% 関数{\tt{coloringYBBY}}が表す色は，
+%% {\tt{i}}の偶奇で場合分けをおこなうことで求められるようになる．
+%% すると，調和彩色三角形の両端のマスの色を求めることができ，
+%% 得られた 2 色から関数{\tt{mix}}を計算をすることで，
+%% 「最上段か{\tt{3\verb|^|k}}段下のすべてのマスの色は
+%%   関数{\tt{coloringYB}}で塗ったときの色と一致する」
+%% ことを証明できる．
 
-仮定{\tt{topcolor}}より最上段のマスの色は関数{\tt{coloringYBBY}}で得られ，
-%% \begin{lstlisting}[language=Coq]
-%%   have <- :
-%%     coloringYBBY n i = cpos (x + i) 0
-%%   by exact /topcolor /i_leq_n.
-%%   have <- :
-%%     coloringYBBY n (i + 3 ^ k) = cpos (x + i + 3^k) 0
-%%   by rewrite -addnA topcolor.
-%% \end{lstlisting}
-%% \begin{lstlisting}[language=Coq]
-%%   cpos : coloring
-%%   k, x, n : nat
-%%   n_range : 3 ^ k < n <= (3 ^ k).*2
-%%   on : odd n
-%%   H : CFun cpos
-%%   triangle :
-%%     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
-%%   topcolor :
-%%     forall i : nat, i <= n ->
-%%     coloringYBBY n i = cpos (x + i) 0
-%%   i : nat
-%%   i_range : i <= n - 3 ^ k
-%%   i_range' : i + 3 ^ k <= n
-%%   i_leq_n : i <= n
-%%   n_range_lt : n < (3 ^ k).*2
-%%   hn_range_lt : n./2 < 3 ^ k
-%%   hn_range_lt' : n./2 < i + 3 ^ k
-%%   hn_geq_i : i <= n./2
-%%   ============================
-%%   coloringYB (n - 3^k) i =
-%%   mix (coloringYBBY n i) (coloringYBBY n (i + 3^k))
-%% \end{lstlisting}
-{\tt{i}}の偶奇で場合分けをおこなって示す．
-\begin{lstlisting}[language=Coq]
-  have [oi|ei] := boolP (odd i).
-\end{lstlisting}
-
-{\tt{i}}が奇数の場合は，
-関数{\tt{coloringYBBY}}で塗られている最上段のマスはどちらも{\tt{blu}}となる．
-これは前述した
-補題{\tt{YBBY\_blu\_odd}}，{\tt{YBBY\_blu\_even}}を用いて証明する．
-さらに，{\tt{i}}が奇数であるから
-{\tt{coloringYB (n - 3\verb|^|k) i}}も{\tt{blu}}となることから，
+補題{\tt{shortodd\_coloringYB}}より
 最上段から{\tt{3\verb|^|k}}段下のすべてのマスの色は
-関数{\tt{coloringYB}}で塗ったときの色と一致することを示せる．
-%% \begin{lstlisting}[language=Coq]
-%%   - have -> : coloringYBBY n i = blu
-%%     by exact: YBBY_blu_odd.
-%%     have -> : coloringYBBY n (i + 3 ^ k) = blu.
-%%     by rewrite YBBY_blu_even// ?
-%%       hn_range_lt'// oddD oddX orbT oi.
-%%     have ->// :
-%%       coloringYB (n - 3 ^ k) i = blu
-%%     by rewrite /coloringYB oi i_range //.
-%% \end{lstlisting}
-
-{\tt{i}}が偶数の場合は，
-関数{\tt{coloringYBBY}}で塗られている最上段のマスはどちらも{\tt{yel}}となる．
-これは前述した
-補題{\tt{YBBY\_yel\_even}}，{\tt{YBBY\_yel\_odd}}を用いて証明する．
-さらに，{\tt{i}}が偶数であるから
-{\tt{coloringYB (n - 3\verb|^|k) i}}も{\tt{yel}}となることから，
-最上段から{\tt{3\verb|^|k}}段下のすべてのマスの色は
-関数{\tt{coloringYB}}で塗ったときに帰着されることがわかる．
-%% \begin{lstlisting}[language=Coq]
-%%   - have -> : coloringYBBY n i = yel
-%%     by exact: YBBY_yel_even.      
-%%     have -> : coloringYBBY n (i + 3 ^ k) = yel.
-%%     by rewrite YBBY_yel_odd// ?hn_range_lt'//
-%%       oddD oddX orbT /= addbT ei.
-%%     have ->// :
-%%       coloringYB (n - 3 ^ k) i = yel
-%%       by rewrite /coloringYB ei i_range //.
-%% \end{lstlisting}
-
-以上より，{\tt{i}}の偶奇によらず最上段から{\tt{3\verb|^|k}}段下の
-すべてのマスの色は関数{\tt{coloringYB}}で塗ったときの色と一致することを示せた．
-
-補題{\tt{shortodd\_coloringYB}}より最上段から{\tt{3\verb|^|k}}段下のすべてのマスの色は
 関数{\tt{coloringYB}}で塗ったときの色と一致することがわかっている．
 これは最上段から{\tt{3\verb|^|k}}段下のすべてのマスの色は黄色，青と交互に塗られており，
-\ref{sec:even}節で説明した$n$が偶数の場合に帰着したことになる．
-すなわち，$n$が偶数の場合のときと同様にして，最下段のマスの色が赤になる．
-「最下段のマスの色が赤である」ことは次のように記述できる：
+\ref{sec:even}節で説明した$n$が偶数の場合に帰着したことになり「最下段のマスの色が赤である」．
+このことは次のように記述できる：
 \begin{lstlisting}[language=Coq]
-  Lemma shortodd_bottom : cpos x n = red.
+  Lemma shortodd_bottom : colfun x n = red.
 \end{lstlisting}
 この補題は前述した補題{\tt{even\_bottom}}と同じ結論であるが，
-節ごとに設定した有効な変数や仮定が異なることに注意しながら証明を進めていく．
-
-補題{\tt{allred}}より最下段のマスの色は
-すべてのマスが赤となる段があることを示せばよいので，
-最上段から{\tt{(3\verb|^|k).+1}}段下ののマスはすべて赤で塗られていることを示す．
+節ごとに設定した有効な変数や仮定が異なることに注意しながら証明をする必要がある．
+%% 補題{\tt{allred}}より最下段のマスの色は
+%% すべてのマスが赤となる段があることを示せばよいので，
+%% 「最上段から{\tt{(3\verb|^|k).+1}}段下ののマスはすべて赤で塗られている」ことを示す．
+%% これは次のように記述できる：
 %% \begin{lstlisting}[language=Coq]
-%%   Proof.
-%%     have shortodd_coloringYB_next i :
-%%       i <= (n - 3 ^ k).-1 ->
-%%       cpos (x + i) (3 ^ k).+1 = red.
+%%   have shortodd_coloringYB_next_red i :
+%%     i <= (n - 3 ^ k).-1 ->
+%%     colfun (x + i) (3 ^ k).+1 = red.
 %% \end{lstlisting}
-%% \begin{lstlisting}[language=Coq]
-%%   cpos : coloring
-%%   k, x, n : nat
-%%   n_range : 3 ^ k < n <= (3 ^ k).*2
-%%   on : odd n
-%%   H : CFun cpos
-%%   triangle :
-%%     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
-%%   topcolor :
-%%     forall i : nat, i <= n ->
-%%     coloringYBBY n i = cpos (x + i) 0
-%%   shortodd_coloringYB :
-%%     forall i : nat, i <= n - 3 ^ k ->
-%%     coloringYB (n - 3 ^ k) i = cpos (x + i) (3 ^ k)
-%%   i : nat
-%%   ============================
-%%   i <= (n - 3 ^ k).-1 ->
-%%     cpos (x + i) (3 ^ k).+1 = red
-
-%% subgoal 2 (ID 65) is:
-%%  cpos x n = red
-%% \end{lstlisting}
-これは仮定{\tt{H}}より最上段から{\tt{3\verb|^|k}}段下にある隣接した
-任意の2マスの色を関数{\tt{mix}}に与えたときに返す色が{\tt{red}}となればよい．
-ここでは，仮にこの主張が正しいものとして証明を進めることで
-命題{\tt{shortodd\_coloringYB\_next}}の証明を終える．
-そして，仮に正しいとした主張は以下のように記述される．
-\begin{lstlisting}[language=Coq]
-  suff :
-    mix (cpos (x+i) (3^k)) (cpos (x+i).+1 (3^k))
-    = red
-  by move=> <-.
-\end{lstlisting}
-%% \begin{lstlisting}[language=Coq]
-%%   cpos : coloring
-%%   k, x, n : nat
-%%   n_range : 3 ^ k < n <= (3 ^ k).*2
-%%   on : odd n
-%%   H : CFun cpos
-%%   triangle :
-%%     forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
-%%   topcolor :
-%%     forall i : nat, i <= n ->
-%%     coloringYBBY n i = cpos (x + i) 0
-%%   shortodd_coloringYB :
-%%     forall i : nat, i <= n - 3 ^ k ->
-%%     coloringYB (n - 3 ^ k) i = cpos (x + i) (3 ^ k)
-%%   i : nat
-%%   n_gt_0 : 0 < n - 3 ^ k
-%%   i_range : i <= (n - 3 ^ k).-1
-%%   i_range_leq : i <= n - 3 ^ k
-%%   i_range_lt : i < n - 3 ^ k
-%%   ============================
-%%   mix (cpos (x + i) (3^k)) (cpos (x + i).+1 (3^k))
-%%   = red
-  
-%% subgoal 2 (ID 65) is:
-%%  cpos x n = red
-%% \end{lstlisting}
-
-%% --  ここまで修正した --
-
-次に，仮に正しいとしていた上記の主張が本当に正しいことを示す．
-まず，補題{\tt{shortodd\_coloringYB}}より
-最上段から{\tt{3\verb|^|k}}段下のすべてのマスは関数{\tt{coloringYB}}で
-塗ったときの色と一致する．
-すなわち，
-{\tt{cpos (x+i) (3\verb|^|k) = coloringYB (n - 3\verb|^|k) i}}，
-{\tt{cpos (x+i).+1 (3\verb|^|k) = coloringYB (n - 3\verb|^|k) i.+1}}，
-であることを意味している．
-ここで，{\tt{i}}に関して偶奇で場合分けをおこなうと，
-{\tt{i}}が奇数の場合には，
-{\tt{coloringYB (n - 3\verb|^|k) i = blu}}，
-{\tt{coloringYB (n - 3\verb|^|k) i.+1 = yel}}
-となるから上記の主張は正しいことがわかる．
-同様にして，{\tt{i}}が奇数の場合にも，
-{\tt{coloringYB (n - 3\verb|^|k) i = yel}}，
-{\tt{coloringYB (n - 3\verb|^|k) i.+1 = blu}}
-となるから上記の主張は正しいことがわかる．
-\begin{lstlisting}[language=Coq]
-  have [oi|ei] := boolP (odd i).
-  - rewrite -shortodd_coloringYB//
-      (_ : coloringYB _ _ = blu).
-    by rewrite -addnS -shortodd_coloringYB//
-      /coloringYB i_range_lt /= oi.
-    by rewrite /coloringYB i_range_leq oi.    
-  - rewrite -(shortodd_coloringYB i)//
-      (_ : coloringYB _ _ = yel).
-    by rewrite -addnS -shortodd_coloringYB//
-      /coloringYB i_range_lt /= ei.
-    by rewrite /coloringYB ei i_range_leq.
-\end{lstlisting}
-\begin{lstlisting}[language=Coq]
-  cpos : coloring
-  k, x, n : nat
-  n_range : 3 ^ k < n <= (3 ^ k).*2
-  on : odd n
-  H : CFun cpos
-  triangle :
-    forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
-  topcolor :
-    forall i : nat, i <= n ->
-    coloringYBBY n i = cpos (x + i) 0
-  shortodd_coloringYB :
-    forall i : nat, i <= n - 3 ^ k ->
-    coloringYB (n - 3 ^ k) i = cpos (x + i) (3 ^ k)
-  shortodd_coloringYB_next :
-    forall i : nat, i <= (n - 3 ^ k).-1 ->
-    cpos (x + i) (3 ^ k).+1 = red
-  ============================
-  cpos x n = red
-\end{lstlisting}
-最後に，これまで説明した証明の流れの通りに
-補題{\tt{allred}}，{\tt{shortodd\_coloringYB\_next}}を用いて
-等式の変形することで証明を終えることができる．
-\begin{lstlisting}[language=Coq]
-    by rewrite allred// => i ?;
-    rewrite addn1 shortodd_coloringYB_next.
-  Qed.
-\end{lstlisting}
-
-ここからは本節のみで有効であった変数や仮定を用いずに証明する．
-すなわち，補題{\tt{shortodd\_bottom}}を用いる際には
-本節のみで有効であった仮定を証明する必要があることに留意して形式化を進める．
-\begin{lstlisting}[language=Coq]
-  End TCTP_nec_shortodd.
-\end{lstlisting}
+%% 仮定{\tt{H}}より最上段から{\tt{3\verb|^|k}}段下にある隣接した
+%% 任意の2マスの色を関数{\tt{mix}}に与えたときに返す色が{\tt{red}}となればよい．
+%% これは補題{\tt{shortodd\_coloringYB}}より
+%% {\tt{n}}が偶数の場合のときに帰着することから示せる．
+%% 最後に，補題{\tt{allred}}，{\tt{shortodd\_coloringYB\_next}}を用いて
+%% 等式の変形すると，
+%% 補題{\tt{shortodd\_bottom}}証明を終えることができる．
 
 最後に，$n$段の彩色三角形に対して，
 $n$が奇数かつ$3^{k} < n \leq 3^{k} \cdot 2$の場合には
@@ -881,110 +345,11 @@ $n$が奇数かつ$3^{k} < n \leq 3^{k} \cdot 2$の場合には
     3 ^ k < n <= (3 ^ k).*2 -> odd n ->
     ~ WellColoredTriangle x n.
 \end{lstlisting}
-\begin{lstlisting}[language=Coq]
-  x, n, k : nat
-  n_range : 3 ^ k < n <= (3 ^ k).*2
-  on : odd n
-  WCT : WellColoredTriangle x n
-  ============================
-  False
-\end{lstlisting}
 最上段のマスの塗り方が関数{\tt{coloringYBBY}}としたとき，
 下の段に対して関数{\tt{liftcoloring}}によって色の塗り方が拡張される．
-このとき，関数{\tt{liftcoloring}}によって拡張されたマスと
-拡張する際に用いた2マスは調和性を満たす．
-このことを形式化すると次のように記述される：
-\begin{lstlisting}[language=Coq]
-  Proof.
-    have [cpos [H lift]] :
-      exists cpos, CFun cpos /\
-      forall x1 y1, cpos x1 y1 =
-      liftcoloring
-        (fun y => coloringYBBY n (y - x)) x1 y1.
-    by exists (liftcoloring
-      (fun y => coloringYBBY n (y - x))).
-\end{lstlisting}
-以降，任意の互いに隣接する 3 マスは調和性を満たしているという仮定を{\tt{H}}，
-最上段の塗りが方が下の段に対して関数{\tt{liftcoloring}}によって色の塗り方が
-拡張されているという仮定を{\tt{lift}}とする．
-\begin{lstlisting}[language=Coq]
-  x, n, k : nat
-  n_range : 3 ^ k < n <= (3 ^ k).*2
-  on : odd n
-  WCT : WellColoredTriangle x n
-  cpos : nat -> nat -> Color
-  H : CFun cpos
-  lift :
-    forall x1 y1 : nat, cpos x1 y1 =
-    liftcoloring
-      (fun y : nat => coloringYBBY n (y-x)) x1 y1
-  ============================
-  False
-\end{lstlisting}
-仮定{\tt{WCT}}，{\tt{H}}より最下段のマスに塗られている色は
-最上段の両端のマスの2色を関数{\tt{mix}}に与えた色を一致する．
-\begin{lstlisting}[language=Coq]
-  have := WCT cpos H;
-  rewrite /Triangle addnC addn0.
-\end{lstlisting}
-\begin{lstlisting}[language=Coq]
-  x, n, k : nat
-  n_range : 3 ^ k < n <= (3 ^ k).*2
-  on : odd n
-  WCT : WellColoredTriangle x n
-  cpos : nat -> nat -> Color
-  H : CFun cpos
-  lift :
-    forall x1 y1 : nat, cpos x1 y1 =
-    liftcoloring
-      (fun y : nat => coloringYBBY n (y - x)) x1 y1
-  ============================
-  cpos x n =
-    mix (cpos x 0) (cpos (x + n) 0)
-  -> False
-\end{lstlisting}
-すると，最上段の両端のマスの色の塗り方は仮定{\tt{lift}}より
-関数{\tt{coloringYBBY}}である．
-さらに，補題{\tt{YBBY\_both}}より左端のマスから{\tt{x}}離れているマスの色と
-{\tt{x+n}}マス離れているマスの色は一致し，{\tt{yel}}であることがわかる．
-\begin{lstlisting}[language=Coq]
-  have topcolor i :
-  coloringYBBY n i = cpos (x + i) 0
-  by rewrite lift/= addnC addnK.
-  have <- : cpos x 0 = cpos (x + n) 0; first
-  by rewrite lift -topcolor -YBBY_both//= subnn.
-  have -> : cpos x 0 = yel
-  by rewrite lift/= subnn.
-\end{lstlisting}
-\begin{lstlisting}[language=Coq]
-  x, n, k : nat
-  n_range : 3 ^ k < n <= (3 ^ k).*2
-  on : odd n
-  WCT : WellColoredTriangle x n
-  cpos : nat -> nat -> Color
-  H : CFun cpos
-  lift :
-    forall x1 y1 : nat, cpos x1 y1 =
-    liftcoloring (
-      fun y : nat => coloringYBBY n (y - x)) x1 y1
-  topcolor :
-    forall i : nat,
-    coloringYBBY n i = cpos (x + i) 0
-  ============================
-  cpos x n = mix yel yel -> False
-\end{lstlisting}
-補題{\tt{shortodd\_bottom}}より最上段の色の塗り方が関数{\tt{coloringYBBY}}のときは
-最下段のマスの色{\tt{cpos x n}}は{\tt{red}}であることが分かっているから，
-関数{\tt{mix}}を計算すると{\tt{red = yel}}となり矛盾が起こるので
-証明を終えることができる．
-\begin{lstlisting}[language=Coq]
-    have -> // : cpos x n = red
-    by apply: (shortodd_bottom _ k) => // ? ?;
-    apply: TCTP_suf.
-  Qed.
-\end{lstlisting}
+以降，補題 {\tt{TCTP\_nec\_even}}と同様の方針で証明を終えることができる．
 
-\subsubsection{$n$が奇数かつ$3^{k} \cdot 2 + 1 \leq n < 3^{k+1}$の\\場合の形式化}
+\subsubsection{$n$が奇数かつ$3^{k} \cdot 2 + 1 \leq n < 3^{k+1}$の\\場合}
 
 本節では$n$が奇数かつ$3^{k} \cdot 2 + 1 \leq n < 3^{k+1}$の場合を形式化する．
 最初に，$n$が奇数かつ$3^{k} \cdot 2 + 1 \leq n < 3^{k+1}$の場合の
@@ -996,52 +361,29 @@ $n$が奇数かつ$3^{k} < n \leq 3^{k} \cdot 2$の場合には
 関数{\tt{coloringBYB}}はマスの位置に応じてマスに塗られる色を決定する．
 左端から{\tt{3\verb|^|k}}マスから{\tt{n - 3\verb|^|k}}マス離れているマスまでは
 {\tt{yel}}を塗り，その他のマスは{\tt{blu}}を塗る，
-すなわち，関数{\tt{coloringBYB}}はマスの色が対照的になるように，
+すなわち，関数{\tt{coloringBYB}}はマスの色が対称的になるように，
 両端のマスからそれぞれ$3^k$マスずつ内側に向かって青色で塗っていき，
 その内側にあるマスをすべて黄色で塗る塗り方である．
-次に，関数{\tt{coloringYBBY}}のもつ性質について以下の補題として形式化する：
-\begin{lstlisting}[language=Coq]
-  Lemma BYB_blu_left n k i :
-    i <= (3^k).-1 -> coloringBYB n k i = blu.
-  Lemma BYB_yel_center n k i :
-    3^k <= i <= n - 3^k -> coloringBYB n k i = yel.
-  Lemma BYB_blu_right n k i :
-    (n - 3^k).+1 <= i -> coloringBYB n k i = blu.
-\end{lstlisting}
-補題{\tt{BYB\_blu\_left}}，{\tt{YB\_yel\_center}}，
-および{\tt{BYB\_blu\_ right}}は，
-{\tt{i}}の満たす条件によって関数{\tt{coloringBYB}}が
-返す色を表している．
 
 次に本節のみで有効な変数や仮定を導入する．
 \begin{lstlisting}[language=Coq]
   Section TCTP_nec_longodd.
-    Variables (cpos : coloring) (k x n : nat).
+    Variables (colfun : coloring) (k x n : nat).
     Hypotheses
       (n_range : (3 ^ k).*2.+1 <= n < 3 ^ k.+1)
-      (H : CFun cpos).
+      (H : CFun colfun).
     Hypothesis triangle :
-      forall x1 y1, Triangle cpos x1 y1 (3 ^ k).
+      forall x1 y1, Triangle colfun x1 y1 (3 ^ k).
     Hypothesis topcolor :
       forall i, i <= n ->
-      coloringBYB n k i = cpos (x + i) 0.
+      coloringBYB n k i = colfun (x + i) 0.
 \end{lstlisting}
 仮定{\tt{H}}，{\tt{triangle}}より
 \ref{sec_suf_coq}節で形式化した定理{\tt{TCTP\_suf}}が成立していること，
 仮定{\tt{n\_range}}，{\tt{on}}は彩色三角形の段数{\tt{n}}が
-奇数であり，$3^{k} \cdot 2 + 1 \leq n < 3^{k+1}$を満たすこと，
+奇数であり，{\tt{(3\verb|^|k).*2.+1 <= n < 3\verb|^|k.+1}}を満たすこと，
 仮定{\tt{topcolor}}は最上段のマスの色は{\tt{coloringBYB}}で
 決定することを意味している．
-また，仮定{\tt{n\_range}}より
-彩色三角形の段数{\tt{n}}の満たす範囲から新たな不等式を得ることができる．
-この不等式は以下の通りである：
-\begin{lstlisting}[language=Coq]
-  Let inequality :
-    prod (3^k <= n)
-    (prod ((3^k).*2 <= n) (n - (3^k).*2 <= (3^k).-1)).
-\end{lstlisting}
-以降，補題{\tt{inequality}}はタクティック{\tt{rewrite}}で
-等式を変形する際に用いる．
 
 関数{\tt{coloringBYB}}で最上段のマスの色を定めると，
 「最上段から$3^k$段下のマスにおいて，
@@ -1049,131 +391,18 @@ $n$が奇数かつ$3^{k} < n \leq 3^{k} \cdot 2$の場合には
 ことは次のように記述できる：
 \begin{lstlisting}[language=Coq]
   Let longodd_red_both_sides :
-  (forall i, i <= n-(3^k).*2 -> cpos (x+i) (3^k) = red) /\
-  (forall i, 3^k <= i <= n-3^k -> cpos (x+i) (3^k) = red).
+  (forall i, i<=n-(3^k).*2 -> colfun (x+i) (3^k) = red) /\
+  (forall i, 3^k<=i<=n-3^k -> colfun (x+i) (3^k) = red).
 \end{lstlisting}
 この補題は大きく分けて示すべきことが2つの主張に分かれており，
-{\tt{forall i, i <= n - (3\verb|^|k).*2 -> cpos (x + i) (3\verb|^|k) = red}}と
-{\tt{forall i, 3\verb|^|k <= i <= n - 3\verb|^|k -> cpos (x + i) (3\verb|^|k) = red}}である．
 {\tt{i}}の範囲が{\tt{i <= n - (3\verb|^|k).*2}}のときの主張は
 {\tt{3\verb|^|k}}段下における
-左端のマスから{\tt{n - (3\verb|^|k).*2}}までのすべてのマスが
+左端のマスから{\tt{n - (3\verb|^|k).*2}}マスが
 {\tt{red}}で塗られていることを意味している．
-一方で，{\tt{i}}の範囲が{\tt{i <= n - (3\verb|^|k).*2}}のときは
+一方で，{\tt{i}}の範囲が{\tt{3\verb|^|k <= i <= n-3\verb|^|k}}のときは
 {\tt{3\verb|^|k}}段下における
-右端から{\tt{n - (3\verb|^|k).*2}}までのすべてのマスが
+右端から{\tt{n - (3\verb|^|k).*2}}マスが
 {\tt{red}}で塗られていることを意味している．
-
-最初に，{\tt{3\verb|^|k}}段下における
-左端のマスから{\tt{n - (3\verb|^|k).*2}}までの
-すべてのマスが{\tt{red}}で塗られていることを示す．
-\begin{lstlisting}[language=Coq]
-  cpos : coloring
-  k, x, n : nat
-  n_range : (3^k).*2 < n < 3 ^ k.+1
-  H : CFun cpos
-  triangle :
-    forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
-  topcolor :
-    forall i : nat, i <= n ->
-    coloringBYB n k i = cpos (x + i) 0
-  inequality :
-    (3^k <= n) *
-    (((3^k).*2 <= n) * (n - (3^k).*2 <= (3^k).-1))
-  i : nat
-  i_range_right : i <= n - (3^k).*2
-  i_leq_n : i <= n
-  ============================
-  cpos (x + i) (3^k) = red
-
-subgoal 2 (ID 215) is:
- cpos (x + i) (3^k) = red
-\end{lstlisting}
-最上段から{\tt{3\verb|^|k}}段下にある1マスと
-最上段にある2マスが{\tt{3\verb|^|k}}段の彩色三角形の3つの端点となるとき，
-仮定{\tt{triangle}}よりこの彩色三角形は調和彩色三角形となるから
-最上段から{\tt{3\verb|^|k}}段下にある1マスの色を
-最上段にある2マスの色から求められる．
-\begin{lstlisting}[language=Coq]
-  have -> := triangle (x + i) 0;
-  rewrite /Triangle.
-\end{lstlisting}
-\begin{lstlisting}[language=Coq]
-  cpos : coloring
-  k, x, n : nat
-  n_range : (3^k).*2 < n < 3 ^ k.+1
-  H : CFun cpos
-  triangle :
-    forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
-  topcolor :
-    forall i : nat, i <= n ->
-    coloringBYB n k i = cpos (x + i) 0
-  inequality :
-    (3^k <= n) *
-    (((3^k).*2 <= n) * (n - (3^k).*2 <= (3^k).-1))
-  i : nat
-  i_range_right : i <= n - (3^k).*2
-  i_leq_n : i <= n
-  i_range_right' : 3 ^ k + i <= n - 3 ^ k
-  n_range_geq : 3 ^ k + i <= n
-  ============================
-  mix (cpos (x + i) 0) (cpos (x + i + 3 ^ k) 0) = red
-
-subgoal 2 (ID 215) is:
- cpos (x + i) (3 ^ k) = red
-\end{lstlisting}
-次に，この彩色三角形の3つの端点のうち，最上段にある2マスの色を求める．
-すなわち，
-{\tt{cpos (x + i) 0}}，{\tt{cpos (x + i + 3\verb|^|k) 0}}の表す色を求める．
-どちらも最上段のマス色であるから仮定{\tt{topcolor}}より
-関数{\tt{coloringBYB}}で得られることがわかる．
-さらに，{\tt{i}}の満たす範囲を踏まえると，
-補題{\tt{BYB\_blu\_left}}より
-{\tt{cpos (x + i) 0}}は{\tt{blu}}であり，
-補題{\tt{BYB\_yel\_center}}より
-{\tt{cpos (x + i + 3 \verb|^|k) 0}}は{\tt{yel}}である．
-すると，示すべき主張が{\tt{mix blu yel = red}}となり，
-{\tt{3\verb|^|k}}段下における左端のマスから{\tt{n - (3\verb|^|k).*2}}までの
-すべてのマスが{\tt{red}}で塗られていることの証明を終えることができる．
-\begin{lstlisting}[language=Coq]
-  have -> := triangle (x + i) 0; rewrite /Triangle.
-  have -> : cpos (x + i) 0 = blu.
-  rewrite -topcolor//; apply: BYB_blu_left => //.
-  by rewrite (leq_trans i_range_right) // inequality.
-  have ->// : cpos (x + i + (3 ^ k)) 0 = yel.
-  by rewrite -addnA -topcolor// (addnC i) //
-    BYB_yel_center// leq_addr i_range_right'//.
-\end{lstlisting}
-
-次に，{\tt{3\verb|^|k}}段下における
-右端から{\tt{n - (3\verb|^|k).*2}}までのすべてのマスが
-{\tt{red}}で塗られていることを示していくが，
-{\tt{i}}の範囲が{\tt{n - (3\verb|^|k).*2}}であった前述した場合と
-ほぼ同様にして示すことができる．
-注意すべき点は
-{\tt{cpos (x + i) 0}}，{\tt{cpos (x + i + 3\verb|^|k) 0}}の表す色が
-前述と異なる点である．
-こちらの場合は，右端から{\tt{n - (3\verb|^|k).*2}}までのすべてのマスが
-{\tt{red}}で塗られていることを示すので，
-{\tt{i}}の満たす範囲が異なり{\tt{3\verb|^|k <= i <= n - 3\verb|^|k}}である．
-したがって，{\tt{i}}の満たす範囲を踏まえると，
-補題{\tt{BYB\_yel\_center}}より
-{\tt{cpos (x + i) 0}}は{\tt{yel}}であり，
-補題{\tt{BYB\_blu\_right}}より
-{\tt{cpos (x + i + 3 \verb|^|k) 0}}は{\tt{blu}}である．
-すると，示すべき主張が{\tt{mix yel blu = red}}となり，
-{\tt{3\verb|^|k}}段下における右端のマスから{\tt{n - (3\verb|^|k).*2}}までの
-すべてのマスが{\tt{red}}で塗られていることの証明を終えることができる．
-\begin{lstlisting}[language=Coq]
-  have -> : cpos (x + i) 0 = yel
-  by rewrite
-       -topcolor// ?(BYB_yel_center n k i)//
-       i_range_left i_range_right.
-  have ->// : cpos (x + i + 3 ^ k) 0 = blu.
-  rewrite addnAC -addnA -topcolor//;
-  first by apply BYB_blu_right.
-  by rewrite -leq_subRL// inequality //.
-\end{lstlisting}
 
 補題{\tt{longodd\_red\_both\_sides}}より
 最上段から{\tt{3\verb|^|k}}段下のマスにおいて，
@@ -1189,118 +418,46 @@ subgoal 2 (ID 215) is:
 \begin{lstlisting}[language=Coq]
   Lemma longodd_bottom : cpos x n = red.
 \end{lstlisting}
-この補題は前述した
+この補題も前述した
 補題{\tt{even\_bottom}}，{\tt{shortodd\_bottom}}と同じ結論であるが，
-節ごとに設定した有効な変数や仮定が異なることに注意しながら証明を進めていく.
+節ごとに設定した有効な変数や仮定が異なることに注意しながら証明をする必要がある.
 
-補題{\tt{allred}}より最下段のマスの色は
-すべてのマスが赤となる段があることを示せばよいので，
-最上段から{\tt{(3\verb|^|k).*2}}段下ののマスはすべて赤で
-塗られていることを示す．
-\begin{lstlisting}[language=Coq]
-  Proof.
-    have longodd_redline i :
-      i <= n - (3 ^ k).*2 ->
-      cpos (x + i) (3 ^ k).*2 = red.
-\end{lstlisting}
-\begin{lstlisting}[language=Coq]
-  cpos : coloring
-  k, x, n : nat
-  n_range : (3 ^ k).*2 < n < 3 ^ k.+1
-  H : CFun cpos
-  triangle :
-    forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
-  topcolor :
-    forall i : nat, i <= n ->
-    coloringBYB n k i = cpos (x + i) 0
-  inequality :
-      (3^k <= n) *
-      (((3^k).*2 <= n) * (n - (3^k).*2 <= (3^k).-1))
-  longodd_red_both_sides :
-    (forall i : nat, i <= n - (3 ^ k).*2 ->
-     cpos (x + i) (3 ^ k) = red) /\
-    (forall i : nat, 3 ^ k <= i <= n - 3 ^ k ->
-     cpos (x + i) (3 ^ k) = red)
-  i : nat
-  ============================
-  i <= n - (3 ^ k).*2 -> cpos (x + i) (3 ^ k).*2 = red
+%% 補題{\tt{allred}}より最下段のマスの色は
+%% すべてのマスが赤となる段があることを示せばよいので，
+%% 最上段から{\tt{(3\verb|^|k).*2}}段下ののマスはすべて赤で
+%% 塗られていることを示せばよく，これは以下のように記述される．
+%% \begin{lstlisting}[language=Coq]
+%%   Proof.
+%%     have longodd_redline i :
+%%       i <= n - (3 ^ k).*2 ->
+%%       cpos (x + i) (3 ^ k).*2 = red.
+%% \end{lstlisting}
+%% これは仮定{\tt{triangle}}より
+%% {\tt{3\verb|^|k}}段の調和彩色三角形の両端のマスが
+%% 最上段から{\tt{3\verb|^|k}}段目にあるとき，
+%% 最上段から{\tt{(3\verb|^|k).*2}}段下ののマスの色は
+%% この調和彩色三角形の両端のマスのの色から推測することができる．
+%% ここで補題{\tt{longodd\_red\_both\_sides}}より
+%% 最上段から{\tt{(3\verb|^|k)}}段下のマスにおいて，
+%% 両端からそれぞれ{\tt{3\verb|^|k}}マスの色は赤であるから，
+%% {\tt{cpos (x + i) (3\verb|^|k)}}，
+%% {\tt{cpos (x + i + 3\verb|^|k) (3\verb|^|k)}}
+%% は赤であることがわかる．
+%% すると，示すべき主張が{\tt{mix red red = red}}となるので，
+%% 関数{\tt{mix}}の計算より，最上段から{\tt{(3\verb|^|k).*2}}段下ののマスは
+%% すべて赤で塗られていることを示せた．
 
-subgoal 2 (ID 102) is:
- cpos x n = red
-\end{lstlisting}
-これは仮定{\tt{triangle}}より
-{\tt{3\verb|^|k}}段の調和彩色三角形の両端のマスが
-最上段から{\tt{3\verb|^|k}}段目にあるとき，
-最上段から{\tt{(3\verb|^|k).*2}}段下ののマスの色は
-この調和彩色三角形の両端のマスのの色から推測することができる．
-\begin{lstlisting}[language=Coq]
-  have ->// := triangle (x + i) (3 ^ k);
-  rewrite /Triangle. 
-\end{lstlisting}
-\begin{lstlisting}[language=Coq]
-  cpos : coloring
-  k, x, n : nat
-  n_range : (3 ^ k).*2 < n < 3 ^ k.+1
-  H : CFun cpos
-  triangle :
-    forall x1 y1 : nat, Triangle cpos x1 y1 (3 ^ k)
-  topcolor :
-    forall i : nat, i <= n ->
-    coloringBYB n k i = cpos (x + i) 0
-  inequality :
-      (3^k <= n) *
-      (((3^k).*2 <= n) * (n - (3^k).*2 <= (3^k).-1))
-  longodd_red_both_sides :
-    (forall i : nat, i <= n - (3 ^ k).*2 ->
-     cpos (x + i) (3 ^ k) = red) /\
-    (forall i : nat, 3 ^ k <= i <= n - 3 ^ k ->
-     cpos (x + i) (3 ^ k) = red)
-  i : nat
-  i_range : i <= n - (3 ^ k).*2
-  in_range : i + 3 ^ k <= n - 3 ^ k
-  ============================
-  mix (cpos (x + i) (3^k)) (cpos (x + i + 3^k) (3^k))
-  = red
-
-subgoal 2 (ID 102) is:
- cpos x n = red
-\end{lstlisting}
-ここで補題{\tt{longodd\_red\_both\_sides}}より
-最上段から{\tt{(3\verb|^|k)}}段下のマスにおいて，
-両端からそれぞれ{\tt{3\verb|^|k}}マスの色は赤であるから，
-{\tt{cpos (x + i) (3\verb|^|k)}}，
-{\tt{cpos (x + i + 3\verb|^|k) (3\verb|^|k)}}
-は赤であることがわかる．
-すると，示すべき主張が{\tt{mix red red = red}}となるので，
-関数{\tt{mix}}の計算より，最上段から{\tt{(3\verb|^|k).*2}}段下ののマスは
-すべて赤で塗られていることを示せた．
-\begin{lstlisting}[language=Coq]
-  have ->// : cpos (x + i) (3 ^ k) = red
-  by exact: longodd_red_both_sides.1.
-  have ->// : cpos (x + i + 3 ^ k) (3 ^ k) = red.
-  by rewrite -addnA;
-    apply: longodd_red_both_sides.2;
-    rewrite leq_addl.
-\end{lstlisting}
-
-最後に，ここまで証明した補題{\tt{shortodd\_coloringYB\_next}}や
-補題{\tt{allred}}を用いて等式の変形することで，
-最下段のマスの色が赤であることを意味する補題{\tt{longodd\_bottom}}の
-証明を終えることができる．
-\begin{lstlisting}[language=Coq]
-    have // :
-      cpos x ((3^k).*2 + (n - (3^k).*2)) = red
-    by rewrite allred//.
-    by rewrite addnC subnK// inequality.
-  Qed.
-\end{lstlisting}
-
-ここからは本節のみで有効であった変数や仮定を用いずに証明する．
-すなわち，補題{\tt{longodd\_bottom}}を用いる際には
-本節のみで有効であった仮定を証明する必要があることに留意して形式化を進める．
-\begin{lstlisting}[language=Coq]
-  End TCTP_nec_longodd.
-\end{lstlisting}
+%% 最後に，ここまで証明した補題{\tt{shortodd\_coloringYB\_next}}や
+%% 補題{\tt{allred}}を用いて等式の変形することで，
+%% 最下段のマスの色が赤であることを意味する補題{\tt{longodd\_bottom}}の
+%% 証明を終えることができる．
+%% \begin{lstlisting}[language=Coq]
+%%     have // :
+%%       cpos x ((3^k).*2 + (n - (3^k).*2)) = red
+%%     by rewrite allred//.
+%%     by rewrite addnC subnK// inequality.
+%%   Qed.
+%% \end{lstlisting}
 
 最後に，$n$段の彩色三角形に対して，
 $n$が奇数かつ$3^{k} \cdot 2 + 1 \leq n < 3^{k+1}$の場合には
@@ -1311,6 +468,7 @@ $n$が奇数かつ$3^{k} \cdot 2 + 1 \leq n < 3^{k+1}$の場合には
     (3 ^ k).*2.+1 <= n < 3 ^ k.+1 ->
     ~ WellColoredTriangle x n.
 \end{lstlisting}
+%% -- ここまで修正済み --
 \begin{lstlisting}[language=Coq]
   x, n, k : nat
   n_range : (3 ^ k).*2 < n < 3 ^ k.+1
