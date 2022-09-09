@@ -1,4 +1,4 @@
-# A Formalization of Three-Color Triangle Problem
+# A Formalization of The Three-Color Triangle Problem
 
 ## The three-color triangle problem
 
