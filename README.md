@@ -11,7 +11,7 @@ The three-color triangle problem is a mathematical quiz, which is given in the f
 The quiz asks to determine the general form of *n* such that a colored triangle of stage *n* is always well-colored. 
 The answer of the quiz is already known, namely, it's *3^k*. 
 
-![well-colored triangle](coloredtriangle.png) An example of well-colored triangle with 9-stages. 
+![well-colored triangle](coloredtriangle.png) An example of a well-colored triangle with 9-stages. 
 
 The three-color triangle problem is introduced in the following paper:
 > Y. Nishiyama, ``The Three-Color Triangle Problem'', International Journal of Pure and Applied Mathematics, Vol.85, No.1, pp.69–81, 2013.
