@@ -20,9 +20,7 @@ The three-color triangle problem is introduced in the following paper:
 ## This code
 
 The Coq code is an implementation of a formalization of the three-color triangle problem in Coq with a proof for a theorem that states: 
-```
-`n`-stage colored triangles are always well-colored if and only-if `n = 3^k`. 
-```
+> `n`-stage colored triangles are always well-colored if and only-if `n = 3^k`. 
 
 
 ## Installation
