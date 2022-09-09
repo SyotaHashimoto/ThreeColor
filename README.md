@@ -13,7 +13,7 @@ The answer of the quiz is already known, namely, it's *3^k*.
 
 ![well-colored triangle](coloredtriangle.png) An example of a well-colored triangle with 9-stages. 
 
-The three-color triangle problem is introduced in the following paper:
+For more detail of the three-color triangle problem, see
 > Y. Nishiyama, ``The Three-Color Triangle Problem'', International Journal of Pure and Applied Mathematics, Vol.85, No.1, pp.69–81, 2013.
 
 
