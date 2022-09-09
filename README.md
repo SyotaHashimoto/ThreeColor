@@ -25,7 +25,7 @@ The Coq code is an implementation of a formalization of the three-color triangle
 
 ## Installation
 
-If you already have OPAM installed:
+The code requires Coq with SSReflect. If you already have OPAM installed: 
 ```
 opam install coq-mathcomp-ssreflect
 ```
