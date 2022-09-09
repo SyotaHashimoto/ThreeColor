@@ -1,4 +1,6 @@
-# Three-Color Triangle Problem
+# A Formalization of Three-Color Triangle Problem
+
+## The three-color triangle problem
 
 The three-color triangle problem is a mathematical quiz, which is given in the following setting:
 
