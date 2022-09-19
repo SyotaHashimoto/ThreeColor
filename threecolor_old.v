@@ -28,11 +28,11 @@ Section TCTP_definitions.
   Definition CFun colfun := forall x y, colfun x y.+1 = mix (colfun x y) (colfun x.+1 y).
   
   (* Meaning: The color of the node (x,y+n) is the mixure of those of the nodes (x,y) and (x+n,y). *)
-  Definition WellColoredVertices colfun x y n := colfun x (y + n) = mix (colfun x y) (colfun (x + n) y).
+  Definition Triangle colfun x y n := colfun x (y + n) = mix (colfun x y) (colfun (x + n) y).
 
   (* Meaning: The triangle (x,0)-(x+n,0)-(x,n) makes a well-colored triangle for any expected coloring. *)
-  Definition WellColoredTriangle x y n := forall colfun, CFun colfun -> WellColoredVertices colfun x y n.
-  
+  Definition WellColoredTriangle x y n := forall colfun, CFun colfun -> Triangle colfun x y n.
+
   (* Lifting of top-level coloring functions (This will be applied to coloringYBBY and coloringBYB defined later) *)
   Fixpoint liftcoloring (topcoloring : nat -> Color) x y :=
     if y is y'.+1 then mix (liftcoloring topcoloring x y') (liftcoloring topcoloring x.+1 y') else topcoloring x.
@@ -43,19 +43,19 @@ Section TCTP.
   Theorem TCTP_suf (k x y : nat) : WellColoredTriangle x y (3 ^ k).
   Proof.
     move=> colfun H.
-    elim: k x y => [|k IHk] x y; first by rewrite expn0 /WellColoredVertices !addn1; exact /H.
-    rewrite /WellColoredVertices -(mixcut _ (colfun (x + 3 ^ k) y) (colfun (x + (3 ^ k).*2) y)).
-    have <- : WellColoredVertices colfun x y (3 ^ k) by exact: IHk.
+    elim: k x y => [|k IHk] x y; first by rewrite expn0 /Triangle !addn1; exact /H.
+    rewrite /Triangle -(mixcut _ (colfun (x + 3 ^ k) y) (colfun (x + (3 ^ k).*2) y)).
+    have <- : Triangle colfun x y (3 ^ k) by exact: IHk.
     rewrite -addnn addnA.
-    have <- : WellColoredVertices colfun (x + 3 ^ k) y (3 ^ k) by exact: IHk.
-    have <- : WellColoredVertices colfun x (y + 3 ^ k) (3  ^k) by exact: IHk.
+    have <- : Triangle colfun (x + 3 ^ k) y (3 ^ k) by exact: IHk.
+    have <- : Triangle colfun x (y + 3 ^ k) (3  ^k) by exact: IHk.
     have -> : 3 ^ k.+1 = (3 ^ k).*2 + 3 ^ k by rewrite expnS (mulnDl 1 2) mul1n mul2n addnC.
     rewrite -!addnA addnn !addnA.
-    have <- : WellColoredVertices colfun (x + (3 ^ k).*2) y (3 ^ k) by exact: IHk.
+    have <- : Triangle colfun (x + (3 ^ k).*2) y (3 ^ k) by exact: IHk.
     rewrite -addnn !addnA.
-    have <- : WellColoredVertices colfun (x + 3 ^ k) (y + 3 ^ k) (3 ^ k) by exact: IHk. 
+    have <- : Triangle colfun (x + 3 ^ k) (y + 3 ^ k) (3 ^ k) by exact: IHk. 
     rewrite -!addnA addnn !addnA.
-    have <- : WellColoredVertices colfun x (y + (3 ^ k).*2) (3  ^k) by exact: IHk.
+    have <- : Triangle colfun x (y + (3 ^ k).*2) (3  ^k) by exact: IHk.
     by rewrite addnAC.
   Qed.
 
@@ -107,7 +107,7 @@ Lemma TCTP_nec_even n : n > 0 -> ~~ odd n -> ~ WellColoredTriangle 0 0 n.
 Proof.
   move=> n_gt_0 en WCT.
   have H: CFun (liftcoloring (fun z => coloringYB n z)) by rewrite /=.
-  have := WCT _ H; rewrite /WellColoredVertices addnC addn0.
+  have := WCT _ H; rewrite /Triangle addnC addn0.
   have <- : coloringYB n 0 = liftcoloring (fun z => coloringYB n z) 0 0 by rewrite//=.
   have <- : coloringYB n n = liftcoloring (fun z => coloringYB n z) n 0 by rewrite //=.
   have -> : coloringYB n 0 = yel by rewrite /=.
@@ -141,7 +141,7 @@ Section TCTP_nec_shortodd.
 Variables (colfun : coloring) (k n : nat).
 Hypotheses (n_range : 3 ^ k < n <= (3 ^ k).*2) (on : odd n).
 Hypothesis H : CFun colfun.
-Hypothesis vertices : forall x y, WellColoredVertices colfun x y (3 ^ k).
+Hypothesis triangle : forall x y, Triangle colfun x y (3 ^ k).
 Hypothesis topcolor : forall i, i <= n -> coloringYBBY n i = colfun i 0.
 
 Let shortodd_coloringYB i : i <= n - 3 ^ k -> coloringYB (n - 3 ^ k) i = colfun i (3 ^ k).
@@ -158,7 +158,7 @@ Proof.
   have hn_range_lt' : n./2 < i + 3 ^ k by rewrite ltn_addl //.
   have hn_geq_i : i <= n./2. apply: (leq_trans i_range).
   by rewrite leq_subCl -{1}(odd_double_half n) on add1n -addnn subSn ?leq_addr// -addnBA// subnn addn0.
-  have -> : colfun i (3 ^ k) = mix (colfun i 0) (colfun (i + 3 ^ k) 0) by rewrite -vertices.
+  have -> : colfun i (3 ^ k) = mix (colfun i 0) (colfun (i + 3 ^ k) 0) by rewrite -triangle.
   have <- : coloringYBBY n i = colfun i 0 by exact /topcolor /i_leq_n.
   have <- : coloringYBBY n (i + 3 ^ k) = colfun (i + 3 ^ k) 0 by rewrite topcolor.
   have [oi|ei] := boolP (odd i).
@@ -199,7 +199,7 @@ Proof.
   move=> n_range on WCT.
   have [colfun [H lift]] : exists colfun, CFun colfun /\ forall x y, colfun x y = liftcoloring (fun z => coloringYBBY n z) x y
   by exists (liftcoloring (fun z => coloringYBBY n z)).
-  have := WCT colfun H; rewrite /WellColoredVertices addnC addn0.
+  have := WCT colfun H; rewrite /Triangle addnC addn0.
   have topcolor i : coloringYBBY n i = colfun i 0 by rewrite lift //=.
   have <- : colfun 0 0 = colfun n 0; first by rewrite lift -topcolor -YBBY_both//= subnn.
   have -> : colfun 0 0 = yel by rewrite lift//=.
@@ -230,7 +230,7 @@ Proof. by move=> range; rewrite /coloringBYB ifF//; apply/negbTE;rewrite negb_an
 Section TCTP_nec_longodd.
 Variables (colfun : coloring) (k n : nat).
 Hypotheses (n_range : (3 ^ k).*2.+1 <= n < 3 ^ k.+1) (H : CFun colfun).
-Hypothesis vertices : forall x y, WellColoredVertices colfun x y (3 ^ k).
+Hypothesis triangle : forall x y, Triangle colfun x y (3 ^ k).
 Hypothesis topcolor : forall i, i <= n -> coloringBYB n k i = colfun i 0.
 
 (* An inequality obtained from the range of n *)
@@ -253,7 +253,7 @@ Proof.
   - have i_range_right' : 3 ^ k + i <= n - 3 ^ k.
     by rewrite leq_subRL// ?inequality// addnA addnn -leq_subRL// inequality.
     have n_range_geq : 3 ^ k + i <= n by rewrite (leq_trans i_range_right')// leq_subr.
-    have -> := vertices i 0; rewrite /WellColoredVertices. 
+    have -> := triangle i 0; rewrite /Triangle. 
     have -> : colfun i 0 = blu.
     rewrite -topcolor//; apply: BYB_blu_left => //.
     by rewrite (leq_trans i_range_right) // inequality.
@@ -263,7 +263,7 @@ Proof.
     rewrite ltn_subLR// ?(leq_trans i_range_left)// addnA addnn.
     case /andP: n_range => _ /leq_trans ->//.
     by rewrite expnS (mulnDl 1 2) addnC mul2n mul1n leq_add2l.
-    have -> := vertices i 0; rewrite /WellColoredVertices.
+    have -> := triangle i 0; rewrite /Triangle.
     have -> : colfun i 0 = yel
     by rewrite -topcolor // ?(BYB_yel_center n k i)// i_range_left i_range_right.
     have ->// : colfun (i + 3 ^ k) 0 = blu; rewrite -topcolor// addnC; first by apply BYB_blu_right.
@@ -276,7 +276,7 @@ Proof.
   move=> i_range; rewrite -addnn.
   have in_range : i + 3 ^ k <= n - 3 ^ k.
   by rewrite leq_subRL// ?inequality// addnCA addnn addnC -leq_subRL// inequality.
-  have ->// := vertices i (3 ^ k); rewrite /WellColoredVertices. 
+  have ->// := triangle i (3 ^ k); rewrite /Triangle. 
   have ->// : colfun i (3 ^ k) = red by exact: longodd_red_both_sides.1.
   have ->// : colfun (i + 3 ^ k) (3 ^ k) = red.
   by apply: longodd_red_both_sides.2; rewrite leq_addl.    
@@ -291,10 +291,10 @@ Proof.
   move=> n_range WCT.
   have [colfun [H lift]] : exists colfun, CFun colfun /\ forall x y, colfun x y = liftcoloring (fun z => coloringBYB n k z) x y
   by exists (liftcoloring (fun z => coloringBYB n k z)).
-  have := WCT colfun H; rewrite /WellColoredVertices addnC addn0.
+  have := WCT colfun H; rewrite /Triangle addnC addn0.
   have topcolor i : i <= n -> coloringBYB n k i = colfun i 0; first by rewrite lift /=.
   rewrite /WellColoredTriangle in WCT.
-  have triangle x y : WellColoredVertices colfun x y (3 ^ k); first exact: TCTP_suf.
+  have triangle x y : Triangle colfun x y (3 ^ k); first exact: TCTP_suf.
   have -> : colfun 0 n = red; first by exact: (longodd_bottom _ k).
   have -> : colfun 0 0 = blu by rewrite -(addn0 0) -topcolor// BYB_blu_left.
   have ->// : colfun n 0 = blu.
